@@ -471,6 +471,9 @@ html::-webkit-scrollbar-button {
 .slot-frame-corners span:nth-child(3) { bottom: 0; left: 0; }
 .slot-frame-corners span:nth-child(4) { bottom: 0; right: 0; }
 .slot-atmosphere { position: absolute; inset: 0; overflow: hidden; border-radius: inherit; pointer-events: none; z-index: 2; }
+@media (pointer: coarse) {
+  .slot-atmosphere { display: none; }
+}
 .slot-atmosphere i { position: absolute; left: var(--particle-x); top: var(--particle-y); width: var(--particle-size); height: var(--particle-size); border-radius: 50%; background: var(--slot-secondary); opacity: 0; box-shadow: 0 0 8px var(--slot-accent); animation: slot-mote 7s var(--particle-delay) ease-in-out infinite; }
 .slot-themed-frame.has-prize .slot-reels { animation: slot-theme-prize 700ms ease-out both; }
 [data-motif="frost"] .slot-themed-frame { border-radius: 10px 30px 10px 30px; background: linear-gradient(120deg, #e0f2fe, var(--slot-accent) 12%, var(--slot-surface) 30%, var(--slot-secondary) 51%, var(--slot-surface) 72%, #e0f2fe); }

@@ -1022,3 +1022,15 @@
   .rg-prism-boost[data-hit="true"]::after { animation: none; }
   .rg-prism-bubble { display: none; }
 }
+
+
+@media (pointer: coarse) {
+  .rg-player[data-theme="obsidian-rift"] .rg-prism-illustrated-rim,
+  .rg-player[data-volt-reward="volcanic"] .rg-prism-boost::before {
+    animation: none;
+  }
+
+  .rg-prism-wordmark::after {
+    content: none;
+  }
+}

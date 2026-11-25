@@ -51,11 +51,9 @@ function SlotReel({ game, column, columns, rows, grid, motion, winningCells, onS
   useLayoutEffect(() => {
     if (!motion || motion.reduced || !track.current) return;
     const animation = track.current.animate([
-      { transform: "translateY(0)", filter: "blur(0px)", offset: 0 },
-      { filter: "blur(1.2px)", offset: 0.15 },
-      { filter: "blur(0.8px)", offset: 0.7 },
-      { transform: `translateY(${offset - 6 / symbols.length}%)`, filter: "blur(0px)", offset: 0.92 },
-      { transform: `translateY(${offset}%)`, filter: "blur(0px)", offset: 1 },
+      { transform: "translateY(0)", offset: 0 },
+      { transform: `translateY(${offset - 6 / symbols.length}%)`, offset: 0.92 },
+      { transform: `translateY(${offset}%)`, offset: 1 },
     ], {
       duration: (1000 + column * 200) / motion.speed,
       easing: "cubic-bezier(0.16, 0.65, 0.28, 1)",
