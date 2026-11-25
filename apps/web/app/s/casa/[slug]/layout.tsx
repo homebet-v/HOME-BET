@@ -1,8 +1,18 @@
+import type { Metadata } from "next";
 import { Suspense, type ReactNode, type CSSProperties } from "react";
 import Link from "next/link";
 import { DemoPlayerProvider } from "@/components/demo-player-context";
 import { defaultAppearance, palettes } from "@/lib/appearance";
 import { houseBySlug } from "@/lib/fixtures";
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const name = houseBySlug(slug)?.name ?? "Casino";
+  return {
+    title: { absolute: name },
+    description: `${name}. La casa de juegos.`,
+  };
+}
 
 async function CasaFrame({ params, children }: { params: Promise<{ slug: string }>; children: ReactNode }) {
   const { slug } = await params;

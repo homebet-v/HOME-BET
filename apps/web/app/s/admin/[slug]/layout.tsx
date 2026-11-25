@@ -1,6 +1,16 @@
+import type { Metadata } from "next";
 import { Suspense, type ReactNode } from "react";
 import { AdminShell } from "@/components/admin-shell";
 import { houseBySlug } from "@/lib/fixtures";
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const name = houseBySlug(slug)?.name ?? "Casino";
+  return {
+    title: { absolute: name },
+    description: `Panel de ${name}.`,
+  };
+}
 
 
 async function AdminFrame({
