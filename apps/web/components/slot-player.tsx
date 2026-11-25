@@ -31,7 +31,7 @@ function SymbolTile({ game, symbol, className = "" }: { game: SlotGame; symbol: 
   return <span role="img" aria-label={game.symbols[symbol]} className={`slot-symbol ${className}`} style={{ backgroundImage: `url("${game.sprite}")`, backgroundPosition: `${symbol * 100 / 7}% 50%` }} />;
 }
 
-type ReelMotion = { id: number; from: readonly number[]; to: readonly number[]; speed: number; reduced: boolean };
+type ReelMotion = { id: number; from: readonly number[]; to: readonly number[]; speed: number; reduced: boolean; compact: boolean };
 
 function SlotReel({ game, column, columns, rows, grid, motion, winningCells, onStop }: {
   game: SlotGame; column: number; columns: number; rows: number; grid: readonly number[]; motion: ReelMotion | null; winningCells: Set<number>; onStop: (cue: "stop", column: number, roundId: number) => void;
@@ -39,7 +39,7 @@ function SlotReel({ game, column, columns, rows, grid, motion, winningCells, onS
   const track = useRef<HTMLDivElement>(null);
   // Keep both endpoints in the strip: the animation starts on the previous grid
   // and lands on the exact result already chosen by the engine.
-  const travel = 18 + column * 6;
+  const travel = motion?.compact ? rows + 6 + column * 2 : 18 + column * 6;
   const symbols = motion && !motion.reduced
     ? [...Array.from({ length: rows }, (_, row) => motion.from[row * columns + column]),
       ...Array.from({ length: travel - rows }, (_, index) => (index + column * 3 + motion.id) % game.symbols.length),
@@ -192,7 +192,7 @@ export default function SlotPlayer({ game, onExit }: { game: SlotGame; onExit?: 
       setSession((current) => ({ ...current, balanceCents: current.balanceCents - (next.lastRound!.isFree ? 0 : next.lastRound!.betCents) }));
       playCue("spin");
       const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      setReelMotion({ id: next.lastRound!.id, from: previousGrid, to: next.lastRound!.grid, speed, reduced });
+      setReelMotion({ id: next.lastRound!.id, from: previousGrid, to: next.lastRound!.grid, speed, reduced, compact: window.matchMedia("(pointer: coarse)").matches });
       stoppedReels.current.clear();
       const complete = () => {
         if (finishSpin.current !== complete) return;
@@ -283,7 +283,7 @@ export default function SlotPlayer({ game, onExit }: { game: SlotGame; onExit?: 
     <div className="slot-scene-shade pointer-events-none absolute inset-0 -z-10 bg-gradient-to-b from-[#070a13]/10 via-[#070a13]/65 to-[#070a13]" />
     <header className="slot-theme-header flex items-center justify-between gap-3 border-b border-white/10 bg-black/25 px-4 py-3"><div className="min-w-0"><p className="text-[9px] font-semibold uppercase tracking-[0.25em] text-amber-200">{isPolished ? `Lumen Studio${engine.columns === 5 ? ` · ${engine.edition} · ${engine.columns}×${engine.rows}` : ""}` : "Lumen Studio · 3 × 3"}</p></div><div className="flex shrink-0 items-center gap-2"><span className="slot-demo-badge rounded-full border border-amber-300/20 bg-amber-300/10 px-2 py-1 text-[9px] font-bold text-amber-200">DEMO</span>{isPolished && <><button type="button" className="slot-lumen-header-button" aria-label={sound ? "Silenciar sonido" : "Activar sonido"} aria-pressed={sound} onClick={() => setSound(!sound)}><SkinSoundGlyph sound={sound} /></button><button type="button" className="slot-lumen-header-button" aria-label="Abrir reglas y premios" aria-expanded={rulesOpen} onClick={() => setRulesOpen(!rulesOpen)}>i</button></>}{onExit && <button type="button" aria-label="Salir del juego" onClick={() => { stopAuto(); onExit(); }} className={buttonClass}>×</button>}</div></header>
     {!ready ? <div className="relative flex min-h-[440px] flex-1 flex-col items-center justify-center gap-5 p-6 text-center"><img src={game.loading} alt={game.name} className="absolute inset-0 -z-10 h-full w-full object-cover opacity-40" /><img src={game.icon} alt="" className="size-24 rounded-3xl border border-white/20 object-cover shadow-2xl" /><h2 className="text-3xl font-black">{game.name}</h2><p className="max-w-sm text-sm leading-6 text-slate-200">{game.tagline}</p><div className="h-1.5 w-48 overflow-hidden rounded-full bg-white/10"><div className="h-full rounded-full transition-[width]" style={{ width: `${loaded * 100 / preloadSources.length}%`, background: game.accent }} /></div>{loadError ? <><p role="alert" className="text-xs text-red-200">No se pudieron cargar los gráficos.</p><button className={buttonClass} onClick={() => { setLoaded(0); setLoadError(false); setRetry((value) => value + 1); }}>Reintentar carga</button></> : <button disabled={loaded < preloadSources.length} onClick={() => setReady(true)} className="rounded-full px-8 py-3 text-sm font-black text-black disabled:opacity-40" style={{ background: game.accent }}>{loaded < preloadSources.length ? "Cargando recursos…" : "Entrar con 10.000 fichas demo"}</button>}<p className="max-w-sm text-[10px] leading-5 text-slate-300">Sin dinero real. Las fichas y la sesión se reinician al cerrar. RTP teórico: {(rtp / 100).toFixed(2)}%.</p></div> : <>
-      <div className="slot-play-area mx-auto w-full max-w-xl flex-1 space-y-3 px-3 py-4 sm:px-6">
+      <div className="game-entry slot-play-area mx-auto w-full max-w-xl flex-1 space-y-3 px-3 py-4 sm:px-6">
           <div className="slot-balance-strip slot-stats-panel">
             <div className="slot-saldo-stat"><span>{isPolished ? "Saldo demo" : "Fichas demo"}</span><strong>{chips(session.balanceCents)}</strong></div>
             <div className="slot-bet-stat"><span>Apuesta total</span><strong>{chips(activeBet)}</strong></div>

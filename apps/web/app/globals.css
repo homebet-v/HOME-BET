@@ -610,3 +610,16 @@ html::-webkit-scrollbar-button {
 .slot-bonus-layer .slot-bonus { position: relative; flex-shrink: 0; width: min(528px, calc(100vw - 24px)); max-height: calc(100dvh - 160px); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; pointer-events: auto; margin: 0; box-shadow: 0 20px 60px #0009; }
 .slot-board-stage:has(.slot-bonus-layer) { z-index: 20; }
 
+
+@media (prefers-reduced-motion: no-preference) {
+  :is(.slot-demo-dialog, .rg-demo-dialog)[open],
+  .slot-player .game-entry,
+  .rg-demo-dialog .rg-player {
+    animation: game-entry-fade 180ms ease-out both;
+  }
+}
+
+@keyframes game-entry-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

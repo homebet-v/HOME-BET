@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense, type ReactNode, type CSSProperties } from "react";
 import Link from "next/link";
+import { GameAssetCache } from "@/components/game-asset-cache";
 import { DemoPlayerProvider } from "@/components/demo-player-context";
 import { defaultAppearance, palettes } from "@/lib/appearance";
 import { houseBySlug } from "@/lib/fixtures";
@@ -21,6 +22,7 @@ async function CasaFrame({ params, children }: { params: Promise<{ slug: string 
   const overlay = Math.round((appearance.backgroundOverlay ?? 45) * 2.55).toString(16).padStart(2, "0");
   return (
     <DemoPlayerProvider key={slug} casinoId={slug}>
+      <GameAssetCache />
       <div
         className="casino-scenery min-h-dvh min-w-0 flex-1"
         style={{

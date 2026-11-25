@@ -11,6 +11,7 @@ function deploymentHost(name: string): string | undefined {
 
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
+  if (pathname === "/homebet-game-cache.js") return NextResponse.next();
 
   if (pathname === "/s" || pathname.startsWith("/s/")) {
     const url = request.nextUrl.clone();
