@@ -312,12 +312,37 @@ html::-webkit-scrollbar-button {
   height: 2px;
 }
 
-/* La escena es 16:9. Ocupa el ancho y no se estira con el alto de la página. */
 .casino-scenery {
-  background-image: none;
+  --casino-glow: color-mix(in srgb, var(--casino-accent, #2dd4bf) 20%, transparent);
+  background-image:
+    radial-gradient(ellipse at 0 45%, var(--casino-glow), transparent 58%),
+    radial-gradient(ellipse at 100% 64%, var(--casino-glow), transparent 58%);
   position: relative;
   isolation: isolate;
 }
+
+.casino-catalog-scenery {
+  --catalog-shade: var(--casino-surface, #080a12);
+  background-image:
+    linear-gradient(to bottom, var(--catalog-shade), transparent 16% 78%, var(--catalog-shade)),
+    linear-gradient(to right, #080a1220, #080a12a3 46% 54%, #080a1220),
+    var(--casino-art, none);
+  background-size: 100% 720px, 100% 720px, max(100%, 1280px) 720px;
+  background-position: center top;
+  background-repeat: repeat-y;
+}
+
+.casino-scenery[data-casino-palette="kairo"] .casino-catalog-scenery {
+  --kairo-scene-height: clamp(220px, 56vw, 780px);
+  background-color: #392513;
+  background-image:
+    linear-gradient(to bottom, var(--catalog-shade), transparent 18% 76%, var(--catalog-shade)),
+    radial-gradient(ellipse at 50% 44%, #130c07b3 10%, transparent 76%),
+    var(--casino-art, none);
+  background-size: 100% var(--kairo-scene-height);
+  background-blend-mode: normal, normal, luminosity;
+}
+/* La ilustración conserva su proporción y se funde con el fondo del catálogo. */
 .casino-scenery::before {
   content: "";
   position: absolute;
@@ -337,6 +362,7 @@ html::-webkit-scrollbar-button {
 /* El marco de la casa ya pinta la escena. El lobby anidado no la repite. */
 .casino-scenery .casino-scenery {
   background-color: transparent !important;
+  background-image: none;
 }
 .casino-scenery .casino-scenery::before {
   content: none;
@@ -542,10 +568,10 @@ html::-webkit-scrollbar-button {
 .slot-bonus h2 { margin-top: 8px; font-size: 22px; font-weight: 900; line-height: 1.2; }
 .slot-bonus h2:focus { outline: none; }
 .slot-bonus-help { margin-block: 10px 18px; font-size: 12px; color: #cbd5e1; }
-.slot-bonus-options { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
-.slot-bonus-option { min-width: 0; padding: 6px; border: 1px solid color-mix(in srgb, var(--slot-accent) 40%, transparent); border-radius: 16px; background: #ffffff06; transition: opacity 200ms, border-color 200ms; }
+.slot-bonus-options { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(4px, 1.5vw, 8px); width: 100%; max-width: 320px; margin-inline: auto; }
+.slot-bonus-option { width: 100%; min-width: 0; padding: 5px; border: 1px solid color-mix(in srgb, var(--slot-accent) 40%, transparent); border-radius: 12px; background: #ffffff06; transition: opacity 200ms, border-color 200ms; }
 .slot-bonus-option:not(:disabled):hover { border-color: var(--slot-secondary); background: #ffffff10; }
-.slot-bonus-object { position: relative; display: block; aspect-ratio: 1; }
+.slot-bonus-object { position: relative; display: block; width: 88%; margin-inline: auto; aspect-ratio: 1; }
 .slot-bonus-halo { position: absolute; inset: 12%; border-radius: 50%; background: radial-gradient(circle, color-mix(in srgb, var(--slot-accent) 35%, transparent), transparent 70%); }
 .slot-bonus-seal { position: absolute; right: 0; bottom: 0; color: var(--slot-secondary); font-size: 24px; text-shadow: 0 0 12px var(--slot-accent); }
 .slot-bonus-option-label { display: block; padding-block: 8px 5px; text-transform: capitalize; font-size: 11px; color: var(--slot-secondary); overflow-wrap: anywhere; }
@@ -605,9 +631,9 @@ html::-webkit-scrollbar-button {
 .slot-prize-overlay .slot-prize-details small { margin-top: 3px; font-size: clamp(6px, 2.7cqh, 10px); }
 .slot-prize-overlay .slot-prize-decoration { inset: 10% 7% auto; font-size: 8cqh; }
 
-.slot-bonus-layer { position: absolute; inset: 0; z-index: 8; display: flex; align-items: center; justify-content: center; pointer-events: none; }
+.slot-bonus-layer { position: absolute; inset: 0; z-index: 8; display: flex; align-items: center; justify-content: center; padding-inline: 6px; pointer-events: none; }
 .slot-bonus-layer::before { content: ""; position: absolute; inset: 0; border-radius: 20px; background: #04091270; backdrop-filter: blur(3px); }
-.slot-bonus-layer .slot-bonus { position: relative; flex-shrink: 0; width: min(528px, calc(100vw - 24px)); max-height: calc(100dvh - 160px); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; pointer-events: auto; margin: 0; box-shadow: 0 20px 60px #0009; }
+.slot-bonus-layer .slot-bonus { position: relative; box-sizing: border-box; width: 100%; min-width: 0; max-width: 360px; max-height: calc(100dvh - 160px); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; pointer-events: auto; margin: 0; box-shadow: 0 20px 60px #0009; }
 .slot-board-stage:has(.slot-bonus-layer) { z-index: 20; }
 
 
