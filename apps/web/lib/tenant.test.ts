@@ -31,6 +31,16 @@ test("Vercel aliases open Home on exact matches", () => {
   assert.deepEqual(resolveHost("bet1.homebet.com", "homebet.com", aliases), { kind: "casa", slug: "bet1" });
 });
 
+test("kairobet.online is the Kairobet house and its panel", () => {
+  assert.deepEqual(resolveHost("kairobet.online"), { kind: "casa", slug: "kairobet" });
+  assert.deepEqual(resolveHost("www.kairobet.online"), { kind: "casa", slug: "kairobet" });
+  assert.deepEqual(resolveHost("admin.kairobet.online"), { kind: "admin", slug: "kairobet" });
+  assert.deepEqual(resolveHost("kairobet.online", "homebet.com"), { kind: "casa", slug: "kairobet" });
+  assert.equal(surfaceOrigin("casa", "kairobet"), "https://kairobet.online");
+  assert.equal(surfaceOrigin("admin", "kairobet"), "https://admin.kairobet.online");
+  assert.equal(surfaceOrigin("casa", "kairobet", "homebet.com"), "https://kairobet.online");
+});
+
 test("nested hosts, reserved labels and foreign domains stay unknown", () => {
   assert.deepEqual(resolveHost("admin.bet1.localhost"), { kind: "unknown", slug: null });
   assert.deepEqual(resolveHost("api.localhost"), { kind: "unknown", slug: null });

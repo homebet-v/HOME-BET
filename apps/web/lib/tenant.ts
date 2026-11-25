@@ -7,6 +7,13 @@ export type Surface =
 const RESERVED = new Set(["home", "www", "api", "app", "localhost"]);
 const SLUG = /^[a-z][a-z0-9-]{1,40}$/;
 
+/** A house that owns its apex domain, outside the platform root. */
+const ownedHosts: Record<string, { kind: "casa" | "admin"; slug: string; canonical?: boolean }> = {
+  "kairobet.online": { kind: "casa", slug: "kairobet", canonical: true },
+  "www.kairobet.online": { kind: "casa", slug: "kairobet" },
+  "admin.kairobet.online": { kind: "admin", slug: "kairobet", canonical: true },
+};
+
 export function isSlug(value: string): boolean {
   return SLUG.test(value) && !value.endsWith("-");
 }
@@ -26,6 +33,9 @@ export function resolveHost(
   homeAliases: readonly (string | undefined)[] = [],
 ): Surface {
   const hostname = hostnameOf(hostHeader);
+  const owned = ownedHosts[hostname];
+  if (owned) return { kind: owned.kind, slug: owned.slug };
+
   const root = rootDomain.trim().toLowerCase().replace(/\.$/, "") || "localhost";
 
   if (
@@ -70,6 +80,13 @@ export function surfaceOrigin(
   slug: string | null,
   rootDomain = "localhost",
 ): string {
+  if (kind === "casa" || kind === "admin") {
+    const host = Object.entries(ownedHosts).find(
+      ([, value]) => value.canonical && value.kind === kind && value.slug === slug,
+    )?.[0];
+    if (host) return `https://${host}`;
+  }
+
   const root = rootDomain.trim().toLowerCase().replace(/\.$/, "") || "localhost";
   const local = root === "localhost";
   const protocol = local ? "http" : "https";

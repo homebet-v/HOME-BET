@@ -16,7 +16,7 @@ function Domain({ slug }: { slug: string }) {
       <section className="flex flex-col gap-2">
         <h1 className="text-xl font-semibold">Dominio</h1>
         <p className="max-w-xl text-sm leading-6 text-zinc-400">
-          Home y este panel ven los mismos hosts. Cambiar el dominio propio se agrega cuando Vercel tenga el proyecto.
+          Home y este panel ven los mismos hosts.
         </p>
       </section>
       <dl className="grid gap-3">
