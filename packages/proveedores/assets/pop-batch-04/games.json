@@ -1,0 +1,622 @@
+[
+  {
+    "slug": "neon-outlaws",
+    "name": "Neon Outlaws",
+    "tagline": "Mercenarios originales entre implantes y calles de neón.",
+    "accent": "#f472b6",
+    "secondary": "#67e8f9",
+    "surface": "#160d2a",
+    "motif": "celestial",
+    "emblem": "ϟ",
+    "artStyle": "neon",
+    "medium": "cinematic cyberpunk graphic-novel game art with vivid painted3D materials",
+    "scene": "original adult cyberpunk courier with silver undercut hair, magenta tech jacket and cyan visor in a rainy futuristic street",
+    "symbols": [
+      "Chip cian",
+      "Ficha neón",
+      "Visor óptico",
+      "Brazo cibernético",
+      "Cristal de datos",
+      "Forajida neón",
+      "Emblema WILD",
+      "Sello de giros gratis"
+    ],
+    "artSymbols": "cyan data chip, neon casino token, cyber visor, cybernetic gauntlet, data crystal, original adult neon courier portrait",
+    "bonus": {
+      "item": "cristal de datos",
+      "title": "Los archivos de la ciudad",
+      "symbol": 4
+    },
+    "materials": "black chrome, cyan circuit rims, magenta holographic studs",
+    "fanArt": false
+  },
+  {
+    "slug": "ghost-hunters",
+    "name": "Ghost Hunters",
+    "tagline": "Un equipo paranormal captura espectros con aparatos imposibles.",
+    "accent": "#4ade80",
+    "secondary": "#c4b5fd",
+    "surface": "#101d24",
+    "motif": "celestial",
+    "emblem": "✧",
+    "artStyle": "comic",
+    "medium": "expressive original comic-book3D cartoon, bold ink contours and tactile gadgets",
+    "scene": "original adult paranormal investigator in teal copper work suit with oversized spectral scanner, accompanied by a mint ghost with square spectacles, haunted city street",
+    "symbols": [
+      "Medidor espectral",
+      "Ficha fantasma",
+      "Frasco ectoplasma",
+      "Lente paranormal",
+      "Trampa de espectros",
+      "Investigadora paranormal",
+      "Emblema WILD",
+      "Sello de giros gratis"
+    ],
+    "artSymbols": "spectral meter, ghost token, ectoplasm flask, paranormal lens, spectral trap gadget, original adult paranormal investigator portrait",
+    "bonus": {
+      "item": "trampa de espectros",
+      "title": "Las trampas del más allá",
+      "symbol": 4
+    },
+    "materials": "copper scanner rims, teal enamel, spectral green tubes, no franchise symbols",
+    "fanArt": false
+  },
+  {
+    "slug": "midnight-arcade",
+    "name": "Midnight Arcade",
+    "tagline": "Máquinas, fichas y récords de un salón recreativo de los ochenta.",
+    "accent": "#a78bfa",
+    "secondary": "#5eead4",
+    "surface": "#160f2d",
+    "motif": "celestial",
+    "emblem": "★",
+    "artStyle": "neon",
+    "medium": "luxurious retro1980s arcade painted3D key art, neon lighting and colorful cabinet illustrations",
+    "scene": "original adult arcade champion with blue bomber jacket and magenta headphones beside a purple arcade cabinet with abstract glowing game screen",
+    "symbols": [
+      "Ficha arcade",
+      "Joystick",
+      "Botón rojo",
+      "Casete de juego",
+      "Máquina arcade",
+      "Campeona arcade",
+      "Emblema WILD",
+      "Sello de giros gratis"
+    ],
+    "artSymbols": "arcade token, joystick, red arcade button, game cartridge, purple arcade cabinet without text, original adult arcade champion portrait",
+    "bonus": {
+      "item": "ficha arcade",
+      "title": "Las fichas de medianoche",
+      "symbol": 0
+    },
+    "materials": "violet arcade panels, cyan neon tubes, chrome button bezels",
+    "fanArt": false
+  },
+  {
+    "slug": "cosmic-rebels",
+    "name": "Cosmic Rebels",
+    "tagline": "Pilotos rebeldes y robots frente a una estación espacial gigantesca.",
+    "accent": "#60a5fa",
+    "secondary": "#fbbf24",
+    "surface": "#101b30",
+    "motif": "celestial",
+    "emblem": "✦",
+    "artStyle": "jewel",
+    "medium": "cinematic space opera illustration with glossy painted3D spacecraft and heroic silhouettes",
+    "scene": "original adult rebel pilot in orange flight jacket with silver comet insignia, original four-armed blue robot and triangular star cruiser near a vast orbital station",
+    "symbols": [
+      "Brújula estelar",
+      "Ficha rebelde",
+      "Cristal plasma",
+      "Insignia cometa",
+      "Crucero rebelde",
+      "Piloto rebelde",
+      "Emblema WILD",
+      "Sello de giros gratis"
+    ],
+    "artSymbols": "star compass, rebel token, plasma crystal, comet badge, original triangular star cruiser, original adult rebel pilot portrait",
+    "bonus": {
+      "item": "insignia cometa",
+      "title": "Las insignias de la rebelión",
+      "symbol": 3
+    },
+    "materials": "silver flight metal, orange enamel, blue plasma crystal rims",
+    "fanArt": false
+  },
+  {
+    "slug": "monster-trainers",
+    "name": "Monster Trainers",
+    "tagline": "Exploradores adultos y criaturas elementales originales.",
+    "accent": "#22c55e",
+    "secondary": "#fcd34d",
+    "surface": "#10241e",
+    "motif": "botanical",
+    "emblem": "❖",
+    "artStyle": "comic",
+    "medium": "bright original creature-adventure comic illustration, bold silhouettes and glossy jewel highlights",
+    "scene": "original adult creature explorer in turquoise hiking coat with an orange owl-moth companion and a purple moss-turtle companion, elemental jungle clearing",
+    "symbols": [
+      "Pluma solar",
+      "Ficha elemental",
+      "Gema musgo",
+      "Cápsula de cristal",
+      "Criatura búho-polilla",
+      "Exploradora elemental",
+      "Emblema WILD",
+      "Sello de giros gratis"
+    ],
+    "artSymbols": "sun feather, elemental token, moss crystal, transparent crystal creature capsule, original orange owl moth creature, original adult creature explorer portrait",
+    "bonus": {
+      "item": "gema musgo",
+      "title": "Los cristales elementales",
+      "symbol": 2
+    },
+    "materials": "turquoise explorer enamel, amber feather ornaments, moss-green gem rims",
+    "fanArt": false
+  },
+  {
+    "slug": "vampire-disco",
+    "name": "Vampire Disco",
+    "tagline": "Vampiros, sintetizadores y una pista nocturna de los ochenta.",
+    "accent": "#e879f9",
+    "secondary": "#fda4af",
+    "surface": "#240d2b",
+    "motif": "celestial",
+    "emblem": "☾",
+    "artStyle": "neon",
+    "medium": "glamorous synthwave gothic game art, painted3D chrome, velvet and neon",
+    "scene": "original adult vampire DJ with short platinum hair and magenta velvet jacket at a violet neon disco with mirror ball and red gemstone ornaments",
+    "symbols": [
+      "Colmillo de plata",
+      "Ficha nocturna",
+      "Disco vinilo",
+      "Sintetizador",
+      "Esfera disco",
+      "Vampiro DJ",
+      "Emblema WILD",
+      "Sello de giros gratis"
+    ],
+    "artSymbols": "silver fang brooch, night token, vinyl record, synthesizer, mirrored disco ball, original adult vampire DJ portrait",
+    "bonus": {
+      "item": "disco vinilo",
+      "title": "Los discos de la noche",
+      "symbol": 2
+    },
+    "materials": "purple chrome, magenta velvet enamel, silver fang and mirror-ball rims",
+    "fanArt": false
+  },
+  {
+    "slug": "mutant-alley",
+    "name": "Mutant Alley",
+    "tagline": "Animales mutantes originales protegen los callejones de la ciudad.",
+    "accent": "#a3e635",
+    "secondary": "#fb923c",
+    "surface": "#172219",
+    "motif": "botanical",
+    "emblem": "ϟ",
+    "artStyle": "comic",
+    "medium": "dynamic street-action comic-book illustration, original animal heroes, bold ink and glossy colors",
+    "scene": "original adult anthropomorphic purple lizard street leader in teal tech jacket, orange badger mechanic and silver raven scout in a graffiti alley, no bandanas or franchise costumes",
+    "symbols": [
+      "Tornillo urbano",
+      "Ficha mutante",
+      "Gafas callejeras",
+      "Guante mecánico",
+      "Emblema del callejón",
+      "Líder lagarto",
+      "Emblema WILD",
+      "Sello de giros gratis"
+    ],
+    "artSymbols": "urban steel bolt, mutant token, street goggles, mechanical glove, alley crew emblem, original purple lizard leader portrait",
+    "bonus": {
+      "item": "emblema del callejón",
+      "title": "Los emblemas del callejón",
+      "symbol": 4
+    },
+    "materials": "graffiti orange lacquer, teal metal, purple scale details and steel studs",
+    "fanArt": false
+  },
+  {
+    "slug": "time-jumpers",
+    "name": "Time Jumpers",
+    "tagline": "Una mecánica temporal viaja entre relojes y ciudades imposibles.",
+    "accent": "#38bdf8",
+    "secondary": "#fcd34d",
+    "surface": "#161c2d",
+    "motif": "brass",
+    "emblem": "◷",
+    "artStyle": "jewel",
+    "medium": "retro science-fiction adventure painted3D illustration, brass clocks and electric blue energy",
+    "scene": "original adult time mechanic in orange aviator coat and teal goggles beside an original three-wheeled time scooter with brass clock engine, split past-future city skyline",
+    "symbols": [
+      "Engranaje temporal",
+      "Ficha del tiempo",
+      "Reloj magnético",
+      "Gafas cronales",
+      "Moto del tiempo",
+      "Mecánica temporal",
+      "Emblema WILD",
+      "Sello de giros gratis"
+    ],
+    "artSymbols": "time gear, temporal token, magnetic clock, time travel goggles, original three wheeled time scooter, original adult time mechanic portrait",
+    "bonus": {
+      "item": "reloj magnético",
+      "title": "Los relojes del salto",
+      "symbol": 2
+    },
+    "materials": "antique brass, electric blue clock rings, orange aviator leather and chrome",
+    "fanArt": false
+  },
+  {
+    "slug": "kaiju-city",
+    "name": "Kaiju City",
+    "tagline": "Un monstruo de coral y un robot defensor se enfrentan sobre la ciudad.",
+    "accent": "#fb923c",
+    "secondary": "#67e8f9",
+    "surface": "#162330",
+    "motif": "ember",
+    "emblem": "ϟ",
+    "artStyle": "jewel",
+    "medium": "spectacular original giant-monster cinematic3D illustration with vivid toy-like armored surfaces",
+    "scene": "original six-limbed coral-armored giant creature with blue bioluminescent horns and an ivory orange city-defense mech over a futuristic harbor skyline",
+    "symbols": [
+      "Escama coral",
+      "Ficha titán",
+      "Núcleo azul",
+      "Brazo defensor",
+      "Robot de la ciudad",
+      "Kaiju coral",
+      "Emblema WILD",
+      "Sello de giros gratis"
+    ],
+    "artSymbols": "coral monster scale, titan token, blue energy core, defense robot arm, original ivory orange giant defense mech, original coral armored giant creature head",
+    "bonus": {
+      "item": "núcleo azul",
+      "title": "Los núcleos de la ciudad",
+      "symbol": 2
+    },
+    "materials": "ivory mech plates, coral orange armor, blue reactor and horn rims",
+    "fanArt": false
+  },
+  {
+    "slug": "mystery-motel",
+    "name": "Mystery Motel",
+    "tagline": "Una detective sigue señales extrañas en un motel de carretera.",
+    "accent": "#c084fc",
+    "secondary": "#fde68a",
+    "surface": "#1c142b",
+    "motif": "celestial",
+    "emblem": "☾",
+    "artStyle": "jewel",
+    "medium": "stylized supernatural mystery noir game illustration, moody violet gold and rich cinematic detail",
+    "scene": "original adult detective with dark hair and silver streak in burgundy coat holding a brass motel key, eerie roadside motel in violet pine forest with strange moonlight",
+    "symbols": [
+      "Llave de habitación",
+      "Ficha del motel",
+      "Linterna antigua",
+      "Polaroid misteriosa",
+      "Maleta sellada",
+      "Detective del motel",
+      "Emblema WILD",
+      "Sello de giros gratis"
+    ],
+    "artSymbols": "brass motel key, motel token, antique flashlight, mysterious instant photo without text, sealed suitcase, original adult noir detective portrait",
+    "bonus": {
+      "item": "llave de habitación",
+      "title": "Las habitaciones secretas",
+      "symbol": 0
+    },
+    "materials": "burgundy motel leather, brass key scrollwork, violet moon crystal edges",
+    "fanArt": false
+  },
+  {
+    "slug": "wasteland-radio",
+    "name": "Wasteland Radio",
+    "tagline": "Un locutor enmascarado transmite entre ruinas retrofuturistas.",
+    "accent": "#fb923c",
+    "secondary": "#5eead4",
+    "surface": "#241b15",
+    "motif": "brass",
+    "emblem": "◉",
+    "artStyle": "jewel",
+    "medium": "original retrofuturist post-apocalyptic painted3D illustration, aged copper and warm mint-glow technology",
+    "scene": "original adult masked radio host in mustard coat and copper aviator helmet, vacuum-tube radio, rusted transmission tower and desert road, no franchise emblems or costumes",
+    "symbols": [
+      "Tapa de cobre",
+      "Ficha de antena",
+      "Tubo de vacío",
+      "Radio portátil",
+      "Torre de transmisión",
+      "Locutor del páramo",
+      "Emblema WILD",
+      "Sello de giros gratis"
+    ],
+    "artSymbols": "copper bottle cap, antenna token, vacuum tube, retro portable radio, transmission tower, original masked wasteland radio host portrait",
+    "bonus": {
+      "item": "radio portátil",
+      "title": "Las frecuencias perdidas",
+      "symbol": 3
+    },
+    "materials": "aged copper, mint radio glass, mustard leather and vintage tuning dials",
+    "fanArt": false
+  },
+  {
+    "slug": "masked-legends",
+    "name": "Masked Legends",
+    "tagline": "Héroes originales saltan de las viñetas a una ciudad de cristal.",
+    "accent": "#22d3ee",
+    "secondary": "#facc15",
+    "surface": "#0c1c32",
+    "motif": "celestial",
+    "emblem": "✦",
+    "artStyle": "comic",
+    "medium": "premium superhero comic-book illustration with strong black ink, halftone shadows and vibrant jewel colors",
+    "scene": "original adult dark-skinned heroine with silver mask, yellow cape and cyan geometric armor, crystal city and dynamic comic rays, entirely original costume and emblem",
+    "symbols": [
+      "Gema de viñeta",
+      "Ficha heroica",
+      "Comunicador",
+      "Guante de energía",
+      "Insignia orbital",
+      "Heroína enmascarada",
+      "Emblema WILD",
+      "Sello de giros gratis"
+    ],
+    "artSymbols": "comic crystal, hero token, hero communicator, energy gauntlet, original orbital hero insignia, original silver masked heroine portrait",
+    "bonus": {
+      "item": "insignia orbital",
+      "title": "Las insignias legendarias",
+      "symbol": 4
+    },
+    "materials": "black ink panel borders, cyan armor, yellow cape and silver mask edges",
+    "fanArt": false
+  },
+  {
+    "slug": "dungeon-party",
+    "name": "Dungeon Party",
+    "tagline": "Guerrera, maga y pícaro buscan un cofre viviente.",
+    "accent": "#f59e0b",
+    "secondary": "#a78bfa",
+    "surface": "#21152a",
+    "motif": "brass",
+    "emblem": "⚄",
+    "artStyle": "jewel",
+    "medium": "rich tabletop fantasy game illustration, polished3D medieval materials and expressive original adventurers",
+    "scene": "original adult dwarven warrior, adult blue-robed mage and adult fox-eared rogue investigating a mischievous living treasure chest in a torch-lit dungeon",
+    "symbols": [
+      "Dado de cobre",
+      "Ficha de taberna",
+      "Poción violeta",
+      "Libro de campaña",
+      "Cofre viviente",
+      "Guerrera de la partida",
+      "Emblema WILD",
+      "Sello de giros gratis"
+    ],
+    "artSymbols": "copper gaming die, tavern token, violet potion, campaign spellbook, original living treasure chest, original adult dwarven warrior portrait",
+    "bonus": {
+      "item": "cofre viviente",
+      "title": "Los cofres de la partida",
+      "symbol": 4
+    },
+    "materials": "carved tavern walnut, aged gold, violet potion gems and dice studs",
+    "fanArt": false
+  },
+  {
+    "slug": "galaxy-racers",
+    "name": "Galaxy Racers",
+    "tagline": "Pilotos originales compiten en circuitos suspendidos entre estrellas.",
+    "accent": "#38bdf8",
+    "secondary": "#f472b6",
+    "surface": "#0e1930",
+    "motif": "celestial",
+    "emblem": "ϟ",
+    "artStyle": "neon",
+    "medium": "high-energy futuristic racing game illustration, glossy3D chrome and cyan magenta light trails",
+    "scene": "original fully helmeted adult hover racer in teal silver armor beside a sleek red cyan hover bike on a suspended galactic circuit",
+    "symbols": [
+      "Tuerca galáctica",
+      "Ficha de circuito",
+      "Visor de piloto",
+      "Turbina azul",
+      "Moto orbital",
+      "Piloto de galaxia",
+      "Emblema WILD",
+      "Sello de giros gratis"
+    ],
+    "artSymbols": "galactic steel nut, racing token, pilot visor, blue racing turbine, original red cyan hover bike, original helmeted adult hover racer portrait",
+    "bonus": {
+      "item": "turbina azul",
+      "title": "Las turbinas del circuito",
+      "symbol": 3
+    },
+    "materials": "chrome racing metal, cyan turbine rings, magenta light strips",
+    "fanArt": false
+  },
+  {
+    "slug": "monster-matinee",
+    "name": "Monster Matinee",
+    "tagline": "Monstruos originales de cine clásico toman un viejo estudio.",
+    "accent": "#a3e635",
+    "secondary": "#e9d5ff",
+    "surface": "#1a1827",
+    "motif": "celestial",
+    "emblem": "☾",
+    "artStyle": "jewel",
+    "medium": "vintage monster-cinema game poster illustration, art deco gold, emerald lighting and expressive stylized3D monsters",
+    "scene": "original purple-haired gentleman vampire and original bronze-bolted patchwork stone giant on a classic film studio set with castle miniature and full moon, no actor likenesses",
+    "symbols": [
+      "Rollo de película",
+      "Ficha del cine",
+      "Vela del castillo",
+      "Poción verde",
+      "Claqueta antigua",
+      "Gigante del estudio",
+      "Emblema WILD",
+      "Sello de giros gratis"
+    ],
+    "artSymbols": "film reel, cinema token, castle candle, green potion, vintage blank film clapperboard, original bronze bolted patchwork stone giant portrait",
+    "bonus": {
+      "item": "rollo de película",
+      "title": "Los rollos del estudio",
+      "symbol": 0
+    },
+    "materials": "black silver film metal, art deco gold, emerald stage light accents",
+    "fanArt": false
+  },
+  {
+    "slug": "sugar-rush-idols",
+    "name": "Sugar Rush Idols",
+    "tagline": "Artistas adultos y espíritus de azúcar iluminan un gran escenario.",
+    "accent": "#fb7185",
+    "secondary": "#67e8f9",
+    "surface": "#29122c",
+    "motif": "paper",
+    "emblem": "♫",
+    "artStyle": "comic",
+    "medium": "glamorous original animated pop-concert fantasy game art, candy jewels and bold luminous colors",
+    "scene": "three original adult pop singers with candy-colored full stage outfits and floating sugar spirits on a vibrant jewel concert stage, no existing band or character likeness",
+    "symbols": [
+      "Estrella dulce",
+      "Ficha del show",
+      "Micrófono rosa",
+      "Auriculares cian",
+      "Cristal del escenario",
+      "Cantante de azúcar",
+      "Emblema WILD",
+      "Sello de giros gratis"
+    ],
+    "artSymbols": "candy star jewel, concert token, pink microphone, cyan headphones, stage crystal, original adult fantasy pop singer portrait",
+    "bonus": {
+      "item": "micrófono rosa",
+      "title": "Las estrellas del escenario",
+      "symbol": 2
+    },
+    "materials": "rose gold, candy pink enamel, cyan speaker gems and musical scrolls",
+    "fanArt": false
+  },
+  {
+    "slug": "space-cowboys",
+    "name": "Space Cowboys",
+    "tagline": "Contrabandistas y cazarrecompensas recorren el lejano espacio.",
+    "accent": "#fbbf24",
+    "secondary": "#2dd4bf",
+    "surface": "#201b26",
+    "motif": "brass",
+    "emblem": "★",
+    "artStyle": "jewel",
+    "medium": "original space western adventure game illustration, weathered copper, teal starlight and rich cinematic3D paint",
+    "scene": "original adult bounty hunter with teal poncho and wide-brim copper hat, mechanical desert fox companion and retro star freighter at a frontier spaceport, no actor likenesses or franchise costumes",
+    "symbols": [
+      "Bota orbital",
+      "Ficha de frontera",
+      "Brújula cósmica",
+      "Casco de cobre",
+      "Carguero estelar",
+      "Cazarrecompensas",
+      "Emblema WILD",
+      "Sello de giros gratis"
+    ],
+    "artSymbols": "orbital boot, frontier token, cosmic compass, copper space helmet, original retro star freighter, original adult teal poncho space bounty hunter portrait",
+    "bonus": {
+      "item": "carguero estelar",
+      "title": "Los cargamentos de frontera",
+      "symbol": 4
+    },
+    "materials": "weathered copper, teal poncho leather, star-shaped brass rivets",
+    "fanArt": false
+  },
+  {
+    "slug": "haunted-broadcast",
+    "name": "Haunted Broadcast",
+    "tagline": "Un autómata de televisión intercepta emisiones de otra dimensión.",
+    "accent": "#4ade80",
+    "secondary": "#f87171",
+    "surface": "#121d20",
+    "motif": "celestial",
+    "emblem": "◉",
+    "artStyle": "jewel",
+    "medium": "stylized analog-horror mystery game illustration, eerie CRT green red glow, no gore or graphic horror",
+    "scene": "original television automaton with abstract signal face and tape-reel crown, eerie retro broadcast room with CRT screens and magnetic tapes, mysterious atmospheric not graphic",
+    "symbols": [
+      "Cinta magnética",
+      "Ficha de señal",
+      "Antena roja",
+      "Monitor CRT",
+      "Bobina espectral",
+      "Autómata de televisión",
+      "Emblema WILD",
+      "Sello de giros gratis"
+    ],
+    "artSymbols": "magnetic tape cassette, signal token, red antenna, CRT monitor with abstract glow no text, spectral tape reel, original television automaton with signal face",
+    "bonus": {
+      "item": "cinta magnética",
+      "title": "Las cintas de la emisión",
+      "symbol": 0
+    },
+    "materials": "dark broadcast metal, green CRT glass, red signal-light rims",
+    "fanArt": false
+  },
+  {
+    "slug": "toybox-rebellion",
+    "name": "Toybox Rebellion",
+    "tagline": "Juguetes originales cobran vida y se organizan en un taller.",
+    "accent": "#fb923c",
+    "secondary": "#7dd3fc",
+    "surface": "#241c30",
+    "motif": "paper",
+    "emblem": "⚙",
+    "artStyle": "comic",
+    "medium": "original animated toy-adventure game illustration, tactile painted wood and glossy3D clockwork materials",
+    "scene": "original wooden wind-up robot captain with red aviator scarf, brass toy duck and plush violet dragon organizing an escape in a magical toy workshop, entirely original toy designs",
+    "symbols": [
+      "Botón de madera",
+      "Ficha de juguete",
+      "Llave de cuerda",
+      "Pato mecánico",
+      "Dragón de felpa",
+      "Capitán de cuerda",
+      "Emblema WILD",
+      "Sello de giros gratis"
+    ],
+    "artSymbols": "wooden button, toy token, wind up key, original brass clockwork duck, original plush violet dragon, original wooden wind up robot captain portrait",
+    "bonus": {
+      "item": "llave de cuerda",
+      "title": "Las llaves del taller",
+      "symbol": 2
+    },
+    "materials": "painted maple wood, brass wind-up gears, orange blue enamel studs",
+    "fanArt": false
+  },
+  {
+    "slug": "final-encore",
+    "name": "Final Encore",
+    "tagline": "Una banda fantástica toca instrumentos encantados en su último concierto.",
+    "accent": "#f43f5e",
+    "secondary": "#a78bfa",
+    "surface": "#211029",
+    "motif": "celestial",
+    "emblem": "♫",
+    "artStyle": "neon",
+    "medium": "spectacular original fantasy rock-concert game illustration, glossy guitar lacquer, dramatic purple red stage lighting",
+    "scene": "original adult rock guitarist with blue braids and red leather jacket, silver robot drummer and enchanted gold guitar under dramatic concert spotlights, no band logos or celebrity likenesses",
+    "symbols": [
+      "Púa encantada",
+      "Ficha del concierto",
+      "Disco dorado",
+      "Tambor eléctrico",
+      "Guitarra mágica",
+      "Guitarrista del encore",
+      "Emblema WILD",
+      "Sello de giros gratis"
+    ],
+    "artSymbols": "enchanted guitar pick, concert token, gold record, electric drum, magical gold guitar, original adult blue braided rock guitarist portrait",
+    "bonus": {
+      "item": "disco dorado",
+      "title": "Los discos del encore",
+      "symbol": 2
+    },
+    "materials": "black guitar lacquer, red purple neon rings, gold music ornaments",
+    "fanArt": false
+  }
+]

@@ -1,0 +1,32 @@
+{
+  "themes": [
+    {
+      "slug": "royal-gold",
+      "layout": "classic",
+      "assets": 9,
+      "rendered": true
+    },
+    {
+      "slug": "neon-vegas",
+      "layout": "table",
+      "assets": 9,
+      "rendered": true
+    },
+    {
+      "slug": "coral-palace",
+      "layout": "alternating",
+      "assets": 9,
+      "rendered": true
+    },
+    {
+      "slug": "cyber-wheel",
+      "layout": "compact",
+      "assets": 9,
+      "rendered": true
+    }
+  ],
+  "usedAssets": 36,
+  "plannedThemes": 40,
+  "plannedPerLayout": 10,
+  "verified": true
+}

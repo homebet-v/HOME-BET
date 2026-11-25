@@ -1,0 +1,146 @@
+{
+  "totalGames": 40,
+  "batchGames": 20,
+  "audit": [
+    {
+      "slug": "golden-sevens",
+      "name": "Golden Sevens",
+      "symbols": 8,
+      "controls": 7,
+      "verified": true
+    },
+    {
+      "slug": "cherry-fortune",
+      "name": "Cherry Fortune",
+      "symbols": 8,
+      "controls": 7,
+      "verified": true
+    },
+    {
+      "slug": "royal-flush",
+      "name": "Royal Flush",
+      "symbols": 8,
+      "controls": 7,
+      "verified": true
+    },
+    {
+      "slug": "roulette-royale",
+      "name": "Roulette Royale",
+      "symbols": 8,
+      "controls": 7,
+      "verified": true
+    },
+    {
+      "slug": "pharaohs-vault",
+      "name": "Pharaoh’s Vault",
+      "symbols": 8,
+      "controls": 7,
+      "verified": true
+    },
+    {
+      "slug": "olympus-gold",
+      "name": "Olympus Gold",
+      "symbols": 8,
+      "controls": 7,
+      "verified": true
+    },
+    {
+      "slug": "dragon-fortune",
+      "name": "Dragon Fortune",
+      "symbols": 8,
+      "controls": 7,
+      "verified": true
+    },
+    {
+      "slug": "lucky-coins",
+      "name": "Lucky Coins",
+      "symbols": 8,
+      "controls": 7,
+      "verified": true
+    },
+    {
+      "slug": "pirates-bounty",
+      "name": "Pirate’s Bounty",
+      "symbols": 8,
+      "controls": 7,
+      "verified": true
+    },
+    {
+      "slug": "wild-west-gold",
+      "name": "Wild West Gold",
+      "symbols": 8,
+      "controls": 7,
+      "verified": true
+    },
+    {
+      "slug": "diamond-fever",
+      "name": "Diamond Fever",
+      "symbols": 8,
+      "controls": 7,
+      "verified": true
+    },
+    {
+      "slug": "emerald-fortune",
+      "name": "Emerald Fortune",
+      "symbols": 8,
+      "controls": 7,
+      "verified": true
+    },
+    {
+      "slug": "neon-nights",
+      "name": "Neon Nights",
+      "symbols": 8,
+      "controls": 7,
+      "verified": true
+    },
+    {
+      "slug": "jungle-riches",
+      "name": "Jungle Riches",
+      "symbols": 8,
+      "controls": 7,
+      "verified": true
+    },
+    {
+      "slug": "aztec-treasure",
+      "name": "Aztec Treasure",
+      "symbols": 8,
+      "controls": 7,
+      "verified": true
+    },
+    {
+      "slug": "desert-wishes",
+      "name": "Desert Wishes",
+      "symbols": 8,
+      "controls": 7,
+      "verified": true
+    },
+    {
+      "slug": "lucky-carnival",
+      "name": "Lucky Carnival",
+      "symbols": 8,
+      "controls": 7,
+      "verified": true
+    },
+    {
+      "slug": "midnight-lounge",
+      "name": "Midnight Lounge",
+      "symbols": 8,
+      "controls": 7,
+      "verified": true
+    },
+    {
+      "slug": "ruby-queen",
+      "name": "Ruby Queen",
+      "symbols": 8,
+      "controls": 7,
+      "verified": true
+    },
+    {
+      "slug": "buffalo-thunder",
+      "name": "Buffalo Thunder",
+      "symbols": 8,
+      "controls": 7,
+      "verified": true
+    }
+  ]
+}

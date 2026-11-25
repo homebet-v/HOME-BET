@@ -1,0 +1,22 @@
+.slot-board-stage:has(.slot-chip-layer) { z-index: 30; }
+.slot-chip-layer { position: absolute; inset: 0; z-index: 9; display: flex; align-items: center; justify-content: center; }
+.slot-chip-backdrop { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; border-radius: 20px; background: #040912ad; backdrop-filter: blur(4px); }
+.slot-chip-card { position: relative; flex-shrink: 0; width: min(420px, calc(100vw - 28px)); max-height: calc(100dvh - 100px); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; padding: 20px; border: 1px solid var(--slot-secondary); border-radius: 24px; background: radial-gradient(ellipse at 50% 0, color-mix(in srgb, var(--slot-accent) 14%, transparent), transparent 65%), linear-gradient(145deg, var(--slot-surface), #050c18); box-shadow: 0 16px 50px #000b, inset 0 1px 0 #ffffff30; text-align: center; }
+.slot-chip-close { position: absolute; top: 4px; right: 4px; width: 44px; height: 44px; border: 0; border-radius: 50%; color: #cbd5e1; font-size: 24px; background: transparent; }
+.slot-chip-eyebrow { color: var(--slot-secondary); font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; }
+.slot-chip-card h2 { margin-top: 6px; color: #f1f5f9; font-size: 24px; font-weight: 900; }
+.slot-chip-description { margin: 6px 0 16px; color: #94a3b8; font-size: 11px; }
+.slot-chip-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.slot-bet-chip { position: relative; width: 100%; aspect-ratio: 1; min-width: 44px; min-height: 44px; border: 0; border-radius: 50%; padding: 0; container-type: inline-size; display: grid; place-items: center; background: transparent; color: white; text-shadow: 0 2px 4px #000; transition: transform 150ms, box-shadow 150ms; }
+.slot-bet-chip::before { content: ""; position: absolute; inset: 0; border-radius: inherit; background: var(--chip-art) center / contain no-repeat; filter: hue-rotate(var(--chip-hue)); }
+.slot-bet-chip[aria-checked="true"] { box-shadow: 0 0 0 2px var(--slot-accent), 0 0 18px color-mix(in srgb, var(--slot-accent) 40%, transparent); }
+.slot-chip-label { position: relative; width: 78%; white-space: nowrap; font-size: min(34px, var(--chip-label-size)); font-weight: 900; font-variant-numeric: tabular-nums; letter-spacing: -0.04em; }
+.slot-chip-check { position: absolute; top: -2px; right: -2px; width: 24px; height: 24px; display: grid; place-items: center; border: 1px solid var(--slot-accent); border-radius: 50%; color: var(--slot-secondary); background: var(--slot-surface); font-size: 14px; }
+.slot-chip-selected { margin: 16px 0 10px; color: #cbd5e1; font-size: 12px; font-variant-numeric: tabular-nums; }
+.slot-chip-selected strong { color: var(--slot-secondary); }
+.slot-chip-confirm { min-height: 44px; width: 100%; border: 0; background: var(--slot-button-art) center / 100% 100% no-repeat; color: white; text-shadow: 0 1px 4px #000; font-size: 12px; font-weight: 800; }
+.slot-chip-card button:focus-visible { outline: 2px solid var(--slot-secondary); outline-offset: 3px; }
+@media (hover: hover) { .slot-bet-chip:hover { transform: translateY(-2px); } }
+.slot-bet-chip:active { transform: scale(0.96); }
+@media (max-height: 650px) { .slot-chip-card { width: min(350px, calc(100vw - 28px)); padding: 14px; } .slot-chip-card h2 { font-size: 20px; } .slot-chip-grid { gap: 8px; } .slot-chip-description { margin-bottom: 10px; } .slot-chip-selected { margin-block: 10px; } }
+@media (prefers-reduced-motion: reduce) { .slot-bet-chip { transition: none; } }

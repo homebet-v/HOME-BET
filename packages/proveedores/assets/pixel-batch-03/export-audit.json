@@ -1,0 +1,12 @@
+{
+  "audit": [
+    {
+      "slug": "goblin-gold",
+      "kind": "symbols",
+      "file": "apps/web/public/images/slots/goblin-gold/symbols-transparent.webp",
+      "width": 1536,
+      "height": 192
+    }
+  ],
+  "errors": []
+}

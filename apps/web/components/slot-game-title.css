@@ -1,0 +1,9 @@
+.slot-game-title { position: relative; display: grid; place-items: center; container-type: inline-size; width: 100%; max-width: 460px; aspect-ratio: 4.5; margin-inline: auto; background: var(--slot-title-art) center / 100% 100% no-repeat; }
+.slot-game-title h1 { width: 72%; min-width: 0; margin: 0; color: var(--slot-title-ink, #ffe3a3); font-family: Georgia, "Times New Roman", serif; font-size: min(27px, calc(110cqi / var(--slot-title-letters))); line-height: 1.1; font-weight: 800; text-align: center; text-transform: uppercase; letter-spacing: 0.015em; white-space: nowrap; text-shadow: 0 2px 3px #000, 0 0 12px color-mix(in srgb, var(--slot-accent) 25%, transparent); }
+.slot-player .slot-theme-header { min-height: 44px; padding-block: 6px; }
+.slot-player .slot-play-area .slot-board { max-width: var(--slot-board-size, min(460px, max(96px, calc(100dvh - var(--slot-height-budget) - 60px)))); }
+@media (max-height: 700px) { .slot-game-title { max-width: 360px; aspect-ratio: 5; } .slot-player > footer { padding-block: 7px; } }
+
+[data-motif="frost"] .slot-game-title { --slot-title-ink: #e0f2fe; }
+[data-motif="celestial"] .slot-game-title { --slot-title-ink: #e0e7ff; }
+[data-motif="paper"] .slot-game-title { --slot-title-ink: #fce7f3; }

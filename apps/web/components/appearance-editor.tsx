@@ -1,0 +1,63 @@
+"use client";
+
+import { useState } from "react";
+import { CasinoLobby } from "@/components/casino-lobby";
+import { defaultAppearance, palettes, type Appearance } from "@/lib/appearance";
+import { houses, type CatalogGame } from "@/lib/fixtures";
+
+const input = "w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-sky-400";
+export function AppearanceEditor({ name, games }: { name: string; games: readonly CatalogGame[] }) {
+  const [appearance, setAppearance] = useState<Appearance>(() => defaultAppearance(name));
+  const [device, setDevice] = useState<"desktop" | "mobile">("desktop");
+  const [note, setNote] = useState("");
+  const [uploading, setUploading] = useState(false);
+  async function readBackground(file: File | undefined) {
+    if (!file) return;
+    if (!["image/png", "image/jpeg", "image/webp"].includes(file.type) || file.size > 5 * 1024 * 1024) { setNote("Elegí un fondo PNG, JPG o WebP de hasta 5 MB."); return; }
+    setUploading(true);
+    try {
+      const image = await new Promise<string>((resolve, reject) => { const reader = new FileReader(); reader.onload = () => resolve(String(reader.result)); reader.onerror = reject; reader.readAsDataURL(file); });
+      update("backgroundImage", image);
+      setNote("Fondo aplicado solo a la vista previa. No se subió ni se guardó.");
+    } catch { setNote("No se pudo leer el fondo. Intentá con otra imagen."); }
+    finally { setUploading(false); }
+  }
+  async function addBanners(files: FileList | null) {
+    if (!files) return;
+    const selected = Array.from(files);
+    if (selected.length + appearance.banners.length > 5) { setNote("Podés agregar hasta 5 banners."); return; }
+    if (selected.some((file) => !["image/png", "image/jpeg", "image/webp"].includes(file.type) || file.size > 3 * 1024 * 1024)) { setNote("Usá imágenes PNG, JPG o WebP de hasta 3 MB cada una."); return; }
+    setUploading(true);
+    try {
+      const banners = await Promise.all(selected.map((file) => new Promise<{ id: string; image: string; alt: string }>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve({ id: crypto.randomUUID(), image: String(reader.result), alt: file.name.replace(/\.[^.]+$/, "") });
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      })));
+      setAppearance((current) => ({ ...current, banners: [...current.banners, ...banners].slice(0, 5) }));
+      setNote("Banners agregados a la vista previa. No se subieron ni guardaron.");
+    } catch { setNote("No se pudieron leer las imágenes. Intentá nuevamente."); }
+    finally { setUploading(false); }
+  }
+  function moveBanner(index: number, direction: number) {
+    const banners = [...appearance.banners];
+    [banners[index], banners[index + direction]] = [banners[index + direction], banners[index]];
+    update("banners", banners);
+  }
+  function update<K extends keyof Appearance>(key: K, value: Appearance[K]) { setAppearance((current) => ({ ...current, [key]: value })); setNote(""); }
+  return <div className="flex flex-col gap-5">
+    <header className="flex flex-wrap items-start justify-between gap-3"><div><p className="text-[10px] tracking-widest text-sky-300 uppercase">Identidad de tu casa</p><h1 className="mt-1 text-2xl font-semibold">Apariencia</h1><p className="mt-2 text-sm text-slate-400">Unas pocas decisiones para hacerla tuya.</p></div><span className="rounded-full bg-amber-300/10 px-3 py-1.5 text-xs text-amber-200">Vista previa · sin publicar</span></header>
+    <div className="grid items-start gap-5 lg:grid-cols-[300px_minmax(0,1fr)]">
+      <div className="flex flex-col gap-4">
+        <section className="space-y-4 rounded-xl border border-white/10 p-4"><h2 className="text-sm font-semibold">01 · Identidad</h2><label className="grid gap-2 text-xs text-slate-300">Nombre visible<input className={input} maxLength={36} value={appearance.brand} onChange={(event) => update("brand", event.target.value)} /></label><fieldset><legend className="mb-2 text-xs text-slate-300">Emblema</legend><div className="flex gap-2">{(["diamond", "star", "circle"] as const).map((value, index) => <button key={value} aria-label={["Diamante", "Estrella", "Círculo"][index]} aria-pressed={appearance.emblem === value} onClick={() => update("emblem", value)} className={`rounded-lg border px-4 py-2 text-xl ${appearance.emblem === value ? "border-sky-400 bg-sky-400/10 text-sky-300" : "border-white/10"}`}>{["◈", "✦", "◎"][index]}</button>)}</div></fieldset></section>
+        <section className="space-y-4 rounded-xl border border-white/10 p-4"><h2 className="text-sm font-semibold">02 · Estilo</h2><fieldset><legend className="mb-2 text-xs text-slate-300">Paleta de colores</legend><div className="grid grid-cols-2 gap-2">{Object.entries(palettes).map(([key, palette]) => <button key={key} aria-pressed={appearance.palette === key} onClick={() => update("palette", key as Appearance["palette"])} className={`flex items-center gap-2 rounded-lg border px-2 py-2 text-xs ${appearance.palette === key ? "border-white/60 bg-white/5" : "border-white/10"}`}><span className="size-3 rounded-full" style={{ background: palette.accent }} />{palette.label}</button>)}</div></fieldset><label className="grid gap-2 text-xs text-slate-300">Color de fondo<div className="flex items-center gap-3"><input aria-label="Color de fondo de la casa" type="color" value={appearance.background} onChange={(event) => update("background", event.target.value)} className="h-9 w-14 cursor-pointer rounded border border-white/15 bg-transparent" /><span className="font-mono text-slate-400">{appearance.background}</span></div></label><fieldset className="space-y-3 rounded-lg border border-white/10 p-3"><legend className="px-1 text-xs text-slate-300">Imagen de fondo</legend><label className="grid gap-2 text-[11px] text-slate-400">Elegir un fondo de muestra<select className={input} value={appearance.backgroundImage?.startsWith("/images/") ? appearance.backgroundImage : ""} onChange={(event) => update("backgroundImage", event.target.value || undefined)}><option value="">Solo color / imagen personalizada</option>{houses.map((house) => <option key={house.slug} value={`/images/${house.slug}/background.png`}>{house.name}</option>)}</select></label><label className="grid gap-2 text-[11px] text-slate-400">Cargar una imagen propia<input type="file" accept="image/png,image/jpeg,image/webp" disabled={uploading} className="w-full text-[10px]" onChange={(event) => { void readBackground(event.target.files?.[0]); event.target.value = ""; }} /></label><p className="text-[10px] text-slate-500">Hasta 5 MB · Recomendado: formato horizontal</p>{appearance.backgroundImage && <><label className="grid gap-2 text-[11px] text-slate-300">Oscurecimiento: {appearance.backgroundOverlay ?? 75}%<input type="range" min="0" max="95" value={appearance.backgroundOverlay ?? 75} onChange={(event) => update("backgroundOverlay", Number(event.target.value))} className="w-full accent-sky-400" /></label><button type="button" className="text-[10px] text-rose-300" onClick={() => update("backgroundImage", undefined)}>Quitar imagen de fondo</button></>}</fieldset><label className="flex items-center gap-2 text-xs text-slate-300"><input type="checkbox" checked={appearance.rounded} onChange={(event) => update("rounded", event.target.checked)} />Bordes redondeados</label><fieldset><legend className="mb-2 text-xs text-slate-300">Presentación de portada</legend><div className="grid grid-cols-2 gap-2">{(["spotlight", "compact"] as const).map((value) => <button key={value} aria-pressed={appearance.layout === value} onClick={() => update("layout", value)} className={`rounded-lg border px-3 py-2 text-xs ${appearance.layout === value ? "border-sky-400 bg-sky-400/10 text-sky-300" : "border-white/10"}`}>{value === "spotlight" ? "Destacada" : "Compacta"}</button>)}</div></fieldset></section>
+        <section className="space-y-4 rounded-xl border border-white/10 p-4"><h2 className="text-sm font-semibold">03 · Contenido</h2><label className="grid gap-2 text-xs text-slate-300">Título de portada<input className={input} maxLength={70} value={appearance.title} onChange={(event) => update("title", event.target.value)} /></label><label className="grid gap-2 text-xs text-slate-300">Descripción<textarea className={input} rows={3} maxLength={180} value={appearance.description} onChange={(event) => update("description", event.target.value)} /></label><label className="flex items-center gap-2 text-xs text-slate-300"><input type="checkbox" checked={appearance.showProviders} onChange={(event) => update("showProviders", event.target.checked)} className="accent-sky-400" />Mostrar marcas de los juegos</label></section>
+        <section className="space-y-4 rounded-xl border border-white/10 p-4"><h2 className="text-sm font-semibold">04 · Banners superiores</h2><p className="text-xs leading-5 text-slate-400">Debajo del nombre de tu casa. Hasta 5 imágenes; se recorren deslizando. Recomendado: 1500 × 500 px.</p><label className="grid gap-2 text-xs text-slate-300">Agregar imágenes<input type="file" multiple accept="image/png,image/jpeg,image/webp" disabled={uploading || appearance.banners.length >= 5} className="w-full text-[10px] file:mr-2 file:rounded file:border-0 file:bg-white/10 file:px-2 file:py-2 file:text-slate-200" onChange={(event) => { void addBanners(event.target.files); event.target.value = ""; }} /></label><p className="text-[10px] text-slate-500">PNG, JPG o WebP · Hasta 3 MB por imagen · Solo vista previa</p><div className="space-y-3">{appearance.banners.map((banner, index) => <div key={banner.id} className="space-y-2 rounded-lg border border-white/10 p-2"><img src={banner.image} alt={banner.alt} className="aspect-[3/1] w-full rounded object-cover" /><label className="grid gap-1 text-[10px] text-slate-400">Descripción del banner {index + 1}<input maxLength={100} className={input} value={banner.alt} onChange={(event) => update("banners", appearance.banners.map((item) => item.id === banner.id ? { ...item, alt: event.target.value } : item))} /></label><div className="flex gap-3 text-[10px]"><button disabled={index === 0} className="disabled:opacity-30" onClick={() => moveBanner(index, -1)}>Subir ↑</button><button disabled={index === appearance.banners.length - 1} className="disabled:opacity-30" onClick={() => moveBanner(index, 1)}>Bajar ↓</button><button className="ml-auto text-rose-300" onClick={() => update("banners", appearance.banners.filter((item) => item.id !== banner.id))}>Quitar</button></div></div>)}</div><label className="flex items-center gap-2 text-xs text-slate-300"><input type="checkbox" checked={appearance.showWelcome} onChange={(event) => update("showWelcome", event.target.checked)} />Mostrar también la portada de bienvenida</label></section>
+        <p role="status" className="text-xs text-amber-200">{uploading ? "Preparando imágenes…" : note}</p>
+        <button disabled={uploading} onClick={() => { setAppearance(defaultAppearance(name)); setNote("Se restableció la vista previa de esta casa."); }} className="self-start text-xs text-slate-400 underline underline-offset-4">Restablecer vista previa</button>
+      </div>
+      <section className="min-w-0 rounded-2xl border border-white/10 bg-[#0c121e] p-3 sm:p-4 lg:sticky lg:top-5"><div className="mb-4 flex flex-wrap items-center justify-between gap-3"><h2 className="text-xs font-semibold text-slate-300">Vista previa en vivo</h2><div className="flex rounded-lg bg-white/5 p-1">{(["desktop", "mobile"] as const).map((value) => <button key={value} aria-pressed={device === value} onClick={() => setDevice(value)} className={`rounded-md px-3 py-1.5 text-[10px] ${device === value ? "bg-slate-700 text-white" : "text-slate-400"}`}>{value === "desktop" ? "Escritorio" : "Celular"}</button>)}</div></div><div className={`mx-auto transition-[max-width] ${device === "mobile" ? "max-w-[360px]" : "max-w-full"}`}><CasinoLobby appearance={appearance} games={games} preview /></div><div className="mt-4 border-t border-white/10 pt-4"><p className="text-xs leading-5 text-slate-400">Estos cambios solo se muestran acá. No se guardan ni modifican la casa pública. Al recargar, se restablecen.</p><button onClick={() => setNote("La publicación estará disponible al conectar el guardado de cada casino. Tu casa pública no cambió.")} className="mt-3 rounded-lg border border-sky-400/30 bg-sky-400/10 px-4 py-2 text-xs text-sky-300">Estado de publicación</button><p role="status" className="mt-2 text-xs text-amber-200">{note}</p></div></section>
+    </div>
+  </div>;
+}

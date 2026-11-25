@@ -1,0 +1,55 @@
+{
+  "tool": "image_gen integrated",
+  "jobs": [
+    {
+      "slug": "royal-gold",
+      "kind": "cover",
+      "prompt": "Use case: ads-marketing. Premium European ROULETTE GAME cover, landscape3:2. Exact English title \"ROYAL GOLD\" as LARGE bespoke highly readable dimensional lettering integrated in lower35%, inside8% safe margins. Hero upper65% a magnificent roulette wheel rendered in polished warm gold, carved dark walnut and burgundy velvet, small royal crown, ivory ball and two beautiful poker chips in foreground. Setting European casino salon with burgundy velvet drapes and warm chandelier light. Strong clear casino game identity, theatrical lighting, vivid rich materials, exceptional polished game art. No people, no additional text, no payout claims, no numbers on chips, no watermark, no UI. Roulette pocket numbers may be small decorative details; single green zero. Cover is branding illustration, not a gameplay board."
+    },
+    {
+      "slug": "neon-vegas",
+      "kind": "cover",
+      "prompt": "Use case: ads-marketing. Premium European ROULETTE GAME cover, landscape3:2. Exact English title \"NEON VEGAS\" as LARGE bespoke highly readable dimensional lettering integrated in lower35%, inside8% safe margins. Hero upper65% a magnificent roulette wheel rendered in black chrome, vivid hot pink and electric cyan neon tubing, cut crystal, original geometric star emblems, ivory ball and two beautiful poker chips in foreground. Setting a glamorous futuristic Las Vegas casino with neon chandeliers, magenta and cyan accents, glossy dark floor. Strong clear casino game identity, theatrical lighting, vivid rich materials, exceptional polished game art. No people, no additional text, no payout claims, no numbers on chips, no watermark, no UI. Roulette pocket numbers may be small decorative details; single green zero. Cover is branding illustration, not a gameplay board."
+    },
+    {
+      "slug": "neon-vegas",
+      "kind": "scene",
+      "prompt": "Use case: stylized-concept. Production portrait1:2 mobile roulette game BACKGROUND, a glamorous futuristic Las Vegas casino with neon chandeliers, magenta and cyan accents, glossy dark floor. Materials black chrome, vivid hot pink and electric cyan neon tubing, cut crystal, original geometric star emblems. Luminous highly worked game illustration with vibrant contrasting lights, atmospheric luxury. Top12% and outer sides/bottom frame environment detail; CENTER80% must be a dark low-contrast QUIET EMPTY space reserved for live code roulette wheel and betting table. No frame border, no roulette wheel, no table grid, no controls, no chips, no text, no numerals, no people, no logos. Full bleed art, no transparency. Beautiful atmospheric original casino setting."
+    },
+    {
+      "slug": "neon-vegas",
+      "kind": "controls",
+      "prompt": "Use case: stylized-concept. Production transparent RGBA casino UI ART ASSET ATLAS for roulette Neon Vegas. Square canvas, exactly TWO equal-height ROWS. TOP ROW exactly THREE equal-width CELLS, each holds ONE isolated HORIZONTAL pill-shaped button aspect3:1 fully centered with12% transparent safe margins: LEFT auxiliary dark button; MIDDLE primary more luminous vivid button; RIGHT auxiliary dark button. BOTTOM ROW exactly FOUR equal-width CELLS each holds ONE perfectly round front-facing poker chip fully contained with10% transparent margins, different coordinated colors. All seven assets constructed from black chrome, vivid hot pink and electric cyan neon tubing, cut crystal, original geometric star emblems. Elaborate tactile beautiful premium game materials, realistic bevels, quiet DARK EMPTY centers reserved for live text. Real genuine alpha outside all seven assets and in the gutters, no shadow fields, no white/gray backgrounds, no painted checkerboard, no separator lines. NO arrows, letters, numbers, labels or words anywhere. No title plaque, no scene, no extra objects."
+    },
+    {
+      "slug": "coral-palace",
+      "kind": "cover",
+      "prompt": "Use case: ads-marketing. Premium European ROULETTE GAME cover, landscape3:2. Exact English title \"CORAL PALACE\" as LARGE bespoke highly readable dimensional lettering integrated in lower35%, inside8% safe margins. Hero upper65% a magnificent roulette wheel rendered in iridescent mother-of-pearl, warm gold, turquoise enamel and coral filigree, pearl and shell accents, ivory ball and two beautiful poker chips in foreground. Setting a luxurious underwater palace casino, coral arches at outer sides, turquoise caustics, pearls and pink sea anemones. Strong clear casino game identity, theatrical lighting, vivid rich materials, exceptional polished game art. No people, no additional text, no payout claims, no numbers on chips, no watermark, no UI. Roulette pocket numbers may be small decorative details; single green zero. Cover is branding illustration, not a gameplay board."
+    },
+    {
+      "slug": "coral-palace",
+      "kind": "scene",
+      "prompt": "Use case: stylized-concept. Production portrait1:2 mobile roulette game BACKGROUND, a luxurious underwater palace casino, coral arches at outer sides, turquoise caustics, pearls and pink sea anemones. Materials iridescent mother-of-pearl, warm gold, turquoise enamel and coral filigree, pearl and shell accents. Luminous highly worked game illustration with vibrant contrasting lights, atmospheric luxury. Top12% and outer sides/bottom frame environment detail; CENTER80% must be a dark low-contrast QUIET EMPTY space reserved for live code roulette wheel and betting table. No frame border, no roulette wheel, no table grid, no controls, no chips, no text, no numerals, no people, no logos. Full bleed art, no transparency. Beautiful atmospheric original casino setting."
+    },
+    {
+      "slug": "coral-palace",
+      "kind": "controls",
+      "prompt": "Use case: stylized-concept. Production transparent RGBA casino UI ART ASSET ATLAS for roulette Coral Palace. Square canvas, exactly TWO equal-height ROWS. TOP ROW exactly THREE equal-width CELLS, each holds ONE isolated HORIZONTAL pill-shaped button aspect3:1 fully centered with12% transparent safe margins: LEFT auxiliary dark button; MIDDLE primary more luminous vivid button; RIGHT auxiliary dark button. BOTTOM ROW exactly FOUR equal-width CELLS each holds ONE perfectly round front-facing poker chip fully contained with10% transparent margins, different coordinated colors. All seven assets constructed from iridescent mother-of-pearl, warm gold, turquoise enamel and coral filigree, pearl and shell accents. Elaborate tactile beautiful premium game materials, realistic bevels, quiet DARK EMPTY centers reserved for live text. Real genuine alpha outside all seven assets and in the gutters, no shadow fields, no white/gray backgrounds, no painted checkerboard, no separator lines. NO arrows, letters, numbers, labels or words anywhere. No title plaque, no scene, no extra objects."
+    },
+    {
+      "slug": "cyber-wheel",
+      "kind": "cover",
+      "prompt": "Use case: ads-marketing. Premium European ROULETTE GAME cover, landscape3:2. Exact English title \"CYBER WHEEL\" as LARGE bespoke highly readable dimensional lettering integrated in lower35%, inside8% safe margins. Hero upper65% a magnificent roulette wheel rendered in machined titanium, dark graphite, emerald green luminous circuits and lime accents, original hexagonal technology emblems, ivory ball and two beautiful poker chips in foreground. Setting a futuristic orbital casino control room with graphite panels, green light strips and distant starfield at the edges. Strong clear casino game identity, theatrical lighting, vivid rich materials, exceptional polished game art. No people, no additional text, no payout claims, no numbers on chips, no watermark, no UI. Roulette pocket numbers may be small decorative details; single green zero. Cover is branding illustration, not a gameplay board."
+    },
+    {
+      "slug": "cyber-wheel",
+      "kind": "scene",
+      "prompt": "Use case: stylized-concept. Production portrait1:2 mobile roulette game BACKGROUND, a futuristic orbital casino control room with graphite panels, green light strips and distant starfield at the edges. Materials machined titanium, dark graphite, emerald green luminous circuits and lime accents, original hexagonal technology emblems. Luminous highly worked game illustration with vibrant contrasting lights, atmospheric luxury. Top12% and outer sides/bottom frame environment detail; CENTER80% must be a dark low-contrast QUIET EMPTY space reserved for live code roulette wheel and betting table. No frame border, no roulette wheel, no table grid, no controls, no chips, no text, no numerals, no people, no logos. Full bleed art, no transparency. Beautiful atmospheric original casino setting."
+    },
+    {
+      "slug": "cyber-wheel",
+      "kind": "controls",
+      "prompt": "Use case: stylized-concept. Production transparent RGBA casino UI ART ASSET ATLAS for roulette Cyber Wheel. Square canvas, exactly TWO equal-height ROWS. TOP ROW exactly THREE equal-width CELLS, each holds ONE isolated HORIZONTAL pill-shaped button aspect3:1 fully centered with12% transparent safe margins: LEFT auxiliary dark button; MIDDLE primary more luminous vivid button; RIGHT auxiliary dark button. BOTTOM ROW exactly FOUR equal-width CELLS each holds ONE perfectly round front-facing poker chip fully contained with10% transparent margins, different coordinated colors. All seven assets constructed from machined titanium, dark graphite, emerald green luminous circuits and lime accents, original hexagonal technology emblems. Elaborate tactile beautiful premium game materials, realistic bevels, quiet DARK EMPTY centers reserved for live text. Real genuine alpha outside all seven assets and in the gutters, no shadow fields, no white/gray backgrounds, no painted checkerboard, no separator lines. NO arrows, letters, numbers, labels or words anywhere. No title plaque, no scene, no extra objects."
+    }
+  ]
+}

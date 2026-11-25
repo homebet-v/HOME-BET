@@ -1,0 +1,58 @@
+[
+  {
+    "motif": "ocean",
+    "file": "apps/web/public/images/slots/titles/ocean.webp",
+    "width": 1350,
+    "height": 300,
+    "bytes": 130312
+  },
+  {
+    "motif": "botanical",
+    "file": "apps/web/public/images/slots/titles/botanical.webp",
+    "width": 1350,
+    "height": 300,
+    "bytes": 92078
+  },
+  {
+    "motif": "brass",
+    "file": "apps/web/public/images/slots/titles/brass.webp",
+    "width": 1350,
+    "height": 300,
+    "bytes": 121128
+  },
+  {
+    "motif": "celestial",
+    "file": "apps/web/public/images/slots/titles/celestial.webp",
+    "width": 1350,
+    "height": 300,
+    "bytes": 100352
+  },
+  {
+    "motif": "frost",
+    "file": "apps/web/public/images/slots/titles/frost.webp",
+    "width": 1350,
+    "height": 300,
+    "bytes": 105734
+  },
+  {
+    "motif": "ember",
+    "file": "apps/web/public/images/slots/titles/ember.webp",
+    "width": 1350,
+    "height": 300,
+    "bytes": 93768
+  },
+  {
+    "motif": "paper",
+    "file": "apps/web/public/images/slots/titles/paper.webp",
+    "width": 1350,
+    "height": 300,
+    "bytes": 90480
+  },
+  {
+    "motif": "lantern",
+    "file": "apps/web/public/images/slots/titles/lantern.webp",
+    "width": 1350,
+    "height": 300,
+    "bytes": 100430
+  }
+]

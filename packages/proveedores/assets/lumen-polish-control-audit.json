@@ -1,0 +1,296 @@
+[
+  {
+    "motif": "botanical",
+    "file": "apps/web/public/images/slots/controls-v2/botanical/chip.webp",
+    "width": 256,
+    "height": 256,
+    "bytes": 31658
+  },
+  {
+    "motif": "botanical",
+    "file": "apps/web/public/images/slots/controls-v2/botanical/spin.webp",
+    "width": 320,
+    "height": 320,
+    "bytes": 47880
+  },
+  {
+    "motif": "botanical",
+    "file": "apps/web/public/images/slots/controls-v2/botanical/button.webp",
+    "width": 640,
+    "height": 144,
+    "bytes": 38730
+  },
+  {
+    "motif": "botanical",
+    "file": "apps/web/public/images/slots/controls-v2/botanical/prize-1.webp",
+    "width": 256,
+    "height": 256,
+    "bytes": 33066
+  },
+  {
+    "motif": "botanical",
+    "file": "apps/web/public/images/slots/controls-v2/botanical/prize-2.webp",
+    "width": 256,
+    "height": 256,
+    "bytes": 40560
+  },
+  {
+    "motif": "botanical",
+    "file": "apps/web/public/images/slots/controls-v2/botanical/prize-3.webp",
+    "width": 256,
+    "height": 256,
+    "bytes": 29402
+  },
+  {
+    "motif": "brass",
+    "file": "apps/web/public/images/slots/controls-v2/brass/chip.webp",
+    "width": 256,
+    "height": 256,
+    "bytes": 28996
+  },
+  {
+    "motif": "brass",
+    "file": "apps/web/public/images/slots/controls-v2/brass/spin.webp",
+    "width": 320,
+    "height": 320,
+    "bytes": 44590
+  },
+  {
+    "motif": "brass",
+    "file": "apps/web/public/images/slots/controls-v2/brass/button.webp",
+    "width": 640,
+    "height": 144,
+    "bytes": 36170
+  },
+  {
+    "motif": "brass",
+    "file": "apps/web/public/images/slots/controls-v2/brass/prize-1.webp",
+    "width": 256,
+    "height": 256,
+    "bytes": 31080
+  },
+  {
+    "motif": "brass",
+    "file": "apps/web/public/images/slots/controls-v2/brass/prize-2.webp",
+    "width": 256,
+    "height": 256,
+    "bytes": 36350
+  },
+  {
+    "motif": "brass",
+    "file": "apps/web/public/images/slots/controls-v2/brass/prize-3.webp",
+    "width": 256,
+    "height": 256,
+    "bytes": 33628
+  },
+  {
+    "motif": "celestial",
+    "file": "apps/web/public/images/slots/controls-v2/celestial/chip.webp",
+    "width": 256,
+    "height": 256,
+    "bytes": 31914
+  },
+  {
+    "motif": "celestial",
+    "file": "apps/web/public/images/slots/controls-v2/celestial/spin.webp",
+    "width": 320,
+    "height": 320,
+    "bytes": 53564
+  },
+  {
+    "motif": "celestial",
+    "file": "apps/web/public/images/slots/controls-v2/celestial/button.webp",
+    "width": 640,
+    "height": 144,
+    "bytes": 44512
+  },
+  {
+    "motif": "celestial",
+    "file": "apps/web/public/images/slots/controls-v2/celestial/prize-1.webp",
+    "width": 256,
+    "height": 256,
+    "bytes": 36762
+  },
+  {
+    "motif": "celestial",
+    "file": "apps/web/public/images/slots/controls-v2/celestial/prize-2.webp",
+    "width": 256,
+    "height": 256,
+    "bytes": 38152
+  },
+  {
+    "motif": "celestial",
+    "file": "apps/web/public/images/slots/controls-v2/celestial/prize-3.webp",
+    "width": 256,
+    "height": 256,
+    "bytes": 39092
+  },
+  {
+    "motif": "frost",
+    "file": "apps/web/public/images/slots/controls-v2/frost/chip.webp",
+    "width": 256,
+    "height": 256,
+    "bytes": 30864
+  },
+  {
+    "motif": "frost",
+    "file": "apps/web/public/images/slots/controls-v2/frost/spin.webp",
+    "width": 320,
+    "height": 320,
+    "bytes": 51008
+  },
+  {
+    "motif": "frost",
+    "file": "apps/web/public/images/slots/controls-v2/frost/button.webp",
+    "width": 640,
+    "height": 144,
+    "bytes": 40330
+  },
+  {
+    "motif": "frost",
+    "file": "apps/web/public/images/slots/controls-v2/frost/prize-1.webp",
+    "width": 256,
+    "height": 256,
+    "bytes": 35136
+  },
+  {
+    "motif": "frost",
+    "file": "apps/web/public/images/slots/controls-v2/frost/prize-2.webp",
+    "width": 256,
+    "height": 256,
+    "bytes": 39282
+  },
+  {
+    "motif": "frost",
+    "file": "apps/web/public/images/slots/controls-v2/frost/prize-3.webp",
+    "width": 256,
+    "height": 256,
+    "bytes": 32656
+  },
+  {
+    "motif": "ember",
+    "file": "apps/web/public/images/slots/controls-v2/ember/chip.webp",
+    "width": 256,
+    "height": 256,
+    "bytes": 24424
+  },
+  {
+    "motif": "ember",
+    "file": "apps/web/public/images/slots/controls-v2/ember/spin.webp",
+    "width": 320,
+    "height": 320,
+    "bytes": 38074
+  },
+  {
+    "motif": "ember",
+    "file": "apps/web/public/images/slots/controls-v2/ember/button.webp",
+    "width": 640,
+    "height": 144,
+    "bytes": 33760
+  },
+  {
+    "motif": "ember",
+    "file": "apps/web/public/images/slots/controls-v2/ember/prize-1.webp",
+    "width": 256,
+    "height": 256,
+    "bytes": 28520
+  },
+  {
+    "motif": "ember",
+    "file": "apps/web/public/images/slots/controls-v2/ember/prize-2.webp",
+    "width": 256,
+    "height": 256,
+    "bytes": 41414
+  },
+  {
+    "motif": "ember",
+    "file": "apps/web/public/images/slots/controls-v2/ember/prize-3.webp",
+    "width": 256,
+    "height": 256,
+    "bytes": 32702
+  },
+  {
+    "motif": "paper",
+    "file": "apps/web/public/images/slots/controls-v2/paper/chip.webp",
+    "width": 256,
+    "height": 256,
+    "bytes": 25912
+  },
+  {
+    "motif": "paper",
+    "file": "apps/web/public/images/slots/controls-v2/paper/spin.webp",
+    "width": 320,
+    "height": 320,
+    "bytes": 38194
+  },
+  {
+    "motif": "paper",
+    "file": "apps/web/public/images/slots/controls-v2/paper/button.webp",
+    "width": 640,
+    "height": 144,
+    "bytes": 33516
+  },
+  {
+    "motif": "paper",
+    "file": "apps/web/public/images/slots/controls-v2/paper/prize-1.webp",
+    "width": 256,
+    "height": 256,
+    "bytes": 25556
+  },
+  {
+    "motif": "paper",
+    "file": "apps/web/public/images/slots/controls-v2/paper/prize-2.webp",
+    "width": 256,
+    "height": 256,
+    "bytes": 31504
+  },
+  {
+    "motif": "paper",
+    "file": "apps/web/public/images/slots/controls-v2/paper/prize-3.webp",
+    "width": 256,
+    "height": 256,
+    "bytes": 28282
+  },
+  {
+    "motif": "lantern",
+    "file": "apps/web/public/images/slots/controls-v2/lantern/chip.webp",
+    "width": 256,
+    "height": 256,
+    "bytes": 27672
+  },
+  {
+    "motif": "lantern",
+    "file": "apps/web/public/images/slots/controls-v2/lantern/spin.webp",
+    "width": 320,
+    "height": 320,
+    "bytes": 48030
+  },
+  {
+    "motif": "lantern",
+    "file": "apps/web/public/images/slots/controls-v2/lantern/button.webp",
+    "width": 640,
+    "height": 144,
+    "bytes": 41532
+  },
+  {
+    "motif": "lantern",
+    "file": "apps/web/public/images/slots/controls-v2/lantern/prize-1.webp",
+    "width": 256,
+    "height": 256,
+    "bytes": 23760
+  },
+  {
+    "motif": "lantern",
+    "file": "apps/web/public/images/slots/controls-v2/lantern/prize-2.webp",
+    "width": 256,
+    "height": 256,
+    "bytes": 40508
+  },
+  {
+    "motif": "lantern",
+    "file": "apps/web/public/images/slots/controls-v2/lantern/prize-3.webp",
+    "width": 256,
+    "height": 256,
+    "bytes": 33966
+  }
+]

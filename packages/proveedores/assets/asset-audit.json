@@ -1,0 +1,122 @@
+[
+  {
+    "slug": "jardin-de-luces",
+    "heroRatio": 0.44166666666666665,
+    "secondRowRatio": 0.6625,
+    "bytes": 195790
+  },
+  {
+    "slug": "puerto-ambar",
+    "heroRatio": 0.4625,
+    "secondRowRatio": 0.6791666666666667,
+    "bytes": 209908
+  },
+  {
+    "slug": "taller-de-cometas",
+    "heroRatio": 0.4041666666666667,
+    "secondRowRatio": 0.6458333333333334,
+    "bytes": 204636
+  },
+  {
+    "slug": "biblioteca-lunar",
+    "heroRatio": 0.45,
+    "secondRowRatio": 0.6791666666666667,
+    "bytes": 194814
+  },
+  {
+    "slug": "aurora-glacial",
+    "heroRatio": 0.43333333333333335,
+    "secondRowRatio": 0.6583333333333333,
+    "bytes": 184228
+  },
+  {
+    "slug": "oraculo-coral",
+    "heroRatio": 0.44583333333333336,
+    "secondRowRatio": 0.6708333333333333,
+    "bytes": 237096
+  },
+  {
+    "slug": "caravana-solar",
+    "heroRatio": 0.45416666666666666,
+    "secondRowRatio": 0.6791666666666667,
+    "bytes": 192952
+  },
+  {
+    "slug": "mercado-de-nubes",
+    "heroRatio": 0.42083333333333334,
+    "secondRowRatio": 0.65,
+    "bytes": 203870
+  },
+  {
+    "slug": "bosque-micelio",
+    "heroRatio": 0.5,
+    "secondRowRatio": 0.7166666666666667,
+    "bytes": 242526
+  },
+  {
+    "slug": "volcan-obsidiana",
+    "heroRatio": 0.5,
+    "secondRowRatio": 0.7166666666666667,
+    "bytes": 249956
+  },
+  {
+    "slug": "tren-constelaciones",
+    "heroRatio": 0.44583333333333336,
+    "secondRowRatio": 0.675,
+    "bytes": 250586
+  },
+  {
+    "slug": "reino-origami",
+    "heroRatio": 0.43333333333333335,
+    "secondRowRatio": 0.65,
+    "bytes": 161224
+  },
+  {
+    "slug": "laboratorio-nectar",
+    "heroRatio": 0.44166666666666665,
+    "secondRowRatio": 0.6875,
+    "bytes": 221534
+  },
+  {
+    "slug": "catedral-cristal",
+    "heroRatio": 0.45,
+    "secondRowRatio": 0.6708333333333333,
+    "bytes": 226946
+  },
+  {
+    "slug": "festival-faroles",
+    "heroRatio": 0.45416666666666666,
+    "secondRowRatio": 0.6833333333333333,
+    "bytes": 274684
+  },
+  {
+    "slug": "guardian-jade",
+    "heroRatio": 0.43333333333333335,
+    "secondRowRatio": 0.6541666666666667,
+    "bytes": 245510
+  },
+  {
+    "slug": "islas-magneticas",
+    "heroRatio": 0.42916666666666664,
+    "secondRowRatio": 0.6625,
+    "bytes": 200678
+  },
+  {
+    "slug": "oasis-de-cobre",
+    "heroRatio": 0.44583333333333336,
+    "secondRowRatio": 0.675,
+    "bytes": 213270
+  },
+  {
+    "slug": "jardin-relojes",
+    "heroRatio": 0.45416666666666666,
+    "secondRowRatio": 0.6833333333333333,
+    "bytes": 221854
+  },
+  {
+    "slug": "archivo-abisal",
+    "heroRatio": 0.4375,
+    "secondRowRatio": 0.6666666666666666,
+    "bytes": 260912
+  }
+]

@@ -1,0 +1,602 @@
+[
+  {
+    "slug": "adventure-time-8bit",
+    "name": "Adventure Time 8-Bit",
+    "tagline": "Fanart en 8 bits: Finn, Jake y los personajes de Hora de Aventura.",
+    "accent": "#38bdf8",
+    "secondary": "#fde047",
+    "surface": "#0b1f34",
+    "motif": "celestial",
+    "emblem": "✦",
+    "scene": "Finn in his iconic white bear-eared hat, blue shirt, blue shorts and green backpack, together with Jake the golden stretchy dog, in the Land of Ooo with tree house and candy kingdom",
+    "symbols": [
+      "Caracol de Ooo",
+      "BMO",
+      "Rey Helado",
+      "Dulce Princesa",
+      "Marceline",
+      "Finn y Jake",
+      "Emblema WILD",
+      "Sello de giros gratis"
+    ],
+    "artSymbols": "the waving snail from Adventure Time, BMO the teal handheld console character, Ice King with long white beard blue body and gold crown, Princess Bubblegum with pink hair pink dress and gold crown, Marceline with long black hair gray skin and red bass guitar, Finn in white bear hat and blue clothes together with Jake the golden dog",
+    "bonus": {
+      "item": "bmo",
+      "title": "El tesoro de Ooo",
+      "symbol": 1
+    },
+    "materials": "Ooo treehouse wood, blue and golden pixel gems, candy pink pixel ornament",
+    "fanArt": true,
+    "artStyle": "pixel"
+  },
+  {
+    "slug": "candy-quest",
+    "name": "Candy Quest",
+    "tagline": "Una caballera de caramelo busca tesoros entre castillos de azúcar.",
+    "accent": "#fb7185",
+    "secondary": "#a5f3fc",
+    "surface": "#29132d",
+    "motif": "paper",
+    "emblem": "◇",
+    "scene": "original adult candy-armored knight with candy cane lance, chocolate castle, pink sugar crystals",
+    "symbols": [
+      "Gomita",
+      "Moneda de azúcar",
+      "Piruleta",
+      "Escudo dulce",
+      "Corona de caramelo",
+      "Caballera dulce",
+      "Emblema WILD",
+      "Sello de giros gratis"
+    ],
+    "artSymbols": "jelly candy, sugar coin, striped lollipop, candy shield, caramel crown, original adult candy knight portrait",
+    "bonus": {
+      "item": "escudo dulce",
+      "title": "Los cofres de azúcar",
+      "symbol": 3
+    },
+    "materials": "pink candy blocks, chocolate pixel rims, sugar crystal studs",
+    "fanArt": false,
+    "artStyle": "pixel"
+  },
+  {
+    "slug": "dungeon-dice",
+    "name": "Dungeon Dice",
+    "tagline": "Dados encantados y un caballero esqueleto en una mazmorra retro.",
+    "accent": "#a78bfa",
+    "secondary": "#fde68a",
+    "surface": "#181328",
+    "motif": "celestial",
+    "emblem": "⚄",
+    "scene": "original skeleton knight with blue cape, enchanted dice, ancient dungeon treasure chest",
+    "symbols": [
+      "Llave oxidada",
+      "Dado rojo",
+      "Poción azul",
+      "Escudo antiguo",
+      "Cofre de dados",
+      "Caballero esqueleto",
+      "Emblema WILD",
+      "Sello de giros gratis"
+    ],
+    "artSymbols": "rusty key, red gaming die, blue potion, ancient shield, dice treasure chest, original skeleton knight portrait",
+    "bonus": {
+      "item": "dado rojo",
+      "title": "Los dados de la cripta",
+      "symbol": 1
+    },
+    "materials": "violet dungeon stone pixels, gold dice corners, blue rune gems",
+    "fanArt": false,
+    "artStyle": "pixel"
+  },
+  {
+    "slug": "slime-kingdom",
+    "name": "Slime Kingdom",
+    "tagline": "Un rey gelatinoso custodia un reino de gemas verdes.",
+    "accent": "#84cc16",
+    "secondary": "#fde047",
+    "surface": "#102214",
+    "motif": "botanical",
+    "emblem": "♛",
+    "scene": "original cheerful crowned green slime monarch, emerald slime castle and magical puddles",
+    "symbols": [
+      "Gota verde",
+      "Moneda viscosa",
+      "Hongo gel",
+      "Poción slime",
+      "Corona esmeralda",
+      "Rey slime",
+      "Emblema WILD",
+      "Sello de giros gratis"
+    ],
+    "artSymbols": "green slime drop, slime coin, jelly mushroom, slime potion, emerald crown, original crowned green slime king",
+    "bonus": {
+      "item": "poción slime",
+      "title": "Las gemas del reino",
+      "symbol": 3
+    },
+    "materials": "green jelly pixel blocks, gold crown studs, dark emerald rims",
+    "fanArt": false,
+    "artStyle": "pixel"
+  },
+  {
+    "slug": "wizard-arcade",
+    "name": "Wizard Arcade",
+    "tagline": "Un mago de las máquinas antiguas reúne runas y monedas.",
+    "accent": "#818cf8",
+    "secondary": "#f0abfc",
+    "surface": "#16122c",
+    "motif": "celestial",
+    "emblem": "✧",
+    "scene": "original elderly arcade wizard with long violet beard, starry blue hat and glowing rune staff, retro arcade tower",
+    "symbols": [
+      "Runa azul",
+      "Ficha arcana",
+      "Pergamino",
+      "Libro eléctrico",
+      "Báculo estelar",
+      "Mago arcade",
+      "Emblema WILD",
+      "Sello de giros gratis"
+    ],
+    "artSymbols": "blue rune stone, arcane token, rolled scroll, electric spellbook, star wizard staff, original purple bearded arcade wizard",
+    "bonus": {
+      "item": "libro eléctrico",
+      "title": "Las runas del mago",
+      "symbol": 3
+    },
+    "materials": "indigo arcade casing pixels, gold rune rims, purple star studs",
+    "fanArt": false,
+    "artStyle": "pixel"
+  },
+  {
+    "slug": "pixel-pirates",
+    "name": "Pixel Pirates",
+    "tagline": "Una capitana pixelada busca el mapa de las monedas perdidas.",
+    "accent": "#fb923c",
+    "secondary": "#2dd4bf",
+    "surface": "#231a17",
+    "motif": "brass",
+    "emblem": "⚓",
+    "scene": "original adult red-haired pirate captain with teal scarf, pixel sailing ship and open treasure chest",
+    "symbols": [
+      "Mapa pixel",
+      "Ancla retro",
+      "Sombrero corsario",
+      "Brújula verde",
+      "Cofre pixelado",
+      "Capitana pixel",
+      "Emblema WILD",
+      "Sello de giros gratis"
+    ],
+    "artSymbols": "pixel treasure map, retro anchor, pirate hat, green compass, pixel treasure chest, original adult red-haired pirate captain portrait",
+    "bonus": {
+      "item": "mapa pixel",
+      "title": "Los mapas de la capitana",
+      "symbol": 0
+    },
+    "materials": "dark ship wood pixel blocks, copper anchor engravings, teal gem studs",
+    "fanArt": false,
+    "artStyle": "pixel"
+  },
+  {
+    "slug": "dragon-byte",
+    "name": "Dragon Byte",
+    "tagline": "Un dragón de cristal rojo protege el núcleo de una fortaleza.",
+    "accent": "#ef4444",
+    "secondary": "#fbbf24",
+    "surface": "#28121a",
+    "motif": "ember",
+    "emblem": "ϟ",
+    "scene": "original blocky ruby dragon with golden horns, lava crystal fortress and glowing energy core",
+    "symbols": [
+      "Escama roja",
+      "Moneda de lava",
+      "Garra rubí",
+      "Huevo ígneo",
+      "Núcleo de dragón",
+      "Dragón byte",
+      "Emblema WILD",
+      "Sello de giros gratis"
+    ],
+    "artSymbols": "red dragon scale, lava coin, ruby claw, fiery dragon egg, glowing dragon core, original ruby pixel dragon head",
+    "bonus": {
+      "item": "huevo ígneo",
+      "title": "Los huevos del dragón",
+      "symbol": 3
+    },
+    "materials": "obsidian pixel blocks, molten ruby edges, gold dragon horn rims",
+    "fanArt": false,
+    "artStyle": "pixel"
+  },
+  {
+    "slug": "neon-ninja",
+    "name": "Neon Ninja",
+    "tagline": "Una ninja de neón recorre tejados de una ciudad pixelada.",
+    "accent": "#e879f9",
+    "secondary": "#67e8f9",
+    "surface": "#18112d",
+    "motif": "celestial",
+    "emblem": "✦",
+    "scene": "original adult masked cyber ninja in violet armor, neon pink and cyan futuristic rooftops",
+    "symbols": [
+      "Estrella neón",
+      "Ficha cian",
+      "Pergamino digital",
+      "Máscara violeta",
+      "Cristal eléctrico",
+      "Ninja neón",
+      "Emblema WILD",
+      "Sello de giros gratis"
+    ],
+    "artSymbols": "neon throwing star ornament, cyan token, digital scroll, violet ninja mask, electric crystal, original adult masked cyber ninja portrait",
+    "bonus": {
+      "item": "pergamino digital",
+      "title": "Los pergaminos de neón",
+      "symbol": 2
+    },
+    "materials": "purple neon pixel lines, cyan cyber rims, magenta mask details",
+    "fanArt": false,
+    "artStyle": "pixel"
+  },
+  {
+    "slug": "robot-rumble",
+    "name": "Robot Rumble",
+    "tagline": "Un robot de cobre reúne piezas en una fábrica de tesoros.",
+    "accent": "#f59e0b",
+    "secondary": "#7dd3fc",
+    "surface": "#1c2028",
+    "motif": "brass",
+    "emblem": "⚙",
+    "scene": "original bulky friendly copper robot with blue glass eyes, retro robot factory and glowing power coils",
+    "symbols": [
+      "Tornillo",
+      "Engranaje cobre",
+      "Batería azul",
+      "Brazo mecánico",
+      "Núcleo robótico",
+      "Robot gigante",
+      "Emblema WILD",
+      "Sello de giros gratis"
+    ],
+    "artSymbols": "steel bolt, copper gear, blue battery, robotic arm, robot power core, original bulky copper robot head",
+    "bonus": {
+      "item": "núcleo robótico",
+      "title": "Los núcleos de la fábrica",
+      "symbol": 4
+    },
+    "materials": "copper pixel rivets, blue battery enamel, factory gear edges",
+    "fanArt": false,
+    "artStyle": "pixel"
+  },
+  {
+    "slug": "ghost-manor",
+    "name": "Ghost Manor",
+    "tagline": "Un fantasma con sombrero abre las puertas de una mansión encantada.",
+    "accent": "#c4b5fd",
+    "secondary": "#bef264",
+    "surface": "#16142c",
+    "motif": "celestial",
+    "emblem": "☾",
+    "scene": "original gentleman ghost with top hat and monocle, haunted violet manor and green magical lanterns",
+    "symbols": [
+      "Vela verde",
+      "Llave espectral",
+      "Calabaza morada",
+      "Candelabro",
+      "Reloj embrujado",
+      "Fantasma del salón",
+      "Emblema WILD",
+      "Sello de giros gratis"
+    ],
+    "artSymbols": "green candle, spectral key, purple pumpkin, haunted candelabra, enchanted clock, original top hat ghost portrait",
+    "bonus": {
+      "item": "llave espectral",
+      "title": "Las llaves de la mansión",
+      "symbol": 1
+    },
+    "materials": "violet haunted pixel wood, green ghost crystal studs, silver clock rims",
+    "fanArt": false,
+    "artStyle": "pixel"
+  },
+  {
+    "slug": "crystal-caverns",
+    "name": "Crystal Caverns",
+    "tagline": "Una minera de barba de cristal encuentra una bóveda subterránea.",
+    "accent": "#22d3ee",
+    "secondary": "#fde68a",
+    "surface": "#0b2230",
+    "motif": "frost",
+    "emblem": "◇",
+    "scene": "original adult crystal dwarf miner with teal crystal beard and lamp helmet, underground sapphire caverns",
+    "symbols": [
+      "Piedra azul",
+      "Moneda mineral",
+      "Linterna minera",
+      "Pico de cristal",
+      "Geoda real",
+      "Minera de cristal",
+      "Emblema WILD",
+      "Sello de giros gratis"
+    ],
+    "artSymbols": "blue stone, mineral coin, mining lantern, crystal pickaxe, royal geode, original adult crystal dwarf miner portrait",
+    "bonus": {
+      "item": "geoda real",
+      "title": "Las geodas de la caverna",
+      "symbol": 4
+    },
+    "materials": "cyan crystal pixel facets, bronze mining rims, sapphire highlights",
+    "fanArt": false,
+    "artStyle": "pixel"
+  },
+  {
+    "slug": "moon-patrol",
+    "name": "Moon Patrol",
+    "tagline": "Una astronauta explora estaciones lunares llenas de reliquias.",
+    "accent": "#93c5fd",
+    "secondary": "#fde047",
+    "surface": "#0c1833",
+    "motif": "celestial",
+    "emblem": "☼",
+    "scene": "original adult lunar astronaut with gold visor and blue suit, retro moon base and star-filled sky",
+    "symbols": [
+      "Roca lunar",
+      "Ficha orbital",
+      "Antena",
+      "Cápsula espacial",
+      "Cristal de luna",
+      "Astronauta lunar",
+      "Emblema WILD",
+      "Sello de giros gratis"
+    ],
+    "artSymbols": "moon rock, orbital token, space antenna, lunar capsule, moon crystal, original astronaut in blue suit gold visor portrait",
+    "bonus": {
+      "item": "cápsula espacial",
+      "title": "Las cápsulas de la luna",
+      "symbol": 3
+    },
+    "materials": "silver moon base pixels, blue space rims, gold visor studs",
+    "fanArt": false,
+    "artStyle": "pixel"
+  },
+  {
+    "slug": "goblin-gold",
+    "name": "Goblin Gold",
+    "tagline": "Un rey goblin cuenta monedas en una fortaleza subterránea.",
+    "accent": "#a3e635",
+    "secondary": "#fbbf24",
+    "surface": "#1d2110",
+    "motif": "brass",
+    "emblem": "♛",
+    "scene": "original adult green goblin king with oversized gold crown, wooden underground bank full of coins",
+    "symbols": [
+      "Diente de oro",
+      "Moneda goblin",
+      "Bolsa verde",
+      "Cáliz torcido",
+      "Cofre goblin",
+      "Rey goblin",
+      "Emblema WILD",
+      "Sello de giros gratis"
+    ],
+    "artSymbols": "gold tooth, goblin coin, green coin bag, crooked chalice, goblin chest, original green goblin king portrait",
+    "bonus": {
+      "item": "bolsa verde",
+      "title": "Las bolsas del goblin",
+      "symbol": 2
+    },
+    "materials": "dark wood pixel panels, green gems, chunky gold goblin crown rims",
+    "fanArt": false,
+    "artStyle": "pixel"
+  },
+  {
+    "slug": "star-rangers",
+    "name": "Star Rangers",
+    "tagline": "Una comandante espacial guía una nave entre tesoros de estrellas.",
+    "accent": "#60a5fa",
+    "secondary": "#f9a8d4",
+    "surface": "#111d35",
+    "motif": "celestial",
+    "emblem": "✦",
+    "scene": "original adult space ranger commander with pink visor blue armor, retro star cruiser and galaxy crystals",
+    "symbols": [
+      "Estrella rosa",
+      "Ficha galáctica",
+      "Insignia ranger",
+      "Casco azul",
+      "Nave estelar",
+      "Comandante ranger",
+      "Emblema WILD",
+      "Sello de giros gratis"
+    ],
+    "artSymbols": "pink star crystal, galaxy token, ranger badge, blue space helmet, star cruiser, original adult space commander portrait",
+    "bonus": {
+      "item": "insignia ranger",
+      "title": "Las insignias de la galaxia",
+      "symbol": 2
+    },
+    "materials": "blue space armor pixel blocks, pink visor rims, gold star badges",
+    "fanArt": false,
+    "artStyle": "pixel"
+  },
+  {
+    "slug": "mushroom-knights",
+    "name": "Mushroom Knights",
+    "tagline": "Un caballero de hongos defiende un bosque lleno de monedas.",
+    "accent": "#fb7185",
+    "secondary": "#a3e635",
+    "surface": "#192217",
+    "motif": "botanical",
+    "emblem": "❧",
+    "scene": "original mushroom-armored knight with broad spotted violet mushroom helmet and wooden shield, enchanted forest; entirely original not a recognizable videogame character",
+    "symbols": [
+      "Espora dorada",
+      "Moneda del bosque",
+      "Hongo violeta",
+      "Escudo de raíz",
+      "Corona micelio",
+      "Caballero hongo",
+      "Emblema WILD",
+      "Sello de giros gratis"
+    ],
+    "artSymbols": "golden spore, forest coin, violet mushroom, root shield, mycelium crown, original mushroom armored knight portrait",
+    "bonus": {
+      "item": "hongo violeta",
+      "title": "Los hongos del bosque",
+      "symbol": 2
+    },
+    "materials": "violet mushroom pixel caps, carved root rims, lime spore gems",
+    "fanArt": false,
+    "artStyle": "pixel"
+  },
+  {
+    "slug": "mecha-cats",
+    "name": "Mecha Cats",
+    "tagline": "Un gato mecánico pilota una armadura entre estrellas de metal.",
+    "accent": "#f9a8d4",
+    "secondary": "#7dd3fc",
+    "surface": "#22172e",
+    "motif": "paper",
+    "emblem": "⚙",
+    "scene": "original silver robotic cat pilot with pink ears, bulky blue mecha armor and retro orbital hangar",
+    "symbols": [
+      "Tuerca rosa",
+      "Ficha felina",
+      "Pata robótica",
+      "Casco de gato",
+      "Núcleo mecha",
+      "Gato mecánico",
+      "Emblema WILD",
+      "Sello de giros gratis"
+    ],
+    "artSymbols": "pink steel nut, cat token, robot cat paw, cat helmet, mecha core, original silver robotic cat portrait",
+    "bonus": {
+      "item": "núcleo mecha",
+      "title": "Los núcleos felinos",
+      "symbol": 4
+    },
+    "materials": "silver mecha pixel plates, pink cat-ear ornaments, blue core studs",
+    "fanArt": false,
+    "artStyle": "pixel"
+  },
+  {
+    "slug": "frost-giants",
+    "name": "Frost Giants",
+    "tagline": "Un gigante de hielo protege las monedas de un castillo polar.",
+    "accent": "#67e8f9",
+    "secondary": "#c4b5fd",
+    "surface": "#0e2033",
+    "motif": "frost",
+    "emblem": "❄",
+    "scene": "original friendly blue ice giant with crystal beard and silver crown, frozen retro castle and aurora",
+    "symbols": [
+      "Copo azul",
+      "Moneda helada",
+      "Cuerno polar",
+      "Hacha de hielo",
+      "Corona glacial",
+      "Gigante de hielo",
+      "Emblema WILD",
+      "Sello de giros gratis"
+    ],
+    "artSymbols": "blue snowflake, frozen coin, polar horn, ceremonial ice axe, glacial crown, original blue ice giant portrait",
+    "bonus": {
+      "item": "corona glacial",
+      "title": "Las coronas del hielo",
+      "symbol": 4
+    },
+    "materials": "icy blue pixel blocks, silver frost edges, violet crystal studs",
+    "fanArt": false,
+    "artStyle": "pixel"
+  },
+  {
+    "slug": "desert-raiders",
+    "name": "Desert Raiders",
+    "tagline": "Una exploradora del desierto descubre un palacio enterrado.",
+    "accent": "#fbbf24",
+    "secondary": "#2dd4bf",
+    "surface": "#2a1b13",
+    "motif": "brass",
+    "emblem": "☼",
+    "scene": "original adult desert explorer with teal scarf and gold goggles, buried sandstone palace and camel caravan",
+    "symbols": [
+      "Dátil de oro",
+      "Moneda de arena",
+      "Brújula turquesa",
+      "Jarra antigua",
+      "Relicario solar",
+      "Exploradora del desierto",
+      "Emblema WILD",
+      "Sello de giros gratis"
+    ],
+    "artSymbols": "golden date, sand coin, turquoise compass, ancient jar, solar relic, original adult desert explorer in teal scarf portrait",
+    "bonus": {
+      "item": "jarra antigua",
+      "title": "Las jarras del desierto",
+      "symbol": 3
+    },
+    "materials": "sandstone pixel borders, copper goggles, turquoise mosaic studs",
+    "fanArt": false,
+    "artStyle": "pixel"
+  },
+  {
+    "slug": "jungle-spirits",
+    "name": "Jungle Spirits",
+    "tagline": "Un guardián de madera despierta entre ruinas y gemas verdes.",
+    "accent": "#4ade80",
+    "secondary": "#fde68a",
+    "surface": "#0d2017",
+    "motif": "botanical",
+    "emblem": "❧",
+    "scene": "original living wooden jungle spirit with emerald mask and vine antlers, ruined overgrown pixel temple",
+    "symbols": [
+      "Hoja dorada",
+      "Moneda de raíz",
+      "Flor esmeralda",
+      "Máscara de liana",
+      "Ídolo del bosque",
+      "Guardián de madera",
+      "Emblema WILD",
+      "Sello de giros gratis"
+    ],
+    "artSymbols": "golden leaf, root coin, emerald flower, vine mask, forest idol, original living wooden jungle guardian portrait",
+    "bonus": {
+      "item": "máscara de liana",
+      "title": "Las máscaras del bosque",
+      "symbol": 3
+    },
+    "materials": "dark carved wood pixels, gold leaf rims, emerald mask studs",
+    "fanArt": false,
+    "artStyle": "pixel"
+  },
+  {
+    "slug": "retro-royals",
+    "name": "Retro Royals",
+    "tagline": "Una reina de ajedrez reúne coronas y joyas en su castillo.",
+    "accent": "#f43f5e",
+    "secondary": "#fef3c7",
+    "surface": "#27152c",
+    "motif": "brass",
+    "emblem": "♛",
+    "scene": "original adult retro chess queen in burgundy armor with ruby crown, checkerboard throne room and castle treasures",
+    "symbols": [
+      "Peón de marfil",
+      "Moneda real",
+      "Torre rubí",
+      "Alfil dorado",
+      "Corona retro",
+      "Reina de ajedrez",
+      "Emblema WILD",
+      "Sello de giros gratis"
+    ],
+    "artSymbols": "ivory chess pawn, royal coin, ruby rook, gold bishop, retro crown, original adult chess queen portrait",
+    "bonus": {
+      "item": "corona retro",
+      "title": "Las coronas del castillo",
+      "symbol": 4
+    },
+    "materials": "ivory chess pixel inlays, ruby crown studs, black burgundy gold rims",
+    "fanArt": false,
+    "artStyle": "pixel"
+  }
+]

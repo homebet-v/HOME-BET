@@ -1,0 +1,68 @@
+{
+  "audit": [
+    {
+      "slug": "masked-legends",
+      "kind": "title",
+      "file": "apps/web/public/images/slots/masked-legends/identity-v3/title.webp",
+      "width": 1200,
+      "height": 267,
+      "bytes": 93724
+    },
+    {
+      "slug": "masked-legends",
+      "kind": "chip",
+      "file": "apps/web/public/images/slots/masked-legends/identity-v3/chip.webp",
+      "width": 256,
+      "height": 256,
+      "bytes": 27730
+    },
+    {
+      "slug": "masked-legends",
+      "kind": "spin",
+      "file": "apps/web/public/images/slots/masked-legends/identity-v3/spin.webp",
+      "width": 320,
+      "height": 320,
+      "bytes": 35062
+    },
+    {
+      "slug": "masked-legends",
+      "kind": "button",
+      "file": "apps/web/public/images/slots/masked-legends/identity-v3/button.webp",
+      "width": 640,
+      "height": 144,
+      "bytes": 21102
+    },
+    {
+      "slug": "masked-legends",
+      "kind": "prize-1",
+      "file": "apps/web/public/images/slots/masked-legends/identity-v3/prize-1.webp",
+      "width": 256,
+      "height": 256,
+      "bytes": 34586
+    },
+    {
+      "slug": "masked-legends",
+      "kind": "prize-2",
+      "file": "apps/web/public/images/slots/masked-legends/identity-v3/prize-2.webp",
+      "width": 256,
+      "height": 256,
+      "bytes": 35312
+    },
+    {
+      "slug": "masked-legends",
+      "kind": "prize-3",
+      "file": "apps/web/public/images/slots/masked-legends/identity-v3/prize-3.webp",
+      "width": 256,
+      "height": 256,
+      "bytes": 36294
+    },
+    {
+      "slug": "toybox-rebellion",
+      "kind": "symbols",
+      "file": "apps/web/public/images/slots/toybox-rebellion/symbols-transparent.webp",
+      "width": 1536,
+      "height": 192
+    }
+  ],
+  "errors": []
+}

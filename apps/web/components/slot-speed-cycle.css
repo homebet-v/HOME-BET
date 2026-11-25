@@ -1,0 +1,6 @@
+/* One stateful speed control, shared by every theme and arrangement. */
+.slot-player .slot-control-dock.slot-control-dock-theme .slot-layout-grid .slot-speed-control.slot-speed-cycle > div { display: grid; grid-template-columns: minmax(0, 1fr); width: min(100%, 76px); gap: 0; margin-inline: auto; }
+.slot-player .slot-control-dock.slot-control-dock-theme .slot-layout-grid .slot-speed-control.slot-speed-cycle button { width: 100%; min-width: 44px; height: 44px; min-height: 44px; padding: 0; border: 0; background: var(--slot-button-art) center / 100% 100% no-repeat; color: #fff0ca; font-size: 18px; font-weight: 900; font-variant-numeric: tabular-nums; text-shadow: 0 1px 3px #000; }
+.slot-player .slot-control-dock.slot-control-dock-theme .slot-layout-grid .slot-speed-control.slot-speed-cycle button[data-speed="2"] { color: #ffd47a; filter: brightness(1.15) drop-shadow(0 0 5px #ffaa3150); }
+.slot-player .slot-control-dock.slot-control-dock-theme .slot-layout-grid .slot-speed-control.slot-speed-cycle button[data-speed="3"] { color: #ffc8ff; filter: brightness(1.2) drop-shadow(0 0 6px #f653c750); }
+.slot-player .slot-control-dock.slot-control-dock-theme .slot-layout-grid .slot-speed-control.slot-speed-cycle button:disabled { opacity: 0.45; filter: saturate(0.4); }

@@ -1,0 +1,43 @@
+.slot-player[data-engine="5x3"] .slot-reel-window { gap: 3px; }
+.slot-player[data-engine="5x3"] .slot-reel-label { bottom: 2px; font-size: 6px; }
+.slot-player[data-engine="5x3"] .slot-reel-step { padding-block: 1px; }
+.slot-player[data-engine="5x3"] .slot-reel { border-radius: 7px; }
+.slot-player[data-engine="5x3"] .slot-reel .slot-cell { border-radius: 7px; }
+.slot-player[data-engine="5x3"] .slot-prize-card { width: 88%; height: 96%; }
+.slot-player[data-engine="5x3"] .slot-prize-overlay .slot-prize-card.has-prize-art { grid-template-rows: 20% 8% 10% minmax(0, 1fr) 24%; }
+.slot-player[data-engine="5x3"] .slot-prize-details p { font-size: 9px; }
+.slot-player[data-engine="5x3"] .slot-prize-details small { font-size: 8px; }
+.slot-player[data-engine="5x3"] .slot-bonus-layer > .slot-bonus { min-height: 260px; max-height: min(420px, 70dvh); }
+.slot-edition-bet-note { color: #ffe4a4; font-size: 10px; line-height: 1.5; }
+.slot-edition-rule-tabs { display: flex; gap: 6px; }
+.slot-edition-rule-tabs button { flex: 1; min-height: 36px; padding: 5px; border: 1px solid #ffffff30; border-radius: 9px; background: #0005; color: #f2e5bd; font-size: 10px; }
+.slot-edition-rule-tabs button[aria-pressed="true"] { border-color: var(--slot-accent); background: color-mix(in srgb, var(--slot-accent) 20%, #080b14); }
+.slot-edition-pay-row { display: flex; justify-content: space-between; gap: 3px; width: 100%; padding-top: 2px; font-size: 9px; font-variant-numeric: tabular-nums; }
+.slot-edition-pay-row strong { color: var(--slot-secondary); }
+.slot-edition-lines { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; }
+.slot-edition-lines > div { position: relative; padding: 3px 2px 0; border: 1px solid #ffffff20; border-radius: 6px; background: #0004; color: #f8d96a; }
+.slot-edition-lines span { position: absolute; top: 1px; left: 3px; font-size: 7px; color: #fff9; }
+.slot-edition-lines svg { display: block; width: 100%; margin-top: 6px; }
+.slot-edition-specials { display: grid; gap: 7px; font-size: 10px; line-height: 1.5; color: #dce4ee; }
+.slot-edition-specials strong { color: #ffe4a4; }
+.slot-player[data-engine="5x3"] .slot-rules-panel { gap: 8px; }
+@media (max-height: 700px) {
+  .slot-player[data-engine="5x3"] .slot-rules-panel { padding: 10px; }
+  .slot-player[data-engine="5x3"] .slot-rules-panel > * { margin-top: 6px; }
+  .slot-player[data-engine="5x3"] .slot-edition-paytable .slot-pay-symbol { width: 42px; height: 42px; }
+  .slot-player[data-engine="5x3"] .slot-edition-specials { font-size: 9px; }
+}
+
+.slot-player[data-engine="5x3"] .slot-edition-lines { flex: 1; min-height: 0; }
+.slot-player[data-engine="5x3"] .slot-edition-bet-note, .slot-player[data-engine="5x3"] .slot-edition-rule-tabs { flex-shrink: 0; }
+
+.slot-player[data-engine="5x3"] .slot-edition-specials { flex: 1; min-height: 0; align-content: start; font-size: 12px; line-height: 1.7; }
+
+/* Give the five reels the full cabinet width and use the spare vertical space. */
+.slot-player[data-engine="5x3"] .slot-play-area { max-width: 460px; padding-inline: 4px; }
+.slot-player[data-engine="5x3"] .slot-balance-strip { margin-inline: 8px; }
+.slot-player[data-engine="5x3"] .slot-game-title { width: calc(100% - 12px); margin-inline: 6px; }
+.slot-player[data-engine="5x3"] .slot-board-stage { margin-top: clamp(0px, calc((100dvh - 560px) * 0.3), 72px); margin-bottom: 14px; }
+.slot-player[data-engine="5x3"] .slot-reel .slot-symbol { inset: 1%; width: 98%; height: 98%; }
+.slot-player[data-engine="5x3"] .slot-lumen-metrics { width: calc(100% - 12px); margin-inline: 6px; }
+.slot-player[data-engine="5x3"] .slot-control-dock.slot-control-dock-theme { margin-inline: 8px; margin-top: clamp(0px, calc((100dvh - 560px) * 0.08), 20px); }

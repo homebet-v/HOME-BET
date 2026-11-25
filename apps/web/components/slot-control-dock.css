@@ -1,0 +1,156 @@
+/* Controls inherit each world's materials as well as its palette. */
+.slot-control-dock.slot-control-dock-theme {
+  --dock-radius: 22px;
+  --dock-control-radius: 12px;
+  --dock-spin-radius: 24px;
+  --dock-texture: linear-gradient(135deg, #ffffff05, transparent 55%);
+  isolation: isolate;
+  border: 1px solid color-mix(in srgb, var(--slot-accent) 45%, #ffffff15);
+  border-radius: var(--dock-radius);
+  background: var(--dock-texture), linear-gradient(145deg, color-mix(in srgb, var(--slot-surface) 92%, #000), #090e19fa);
+  box-shadow: 0 -8px 28px #0005, inset 0 1px 0 color-mix(in srgb, var(--slot-secondary) 22%, transparent);
+}
+.slot-control-dock.slot-control-dock-theme::before { content: ""; position: absolute; top: -1px; left: 20%; right: 20%; height: 2px; background: linear-gradient(90deg, transparent, var(--slot-secondary), transparent); pointer-events: none; }
+.slot-control-dock.slot-control-dock-theme::after { content: ""; position: absolute; z-index: -1; right: 8px; top: 12px; width: min(45%, 180px); aspect-ratio: 1; background-image: var(--slot-dock-art); background-size: 800% 100%; background-position: var(--slot-dock-symbol); background-repeat: no-repeat; opacity: 0.065; pointer-events: none; }
+.slot-dock-brand { display: flex; align-items: center; gap: 8px; min-width: 0; margin-bottom: 10px; color: var(--slot-secondary); }
+.slot-dock-brand > span:first-child { font-size: 17px; line-height: 1; }
+.slot-dock-brand > span:nth-child(2) { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.13em; }
+.slot-dock-brand-line { flex: 1; min-width: 12px; height: 1px; background: linear-gradient(90deg, color-mix(in srgb, var(--slot-accent) 45%, transparent), transparent); }
+.slot-control-dock.slot-control-dock-theme .slot-balance-strip { gap: 6px; }
+.slot-control-dock.slot-control-dock-theme .slot-balance-strip > div { padding: 7px 8px; border: 1px solid #ffffff08; border-radius: var(--dock-control-radius); background: #0002; }
+.slot-control-dock.slot-control-dock-theme .slot-balance-strip span, .slot-control-dock.slot-control-dock-theme .slot-bet-control, .slot-control-dock.slot-control-dock-theme .slot-speed-control legend { color: #c2cedb; }
+.slot-control-dock.slot-control-dock-theme .slot-bet-control .slot-bet-trigger, .slot-control-dock.slot-control-dock-theme .slot-speed-control button, .slot-control-dock.slot-control-dock-theme .slot-secondary-controls button {
+  border-color: color-mix(in srgb, var(--slot-accent) 24%, #ffffff18);
+  border-radius: var(--dock-control-radius);
+  background: linear-gradient(150deg, #ffffff07, #0002), color-mix(in srgb, var(--slot-surface) 90%, #0c1420);
+  box-shadow: inset 0 1px 0 #ffffff08;
+}
+.slot-control-dock.slot-control-dock-theme .slot-speed-control button { color: #c2cedb; }
+.slot-control-dock.slot-control-dock-theme .slot-speed-control button[aria-pressed="true"], .slot-control-dock.slot-control-dock-theme .slot-secondary-controls button[aria-pressed="true"], .slot-control-dock.slot-control-dock-theme .slot-secondary-controls button[aria-expanded="true"] { color: var(--slot-secondary); border-color: var(--slot-accent); background: color-mix(in srgb, var(--slot-accent) 14%, var(--slot-surface)); box-shadow: inset 0 0 12px color-mix(in srgb, var(--slot-accent) 9%, transparent); }
+.slot-control-dock.slot-control-dock-theme .slot-spin-button { border-radius: var(--dock-spin-radius); border-color: color-mix(in srgb, var(--slot-secondary) 80%, white); background: linear-gradient(140deg, var(--slot-secondary), var(--slot-accent) 65%); box-shadow: 0 4px 0 color-mix(in srgb, var(--slot-accent) 45%, #000), 0 0 20px color-mix(in srgb, var(--slot-accent) 16%, transparent), inset 0 1px 0 #ffffff80; }
+.slot-control-dock.slot-control-dock-theme .slot-volume { color: #c2cedb; }
+@media (hover: hover) {
+  .slot-control-dock.slot-control-dock-theme .slot-secondary-controls button:hover:not(:disabled), .slot-control-dock.slot-control-dock-theme .slot-speed-control button:hover:not(:disabled), .slot-control-dock.slot-control-dock-theme .slot-bet-control .slot-bet-trigger:hover:not(:disabled) { border-color: var(--slot-secondary); background-color: color-mix(in srgb, var(--slot-accent) 10%, var(--slot-surface)); }
+  .slot-control-dock.slot-control-dock-theme .slot-spin-button:hover:not(:disabled) { filter: brightness(1.08); }
+}
+[data-motif="botanical"] .slot-control-dock.slot-control-dock-theme { --dock-radius: 28px 12px 28px 12px; --dock-control-radius: 14px 6px 14px 6px; --dock-spin-radius: 26px 12px 26px 12px; --dock-texture: repeating-linear-gradient(35deg, transparent 0 24px, #a3e63505 25px, transparent 26px 48px); }
+[data-motif="frost"] .slot-control-dock.slot-control-dock-theme { --dock-radius: 10px 26px 10px 26px; --dock-control-radius: 8px 14px 8px 14px; --dock-spin-radius: 12px 24px 12px 24px; --dock-texture: repeating-linear-gradient(120deg, transparent 0 32px, #e0f2fe08 33px, transparent 34px 66px); border-top-color: var(--slot-secondary); }
+[data-motif="ember"] .slot-control-dock.slot-control-dock-theme { --dock-radius: 12px; --dock-control-radius: 7px; --dock-spin-radius: 12px; --dock-texture: repeating-linear-gradient(125deg, transparent 0 38px, #f973160a 39px, transparent 41px 72px); border-bottom-color: var(--slot-accent); }
+[data-motif="ocean"] .slot-control-dock.slot-control-dock-theme { --dock-radius: 30px; --dock-control-radius: 16px; --dock-spin-radius: 30px; --dock-texture: repeating-radial-gradient(ellipse at 0 100%, transparent 0 25px, #5eead407 26px, transparent 28px 50px); }
+[data-motif="celestial"] .slot-control-dock.slot-control-dock-theme { --dock-radius: 24px; --dock-control-radius: 12px; --dock-spin-radius: 50%; --dock-texture: radial-gradient(circle at 15% 20%, #ffffff35 0 1px, transparent 1.5px), radial-gradient(circle at 65% 18%, #ffffff25 0 1px, transparent 1.5px), radial-gradient(circle at 88% 75%, #ffffff25 0 1px, transparent 1.5px); }
+[data-motif="brass"] .slot-control-dock.slot-control-dock-theme { --dock-radius: 14px; --dock-control-radius: 8px; --dock-spin-radius: 18px; --dock-texture: repeating-linear-gradient(90deg, transparent 0 10px, #fcd34d04 11px, transparent 12px 20px); border-style: ridge; border-color: color-mix(in srgb, var(--slot-secondary) 50%, var(--slot-surface)); }
+[data-motif="paper"] .slot-control-dock.slot-control-dock-theme { --dock-radius: 4px 24px 4px 24px; --dock-control-radius: 4px 12px 4px 12px; --dock-spin-radius: 6px 22px 6px 22px; --dock-texture: conic-gradient(from 45deg at 0 100%, #ffffff06 0deg 45deg, transparent 45deg 90deg, #ffffff03 90deg 135deg, transparent 135deg 360deg); }
+[data-motif="lantern"] .slot-control-dock.slot-control-dock-theme { --dock-radius: 24px 24px 12px 12px; --dock-control-radius: 12px; --dock-spin-radius: 30px 30px 16px 16px; --dock-texture: repeating-linear-gradient(0deg, transparent 0 18px, #fda4af07 19px, transparent 20px 38px); border-inline-color: var(--slot-secondary); }
+
+/* Visible artwork, with dark glass behind amounts and control labels. */
+.slot-control-dock.slot-control-dock-theme {
+  background-image: linear-gradient(110deg, #040913e8 0%, #040913a0 48%, #04091370 100%), var(--slot-dock-background);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.slot-control-dock.slot-control-dock-theme::after { opacity: 0.18; }
+.slot-control-dock.slot-control-dock-theme .slot-balance-strip > div { background: #040913b8; border-color: color-mix(in srgb, var(--slot-accent) 30%, transparent); backdrop-filter: blur(6px); }
+.slot-dock-brand { text-shadow: 0 2px 5px #000; }
+.slot-control-dock.slot-control-dock-theme .slot-bet-control > span, .slot-control-dock.slot-control-dock-theme .slot-speed-control legend { text-shadow: 0 1px 5px #000; }
+/* Artwork is the button surface; labels and the spinning arrow remain live. */
+.slot-control-dock.slot-control-dock-theme .slot-bet-control .slot-bet-trigger,
+.slot-control-dock.slot-control-dock-theme .slot-speed-control button,
+.slot-control-dock.slot-control-dock-theme .slot-secondary-controls button {
+  border: 0;
+  border-radius: 0;
+  border-image: none;
+  background-color: transparent;
+  background-image: var(--slot-button-art);
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  box-shadow: none;
+  color: #f8fafc;
+  text-shadow: 0 1px 4px #000, 0 0 8px #000;
+  transition: filter 150ms, transform 120ms;
+}
+.slot-control-dock.slot-control-dock-theme .slot-bet-control .slot-bet-trigger { padding-inline: 16px; }
+.slot-control-dock.slot-control-dock-theme .slot-secondary-controls button { padding-inline: 12px; }
+.slot-control-dock.slot-control-dock-theme .slot-speed-control button { background-image: var(--slot-spin-art); background-size: contain; color: #cbd5e1; }
+.slot-control-dock.slot-control-dock-theme .slot-speed-control button[aria-pressed="true"],
+.slot-control-dock.slot-control-dock-theme .slot-secondary-controls button[aria-pressed="true"],
+.slot-control-dock.slot-control-dock-theme .slot-secondary-controls button[aria-expanded="true"] {
+  color: var(--slot-secondary);
+  filter: brightness(1.25) drop-shadow(0 0 3px color-mix(in srgb, var(--slot-accent) 35%, transparent));
+}
+.slot-control-dock.slot-control-dock-theme .slot-spin-button {
+  width: 96px;
+  height: 96px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--slot-spin-art) center / contain no-repeat;
+  box-shadow: none;
+  color: #fff;
+  text-shadow: 0 1px 5px #000, 0 0 10px #000;
+  transition: filter 150ms, transform 120ms;
+}
+.slot-control-dock.slot-control-dock-theme .slot-spin-button > .slot-spin-icon { width: auto; height: auto; margin-bottom: 2px; border-radius: 0; background: none; color: var(--slot-secondary); }
+.slot-control-dock.slot-control-dock-theme button:active:not(:disabled) { transform: translateY(2px) scale(0.97); }
+.slot-control-dock.slot-control-dock-theme :is(button, select):disabled { filter: saturate(0.4); opacity: 0.45; }
+@media (hover: hover) {
+  .slot-control-dock.slot-control-dock-theme :is(button, select):hover:not(:disabled) { background-color: transparent; filter: brightness(1.2) drop-shadow(0 0 4px color-mix(in srgb, var(--slot-accent) 25%, transparent)); }
+}
+@media (max-width: 360px) { .slot-control-dock.slot-control-dock-theme .slot-spin-button { width: 78px; height: 78px; } .slot-control-dock.slot-control-dock-theme .slot-secondary-controls button { padding-inline: 6px; font-size: 10px; } }
+.slot-control-dock.slot-control-dock-theme .slot-secondary-controls button[aria-pressed="true"],
+.slot-control-dock.slot-control-dock-theme .slot-secondary-controls button[aria-expanded="true"] { background: var(--slot-button-art) center / 100% 100% no-repeat; box-shadow: none; }
+.slot-control-dock.slot-control-dock-theme .slot-speed-control button[aria-pressed="true"] { background: var(--slot-spin-art) center / contain no-repeat; box-shadow: none; }
+
+/* Notices overlay the reels; they never move the controls. */
+.slot-grid-notice { position: absolute; top: 12px; left: 12px; right: 12px; z-index: 5; margin: 0; padding: 9px 12px; border: 1px solid color-mix(in srgb, var(--slot-accent) 35%, transparent); border-radius: 12px; background: #070a13ed; color: #e2e8f0; font-size: 11px; line-height: 1.5; text-align: center; pointer-events: none; }
+.slot-player { --slot-height-budget: 428px; }
+.slot-player:has(.slot-volume) { --slot-height-budget: 472px; }
+.slot-play-area .slot-board { max-width: min(460px, max(128px, calc(100dvh - var(--slot-height-budget)))); }
+@media (max-height: 760px) {
+  .slot-player { --slot-height-budget: 372px; }
+  .slot-player:has(.slot-volume) { --slot-height-budget: 404px; }
+  .slot-player .slot-play-area { padding-block: 8px; }
+  .slot-control-dock.slot-control-dock-theme { padding-top: 8px; padding-bottom: max(8px, env(safe-area-inset-bottom)); }
+  .slot-dock-brand { margin-bottom: 6px; }
+  .slot-control-dock.slot-control-dock-theme .slot-balance-strip { margin-bottom: 8px; }
+  .slot-control-dock.slot-control-dock-theme .slot-balance-strip > div { padding-block: 4px; }
+  .slot-control-dock.slot-control-dock-theme .slot-spin-button { width: 72px; height: 72px; justify-self: center; }
+  .slot-control-dock.slot-control-dock-theme .slot-secondary-controls { margin-top: 8px; }
+  .slot-control-dock.slot-control-dock-theme .slot-volume, .slot-control-dock.slot-control-dock-theme .slot-volume input { min-height: 32px; }
+}
+
+
+/* The bet trigger is the selected chip, not a dropdown-shaped control. */
+.slot-control-dock.slot-control-dock-theme .slot-bet-control { justify-items: center; }
+.slot-control-dock.slot-control-dock-theme .slot-bet-control .slot-bet-trigger {
+  position: relative;
+  display: grid;
+  place-items: center;
+  container-type: inline-size;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  min-width: 44px;
+  min-height: 44px;
+  gap: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--slot-accent) 45%, transparent), 0 0 14px color-mix(in srgb, var(--slot-accent) 15%, transparent);
+  color: white;
+  text-align: center;
+}
+.slot-bet-trigger::before { content: ""; position: absolute; inset: 0; border-radius: inherit; background: var(--slot-chip-art, var(--slot-spin-art)) center / contain no-repeat; filter: hue-rotate(var(--selected-chip-hue)); pointer-events: none; }
+.slot-bet-trigger .slot-selected-chip-value { position: relative; display: block; box-sizing: border-box; width: 100%; min-width: 0; padding-inline: 12%; overflow: visible; text-overflow: clip; text-align: center; font-size: min(28px, calc(110cqi / var(--selected-chip-characters))); font-weight: 900; line-height: 1; white-space: nowrap; font-variant-numeric: tabular-nums; letter-spacing: -0.04em; text-shadow: 0 1px 4px #000; }
+@media (max-height: 760px) { .slot-control-dock.slot-control-dock-theme .slot-bet-control .slot-bet-trigger { width: 60px; height: 60px; } }
+
+.slot-balance-strip.slot-stats-panel { width: 100%; max-width: 460px; margin: 0 auto; gap: 6px; padding: 7px; border: 0; border-radius: 0; background: none; text-shadow: 0 1px 4px #000, 0 0 10px #0008; }
+.slot-stats-panel > div { padding: 5px 7px; border: 0; border-radius: 0; background: none; min-width: 0; }
+.slot-stats-panel span { color: #c2cedb; font-size: 9px; }
+.slot-stats-panel strong { font-size: clamp(14px, 4vw, 22px); }
+
+.slot-selected-chip-wrap { display: contents; }
+.slot-spin-label { font-size: 10px; line-height: 1.2; }

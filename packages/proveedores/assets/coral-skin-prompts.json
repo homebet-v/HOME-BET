@@ -1,0 +1,27 @@
+{
+  "tool": "image_gen (built-in)",
+  "reference": "User-provided Oráculo Coral visual reference",
+  "assets": "apps/web/public/images/slots/oraculo-coral/skin-v2/",
+  "prompts": [
+    {
+      "id": "scene",
+      "transparent": false,
+      "prompt": "STYLE REFERENCE is the attached Oráculo Coral mobile slot screenshot. Create ONLY the clean full-screen UNDERWATER BACKGROUND ART for this game, portrait 1024x1792. Match the reference's vivid saturated cyan/teal shafts of underwater light, deep navy ocean, glossy turquoise jeweled seahorse in the TOP CENTER-RIGHT area, luminous pink/violet coral at bottom corners and edges, tiny drifting bubbles, sparkling gems and pearlescent seashell near bottom center. The middle 70% of the canvas must remain dark calm navy water to receive an interactive 3x3 game board and real controls later. Seahorse occupies upper 18% of canvas above the main board area; the ornate corals at bottom rim frame the controls without obstructing them. Premium glossy fantasy casino illustration, rich and luminous rather than washed out. Do NOT include any interface, borders, panel, grid, slots, buttons, symbols, coins, title, lettering, text, numbers or watermark. Only background scene, no crop of screenshot. This is an image asset used behind live UI."
+    },
+    {
+      "id": "title",
+      "transparent": true,
+      "prompt": "STYLE REFERENCE attached Oráculo Coral slot screenshot. Recreate ONLY the ornate title plaque frame, with all text REMOVED. Transparent RGBA background. Wide single horizontal banner about 4.5:1 silhouette on 1536x512 canvas. Polished glowing gold curved rim, central seashell crown with a violet pearl, colorful pink and violet coral at both ends, small pink starfish bottom center, cyan glow tracing the edges. The central 72% width must be an EMPTY dark navy plaque for the game title rendered later in HTML. Keep all flourishes within image with transparent margins. Match the reference's lush bright saturated whimsical undersea jewel rendering. No letters, no title, no text, no symbols inside the empty central plaque, no background rectangles, no full game screenshot. One isolated blank title frame only."
+    },
+    {
+      "id": "reels",
+      "transparent": true,
+      "prompt": "STYLE REFERENCE attached Oráculo Coral slot screenshot. Recreate ONLY the SQUARE outer REEL BOARD FRAME as an isolated transparent RGBA asset, front-on, 1024x1024. Fine polished gold double curved tubular rails, gentle cyan luminous trim, rounded corners, small pink/violet diamond gems at left and right middle, small coral/pink starfish ornament at bottom center, subtle gold flourish along top center. Match reference premium vivid ocean casino skin. CRITICAL: the entire large square interior must be completely transparent EMPTY HOLE, no black fill, no grid, no cells, no pictures. Outside the frame also truly transparent. Border should occupy outer 5% of width, clear inside about 88% width and height. No text, no numbers, no labels, no landscape, no extra objects. One square frame asset to place around a real interactive 3x3 board."
+    },
+    {
+      "id": "controls",
+      "transparent": true,
+      "prompt": "STYLE REFERENCE attached Oráculo Coral slot screenshot. Create a matching CONTROL SKIN ATLAS containing EXACTLY THREE blank button surfaces, isolated on transparent RGBA background, landscape1536x1024. NO text, NO letters, NO numbers, NO arrows, NO icons. TOP AREA above y400: one wide slim rounded horizontal pill button centered, approximately1280x220, glossy midnight purple center with thin glowing gold rim and faint violet inner light, matching reference AUTO and TABLA DE PAGOS. BOTTOM AREA below y500: LEFT one circular betting CHIP centered around x400,y760 diameter420, thick sculpted gold edge with violet/pink gemstone inserts and dark navy center. RIGHT one large circular SPIN button centered around x1120,y760 diameter460, brilliant luminous magenta/violet enamel gradient center with glowing pink inner ring, sculpted gold rim and small pointed gold ornament at bottom, matching reference's big central purple spin. Keep empty quiet centers to receive HTML text and animated arrow. Clear transparent gap between all three shapes, no overlap, no exterior glow clouds or shadows, no scenery or full interface. Rich glossy jewel finish, highly saturated and visibly bright. Preserve transparency outside shapes."
+    }
+  ]
+}

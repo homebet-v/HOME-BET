@@ -1,0 +1,130 @@
+[
+  {
+    "motif": "botanical",
+    "name": "button",
+    "file": "apps/web/public/images/slots/controls/botanical/button.webp",
+    "width": 640,
+    "height": 160,
+    "bytes": 31828
+  },
+  {
+    "motif": "botanical",
+    "name": "spin",
+    "file": "apps/web/public/images/slots/controls/botanical/spin.webp",
+    "width": 256,
+    "height": 256,
+    "bytes": 22472
+  },
+  {
+    "motif": "brass",
+    "name": "button",
+    "file": "apps/web/public/images/slots/controls/brass/button.webp",
+    "width": 640,
+    "height": 160,
+    "bytes": 45954
+  },
+  {
+    "motif": "brass",
+    "name": "spin",
+    "file": "apps/web/public/images/slots/controls/brass/spin.webp",
+    "width": 256,
+    "height": 256,
+    "bytes": 29466
+  },
+  {
+    "motif": "celestial",
+    "name": "button",
+    "file": "apps/web/public/images/slots/controls/celestial/button.webp",
+    "width": 640,
+    "height": 160,
+    "bytes": 29574
+  },
+  {
+    "motif": "celestial",
+    "name": "spin",
+    "file": "apps/web/public/images/slots/controls/celestial/spin.webp",
+    "width": 256,
+    "height": 256,
+    "bytes": 21892
+  },
+  {
+    "motif": "frost",
+    "name": "button",
+    "file": "apps/web/public/images/slots/controls/frost/button.webp",
+    "width": 640,
+    "height": 160,
+    "bytes": 39482
+  },
+  {
+    "motif": "frost",
+    "name": "spin",
+    "file": "apps/web/public/images/slots/controls/frost/spin.webp",
+    "width": 256,
+    "height": 256,
+    "bytes": 25672
+  },
+  {
+    "motif": "ocean",
+    "name": "button",
+    "file": "apps/web/public/images/slots/controls/ocean/button.webp",
+    "width": 640,
+    "height": 160,
+    "bytes": 39544
+  },
+  {
+    "motif": "ocean",
+    "name": "spin",
+    "file": "apps/web/public/images/slots/controls/ocean/spin.webp",
+    "width": 256,
+    "height": 256,
+    "bytes": 23824
+  },
+  {
+    "motif": "ember",
+    "name": "button",
+    "file": "apps/web/public/images/slots/controls/ember/button.webp",
+    "width": 640,
+    "height": 160,
+    "bytes": 32680
+  },
+  {
+    "motif": "ember",
+    "name": "spin",
+    "file": "apps/web/public/images/slots/controls/ember/spin.webp",
+    "width": 256,
+    "height": 256,
+    "bytes": 20172
+  },
+  {
+    "motif": "paper",
+    "name": "button",
+    "file": "apps/web/public/images/slots/controls/paper/button.webp",
+    "width": 640,
+    "height": 160,
+    "bytes": 29266
+  },
+  {
+    "motif": "paper",
+    "name": "spin",
+    "file": "apps/web/public/images/slots/controls/paper/spin.webp",
+    "width": 256,
+    "height": 256,
+    "bytes": 20996
+  },
+  {
+    "motif": "lantern",
+    "name": "button",
+    "file": "apps/web/public/images/slots/controls/lantern/button.webp",
+    "width": 640,
+    "height": 160,
+    "bytes": 32514
+  },
+  {
+    "motif": "lantern",
+    "name": "spin",
+    "file": "apps/web/public/images/slots/controls/lantern/spin.webp",
+    "width": 256,
+    "height": 256,
+    "bytes": 24332
+  }
+]

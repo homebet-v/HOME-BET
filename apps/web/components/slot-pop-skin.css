@@ -1,0 +1,7 @@
+/* Live lettering complements the illustrated comic and neon theme frames. */
+.slot-player[data-art-style="comic"] .slot-game-title h1,
+.slot-player[data-art-style="comic"] .slot-prize-heading { font-family: Impact, "Arial Black", sans-serif; font-weight: 900; letter-spacing: 0.025em; text-shadow: 2px 2px 0 #080b18, -1px -1px 0 #080b18; }
+.slot-player[data-art-style="comic"] .slot-prize-card { border-width: 2px; border-radius: 8px; box-shadow: 5px 5px 0 #0009; }
+.slot-player[data-art-style="neon"] .slot-game-title h1,
+.slot-player[data-art-style="neon"] .slot-prize-heading { font-family: "Arial Black", Arial, sans-serif; font-weight: 900; letter-spacing: 0.025em; text-shadow: 0 2px 2px #080b18, 0 0 6px var(--slot-accent), 0 0 12px color-mix(in srgb, var(--slot-accent) 45%, transparent); }
+.slot-player[data-art-style="neon"] .slot-prize-card { border-color: var(--slot-secondary); box-shadow: 0 0 16px color-mix(in srgb, var(--slot-accent) 40%, transparent), inset 0 0 12px color-mix(in srgb, var(--slot-secondary) 10%, transparent); }

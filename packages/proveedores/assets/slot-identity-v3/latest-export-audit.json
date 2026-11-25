@@ -1,0 +1,82 @@
+[
+  {
+    "slug": "archivo-abisal",
+    "kind": "cover",
+    "file": "apps/web/public/images/slots/archivo-abisal/identity-v3/cover.webp",
+    "format": "webp",
+    "mediaType": "image/webp",
+    "width": 1200,
+    "height": 800,
+    "space": "srgb",
+    "channels": 3,
+    "depth": "uchar",
+    "isProgressive": false,
+    "isPalette": false,
+    "hasProfile": false,
+    "hasAlpha": false,
+    "autoOrient": {
+      "width": 1200,
+      "height": 800
+    }
+  },
+  {
+    "slug": "islas-magneticas",
+    "kind": "cover",
+    "file": "apps/web/public/images/slots/islas-magneticas/identity-v3/cover.webp",
+    "format": "webp",
+    "mediaType": "image/webp",
+    "width": 1200,
+    "height": 800,
+    "space": "srgb",
+    "channels": 3,
+    "depth": "uchar",
+    "isProgressive": false,
+    "isPalette": false,
+    "hasProfile": false,
+    "hasAlpha": false,
+    "autoOrient": {
+      "width": 1200,
+      "height": 800
+    }
+  },
+  {
+    "slug": "jardin-relojes",
+    "kind": "cover",
+    "file": "apps/web/public/images/slots/jardin-relojes/identity-v3/cover.webp",
+    "format": "webp",
+    "mediaType": "image/webp",
+    "width": 1200,
+    "height": 800,
+    "space": "srgb",
+    "channels": 3,
+    "depth": "uchar",
+    "isProgressive": false,
+    "isPalette": false,
+    "hasProfile": false,
+    "hasAlpha": false,
+    "autoOrient": {
+      "width": 1200,
+      "height": 800
+    }
+  },
+  {
+    "slug": "oasis-de-cobre",
+    "kind": "cover",
+    "file": "apps/web/public/images/slots/oasis-de-cobre/identity-v3/cover.webp",
+    "format": "webp",
+    "mediaType": "image/webp",
+    "width": 1200,
+    "height": 800,
+    "space": "srgb",
+    "channels": 3,
+    "depth": "uchar",
+    "isProgressive": false,
+    "isPalette": false,
+    "hasProfile": false,
+    "hasAlpha": false,
+    "autoOrient": {
+      "width": 1200,
+      "height": 800
+    }
+  }
+]

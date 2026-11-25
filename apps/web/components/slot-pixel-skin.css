@@ -1,0 +1,14 @@
+/* Raster pixel art is shared by all three engine editions of the theme. */
+.slot-player[data-art-style="pixel"] .slot-scene-image,
+.slot-player[data-art-style="pixel"] .slot-symbol,
+.slot-player[data-art-style="pixel"] .slot-game-title,
+.slot-player[data-art-style="pixel"] .slot-control-dock button,
+.slot-player[data-art-style="pixel"] .slot-prize-badge span { image-rendering: pixelated; }
+.slot-player[data-art-style="pixel"] .slot-game-title h1,
+.slot-player[data-art-style="pixel"] .slot-prize-heading,
+.slot-player[data-art-style="pixel"] .slot-prize-number { font-family: "Courier New", monospace; font-weight: 900; text-shadow: 2px 2px 0 #000; }
+.slot-player[data-art-style="pixel"] .slot-game-title h1 { letter-spacing: -0.035em; }
+.slot-player[data-art-style="pixel"] .slot-prize-card { border-radius: 5px; border-width: 2px; box-shadow: 4px 4px 0 #0009; }
+.slot-player[data-art-style="pixel"] .slot-reel,
+.slot-player[data-art-style="pixel"] .slot-reel .slot-cell { border-radius: 3px; }
+.slot-player[data-art-style="pixel"] .slot-lumen-header-button { border-radius: 3px; }

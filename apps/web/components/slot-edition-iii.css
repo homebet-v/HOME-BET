@@ -1,0 +1,33 @@
+/* The square 25-symbol board gets the available space before the controls. */
+.slot-player[data-engine="5x5"] .slot-play-area { max-width: 460px; padding: 2px 4px 4px; }
+.slot-player[data-engine="5x5"] .slot-play-area > * { margin-top: 0; margin-bottom: 4px; }
+.slot-player[data-engine="5x5"] .slot-theme-header { min-height: 32px; padding: 4px 10px; }
+.slot-player[data-engine="5x5"] .slot-balance-strip { margin-inline: 8px; }
+.slot-player[data-engine="5x5"] .slot-stats-panel > div { min-height: 34px; }
+.slot-player[data-engine="5x5"] .slot-stats-panel strong { font-size: 18px; }
+.slot-player[data-engine="5x5"] .slot-game-title { width: calc(100% - 12px); margin: 4px 6px; aspect-ratio: 5.2; }
+.slot-player[data-engine="5x5"] .slot-reel-window { gap: 3px; }
+.slot-player[data-engine="5x5"] .slot-reel { aspect-ratio: 1 / 5; border-radius: 7px; }
+.slot-player[data-engine="5x5"] .slot-reel-step { padding-block: 1px; }
+.slot-player[data-engine="5x5"] .slot-reel .slot-cell { border-radius: 7px; }
+.slot-player[data-engine="5x5"] .slot-reel .slot-symbol { inset: 1%; width: 98%; height: 98%; }
+.slot-player[data-engine="5x5"] .slot-reel-label { bottom: 2px; font-size: 6px; }
+.slot-player[data-engine="5x5"] .slot-lumen-metrics { width: calc(100% - 12px); min-height: 32px; margin-inline: 6px; }
+.slot-player[data-engine="5x5"] .slot-control-dock.slot-control-dock-theme { margin-inline: 8px; padding-top: 4px; }
+.slot-player[data-engine="5x5"] .slot-control-dock.slot-control-dock-theme .slot-layout-grid { --layout-spin-size: 110px; }
+.slot-player[data-engine="5x5"] > footer { font-size: 7px; padding: 4px; }
+.slot-edition-line-pages { display: flex; align-items: center; justify-content: center; gap: 10px; flex-shrink: 0; font-size: 10px; }
+.slot-edition-line-pages button { min-width: 58px; min-height: 32px; padding: 4px 8px; border: 1px solid #ffffff30; border-radius: 8px; background: #0004; }
+.slot-edition-line-pages button:disabled { opacity: 0.35; }
+.slot-player[data-engine="5x5"] .slot-edition-lines { flex: 1; min-height: 0; align-content: center; }
+.slot-player[data-engine="5x5"] .slot-edition-bet-note, .slot-player[data-engine="5x5"] .slot-edition-rule-tabs { flex-shrink: 0; }
+.slot-player[data-engine="5x5"] .slot-edition-specials { flex: 1; min-height: 0; align-content: start; font-size: 12px; line-height: 1.7; }
+@media (max-height: 760px) {
+  .slot-player[data-engine="5x5"] .slot-control-dock.slot-control-dock-theme .slot-layout-grid { --layout-spin-size: 96px; }
+  .slot-player[data-engine="5x5"] .slot-game-title { aspect-ratio: 5.5; }
+}
+@media (max-height: 660px) {
+  .slot-player[data-engine="5x5"] .slot-control-dock.slot-control-dock-theme .slot-layout-grid { --layout-spin-size: 88px; }
+  .slot-player[data-engine="5x5"] .slot-stats-panel > div { min-height: 30px; }
+  .slot-player[data-engine="5x5"] .slot-game-title { aspect-ratio: 6; }
+}

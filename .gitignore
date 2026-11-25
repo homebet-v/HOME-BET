@@ -1,0 +1,12 @@
+node_modules
+.npm
+.next
+out
+.vercel
+.env
+.env.local
+*.tsbuildinfo
+.DS_Store
+.env.*
+!.env.example
+supabase/.temp/

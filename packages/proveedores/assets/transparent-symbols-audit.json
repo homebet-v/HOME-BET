@@ -1,0 +1,162 @@
+[
+  {
+    "slug": "biblioteca-lunar",
+    "file": "apps/web/public/images/slots/biblioteca-lunar/symbols-transparent.webp",
+    "width": 1536,
+    "height": 192,
+    "transparentPixels": 165688,
+    "bytes": 118236
+  },
+  {
+    "slug": "archivo-abisal",
+    "file": "apps/web/public/images/slots/archivo-abisal/symbols-transparent.webp",
+    "width": 1536,
+    "height": 192,
+    "transparentPixels": 144022,
+    "bytes": 159268
+  },
+  {
+    "slug": "jardin-relojes",
+    "file": "apps/web/public/images/slots/jardin-relojes/symbols-transparent.webp",
+    "width": 1536,
+    "height": 192,
+    "transparentPixels": 138210,
+    "bytes": 159790
+  },
+  {
+    "slug": "oasis-de-cobre",
+    "file": "apps/web/public/images/slots/oasis-de-cobre/symbols-transparent.webp",
+    "width": 1536,
+    "height": 192,
+    "transparentPixels": 143095,
+    "bytes": 140950
+  },
+  {
+    "slug": "islas-magneticas",
+    "file": "apps/web/public/images/slots/islas-magneticas/symbols-transparent.webp",
+    "width": 1536,
+    "height": 192,
+    "transparentPixels": 135914,
+    "bytes": 134326
+  },
+  {
+    "slug": "guardian-jade",
+    "file": "apps/web/public/images/slots/guardian-jade/symbols-transparent.webp",
+    "width": 1536,
+    "height": 192,
+    "transparentPixels": 140915,
+    "bytes": 142220
+  },
+  {
+    "slug": "volcan-obsidiana",
+    "file": "apps/web/public/images/slots/volcan-obsidiana/symbols-transparent.webp",
+    "width": 1536,
+    "height": 192,
+    "transparentPixels": 148838,
+    "bytes": 143222
+  },
+  {
+    "slug": "festival-faroles",
+    "file": "apps/web/public/images/slots/festival-faroles/symbols-transparent.webp",
+    "width": 1536,
+    "height": 192,
+    "transparentPixels": 158957,
+    "bytes": 125176
+  },
+  {
+    "slug": "catedral-cristal",
+    "file": "apps/web/public/images/slots/catedral-cristal/symbols-transparent.webp",
+    "width": 1536,
+    "height": 192,
+    "transparentPixels": 148135,
+    "bytes": 140226
+  },
+  {
+    "slug": "bosque-micelio",
+    "file": "apps/web/public/images/slots/bosque-micelio/symbols-transparent.webp",
+    "width": 1536,
+    "height": 192,
+    "transparentPixels": 137762,
+    "bytes": 159198
+  },
+  {
+    "slug": "laboratorio-nectar",
+    "file": "apps/web/public/images/slots/laboratorio-nectar/symbols-transparent.webp",
+    "width": 1536,
+    "height": 192,
+    "transparentPixels": 152032,
+    "bytes": 127572
+  },
+  {
+    "slug": "mercado-de-nubes",
+    "file": "apps/web/public/images/slots/mercado-de-nubes/symbols-transparent.webp",
+    "width": 1536,
+    "height": 192,
+    "transparentPixels": 151845,
+    "bytes": 144270
+  },
+  {
+    "slug": "taller-de-cometas",
+    "file": "apps/web/public/images/slots/taller-de-cometas/symbols-transparent.webp",
+    "width": 1536,
+    "height": 192,
+    "transparentPixels": 148162,
+    "bytes": 136454
+  },
+  {
+    "slug": "caravana-solar",
+    "file": "apps/web/public/images/slots/caravana-solar/symbols-transparent.webp",
+    "width": 1536,
+    "height": 192,
+    "transparentPixels": 147645,
+    "bytes": 145244
+  },
+  {
+    "slug": "reino-origami",
+    "file": "apps/web/public/images/slots/reino-origami/symbols-transparent.webp",
+    "width": 1536,
+    "height": 192,
+    "transparentPixels": 167576,
+    "bytes": 116456
+  },
+  {
+    "slug": "puerto-ambar",
+    "file": "apps/web/public/images/slots/puerto-ambar/symbols-transparent.webp",
+    "width": 1536,
+    "height": 192,
+    "transparentPixels": 143215,
+    "bytes": 131222
+  },
+  {
+    "slug": "oraculo-coral",
+    "file": "apps/web/public/images/slots/oraculo-coral/symbols-transparent.webp",
+    "width": 1536,
+    "height": 192,
+    "transparentPixels": 150554,
+    "bytes": 146348
+  },
+  {
+    "slug": "tren-constelaciones",
+    "file": "apps/web/public/images/slots/tren-constelaciones/symbols-transparent.webp",
+    "width": 1536,
+    "height": 192,
+    "transparentPixels": 125533,
+    "bytes": 153118
+  },
+  {
+    "slug": "aurora-glacial",
+    "file": "apps/web/public/images/slots/aurora-glacial/symbols-transparent.webp",
+    "width": 1536,
+    "height": 192,
+    "transparentPixels": 148581,
+    "bytes": 155138
+  },
+  {
+    "slug": "jardin-de-luces",
+    "file": "apps/web/public/images/slots/jardin-de-luces/symbols-transparent.webp",
+    "width": 1536,
+    "height": 192,
+    "transparentPixels": 152014,
+    "bytes": 124448
+  }
+]

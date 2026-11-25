@@ -1,0 +1,44 @@
+/* Four arrangements of the same controls; no duplicate buttons or game state. */
+.slot-control-dock.slot-control-dock-theme .slot-layout-grid {
+  --layout-spin-size: 112px;
+  --layout-bet-size: 76px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr) minmax(44px, 0.7fr);
+  grid-template-areas: "bet spin speed" "actions actions actions";
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.slot-control-dock.slot-control-dock-theme .slot-layout-grid > .slot-bet-control { grid-area: bet; min-width: 0; justify-self: stretch; }
+.slot-control-dock.slot-control-dock-theme .slot-layout-grid > .slot-spin-button { grid-area: spin; width: min(var(--layout-spin-size), 100%); height: auto; aspect-ratio: 1; justify-self: center; }
+.slot-control-dock.slot-control-dock-theme .slot-layout-grid .slot-bet-control .slot-bet-trigger { width: var(--layout-bet-size); height: var(--layout-bet-size); }
+.slot-control-dock.slot-control-dock-theme .slot-layout-grid > .slot-speed-control { grid-area: speed; justify-self: center; text-align: center; min-width: 0; width: 100%; }
+.slot-layout-grid .slot-speed-control legend { width: 100%; text-align: center; }
+.slot-control-dock.slot-control-dock-theme .slot-layout-grid .slot-speed-control > div { display: grid; grid-template-columns: 1fr; justify-items: center; gap: 2px; width: 44px; margin-inline: auto; }
+.slot-control-dock.slot-control-dock-theme .slot-layout-grid .slot-speed-control button { min-width: 0; width: 44px; min-height: 44px; height: 44px; padding: 0; }
+.slot-control-dock.slot-control-dock-theme .slot-layout-grid > .slot-secondary-controls { grid-area: actions; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; width: 100%; min-width: 0; margin: 0; }
+.slot-control-dock.slot-control-dock-theme .slot-layout-grid .slot-secondary-controls button { width: 100%; min-width: 0; min-height: 44px; margin: 0; padding-inline: 6px; font-size: 10px; line-height: 1.2; }
+
+[data-control-layout="right-thumb"] .slot-control-dock.slot-control-dock-theme .slot-layout-grid { grid-template-columns: minmax(0, 0.95fr) minmax(0, 0.95fr) minmax(0, 1.15fr); grid-template-areas: "bet actions spin" "speed actions spin"; }
+[data-control-layout="left-thumb"] .slot-control-dock.slot-control-dock-theme .slot-layout-grid { grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.95fr) minmax(0, 0.95fr); grid-template-areas: "spin actions bet" "spin actions speed"; }
+[data-control-layout="low-center"] .slot-control-dock.slot-control-dock-theme .slot-layout-grid { grid-template-areas: "actions actions actions" "bet spin speed"; }
+
+[data-control-layout="right-thumb"] .slot-control-dock.slot-control-dock-theme .slot-layout-grid > .slot-secondary-controls,
+[data-control-layout="left-thumb"] .slot-control-dock.slot-control-dock-theme .slot-layout-grid > .slot-secondary-controls { grid-template-columns: minmax(0, 1fr); }
+[data-control-layout="right-thumb"] .slot-control-dock.slot-control-dock-theme .slot-layout-grid .slot-speed-control > div,
+[data-control-layout="left-thumb"] .slot-control-dock.slot-control-dock-theme .slot-layout-grid .slot-speed-control > div { grid-template-columns: repeat(3, minmax(0, 1fr)); width: 100%; gap: 2px; }
+[data-control-layout="right-thumb"] .slot-control-dock.slot-control-dock-theme .slot-layout-grid .slot-speed-control button,
+[data-control-layout="left-thumb"] .slot-control-dock.slot-control-dock-theme .slot-layout-grid .slot-speed-control button { width: 100%; }
+
+/* Reserve enough screen height for the taller layouts before sizing the reels. */
+.slot-player:is([data-control-layout="central-bar"], [data-control-layout="low-center"]) { --slot-height-budget: 484px; }
+.slot-player:is([data-control-layout="central-bar"], [data-control-layout="low-center"]):has(.slot-volume) { --slot-height-budget: 528px; }
+@media (max-width: 360px) {
+  .slot-control-dock.slot-control-dock-theme .slot-layout-grid { --layout-spin-size: 96px; --layout-bet-size: 64px; gap: 6px; }
+  .slot-control-dock.slot-control-dock-theme .slot-layout-grid .slot-secondary-controls button { font-size: 9px; padding-inline: 4px; }
+}
+@media (max-height: 760px) {
+  .slot-control-dock.slot-control-dock-theme .slot-layout-grid { --layout-spin-size: 96px; --layout-bet-size: 64px; }
+  .slot-player:is([data-control-layout="central-bar"], [data-control-layout="low-center"]) { --slot-height-budget: 440px; }
+  .slot-player:is([data-control-layout="central-bar"], [data-control-layout="low-center"]):has(.slot-volume) { --slot-height-budget: 472px; }
+}

@@ -1,0 +1,25 @@
+{
+  "name": "@homebet/proveedores",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./engine": "./src/slot-engine.ts",
+    "./catalog": "./src/slot-catalog.ts",
+    "./layouts": "./src/slot-layouts.ts",
+    "./engine-5x3": "./src/slot-engine-5x3.ts",
+    "./engine-five-reels": "./src/slot-engine-five-reels.ts",
+    "./engine-5x5": "./src/slot-engine-5x5.ts",
+    "./roulette-engine": "./src/roulette-engine.ts",
+    "./roulette-player": "./src/roulette-player.tsx",
+    "./chip-picker": "./src/chip-picker.tsx",
+    "./chip-label": "./src/chip-label.ts",
+    "./roulette-catalog": "./src/roulette-catalog.ts",
+    "./game-random": "./src/game-random.ts",
+    "./dice-engine": "./src/dice-engine.ts",
+    "./plinko-engine": "./src/plinko-engine.ts",
+    "./mines-engine": "./src/mines-engine.ts",
+    "./higher-lower-engine": "./src/higher-lower-engine.ts"
+  }
+}

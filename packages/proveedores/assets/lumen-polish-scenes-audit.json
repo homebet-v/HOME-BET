@@ -1,0 +1,135 @@
+[
+  {
+    "slug": "jardin-de-luces",
+    "file": "apps/web/public/images/slots/jardin-de-luces/skin-v2/scene.webp",
+    "width": 860,
+    "height": 1474,
+    "bytes": 216492
+  },
+  {
+    "slug": "puerto-ambar",
+    "file": "apps/web/public/images/slots/puerto-ambar/skin-v2/scene.webp",
+    "width": 860,
+    "height": 1474,
+    "bytes": 229590
+  },
+  {
+    "slug": "taller-de-cometas",
+    "file": "apps/web/public/images/slots/taller-de-cometas/skin-v2/scene.webp",
+    "width": 860,
+    "height": 1474,
+    "bytes": 241008
+  },
+  {
+    "slug": "biblioteca-lunar",
+    "file": "apps/web/public/images/slots/biblioteca-lunar/skin-v2/scene.webp",
+    "width": 860,
+    "height": 1474,
+    "bytes": 239598
+  },
+  {
+    "slug": "aurora-glacial",
+    "file": "apps/web/public/images/slots/aurora-glacial/skin-v2/scene.webp",
+    "width": 860,
+    "height": 1474,
+    "bytes": 217860
+  },
+  {
+    "slug": "caravana-solar",
+    "file": "apps/web/public/images/slots/caravana-solar/skin-v2/scene.webp",
+    "width": 860,
+    "height": 1474,
+    "bytes": 217702
+  },
+  {
+    "slug": "mercado-de-nubes",
+    "file": "apps/web/public/images/slots/mercado-de-nubes/skin-v2/scene.webp",
+    "width": 860,
+    "height": 1474,
+    "bytes": 232446
+  },
+  {
+    "slug": "bosque-micelio",
+    "file": "apps/web/public/images/slots/bosque-micelio/skin-v2/scene.webp",
+    "width": 860,
+    "height": 1474,
+    "bytes": 249370
+  },
+  {
+    "slug": "volcan-obsidiana",
+    "file": "apps/web/public/images/slots/volcan-obsidiana/skin-v2/scene.webp",
+    "width": 860,
+    "height": 1474,
+    "bytes": 203624
+  },
+  {
+    "slug": "tren-constelaciones",
+    "file": "apps/web/public/images/slots/tren-constelaciones/skin-v2/scene.webp",
+    "width": 860,
+    "height": 1474,
+    "bytes": 245882
+  },
+  {
+    "slug": "reino-origami",
+    "file": "apps/web/public/images/slots/reino-origami/skin-v2/scene.webp",
+    "width": 860,
+    "height": 1474,
+    "bytes": 209854
+  },
+  {
+    "slug": "laboratorio-nectar",
+    "file": "apps/web/public/images/slots/laboratorio-nectar/skin-v2/scene.webp",
+    "width": 860,
+    "height": 1474,
+    "bytes": 237326
+  },
+  {
+    "slug": "catedral-cristal",
+    "file": "apps/web/public/images/slots/catedral-cristal/skin-v2/scene.webp",
+    "width": 860,
+    "height": 1474,
+    "bytes": 238906
+  },
+  {
+    "slug": "festival-faroles",
+    "file": "apps/web/public/images/slots/festival-faroles/skin-v2/scene.webp",
+    "width": 860,
+    "height": 1474,
+    "bytes": 226560
+  },
+  {
+    "slug": "guardian-jade",
+    "file": "apps/web/public/images/slots/guardian-jade/skin-v2/scene.webp",
+    "width": 860,
+    "height": 1474,
+    "bytes": 279870
+  },
+  {
+    "slug": "islas-magneticas",
+    "file": "apps/web/public/images/slots/islas-magneticas/skin-v2/scene.webp",
+    "width": 860,
+    "height": 1474,
+    "bytes": 224654
+  },
+  {
+    "slug": "oasis-de-cobre",
+    "file": "apps/web/public/images/slots/oasis-de-cobre/skin-v2/scene.webp",
+    "width": 860,
+    "height": 1474,
+    "bytes": 255946
+  },
+  {
+    "slug": "jardin-relojes",
+    "file": "apps/web/public/images/slots/jardin-relojes/skin-v2/scene.webp",
+    "width": 860,
+    "height": 1474,
+    "bytes": 239140
+  },
+  {
+    "slug": "archivo-abisal",
+    "file": "apps/web/public/images/slots/archivo-abisal/skin-v2/scene.webp",
+    "width": 860,
+    "height": 1474,
+    "bytes": 263318
+  }
+]

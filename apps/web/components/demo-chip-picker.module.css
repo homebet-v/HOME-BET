@@ -1,0 +1,127 @@
+.stakes {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: .38rem .7rem;
+  padding-bottom: .52rem;
+  background: linear-gradient(90deg, transparent, #d5ae6e91 38%, #d5ae6e91 62%, transparent) bottom / 100% 1px no-repeat;
+  color: #f4dfb6;
+  font: 700 .92rem / 1.25 Georgia, serif;
+}
+.stakePicker {
+  display: flex;
+  align-items: center;
+  gap: .42rem;
+  min-height: 2.75rem;
+  padding: .16rem .45rem;
+  border: 1px solid #bd9254;
+  border-radius: .58rem;
+  background: linear-gradient(#183b2b, #091f16);
+  color: #fff0cb;
+  font: 700 .78rem / 1.15 Georgia, serif;
+  cursor: pointer;
+}
+.stakeChip {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: var(--chip-size, 2.07rem);
+  aspect-ratio: 1;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  color: #fff0cd;
+  font: 700 var(--chip-font, .61rem) / 1 Georgia, serif;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 1px 2px #000;
+}
+.chipDialog {
+  position: fixed;
+  inset: 0;
+  width: min(calc(100% - 1.4rem), 25rem);
+  max-height: calc(100dvh - 1.4rem);
+  margin: auto;
+  padding: .8rem;
+  overflow: auto;
+  border: 1px solid #d6ae68;
+  border-radius: .9rem;
+  background: radial-gradient(ellipse at top, #22503a, #0b2319 72%);
+  box-shadow: 0 14px 50px #000b, inset 0 0 0 2px #d1a05b30;
+  color: #fff0cb;
+}
+.chipDialog::backdrop { background: #050b08b8; }
+.chipDialog header { display: flex; align-items: center; justify-content: space-between; gap: .65rem; }
+.chipDialog h2 { font: 700 1.35rem / 1.15 Georgia, serif; }
+.closeChips {
+  width: 2.25rem;
+  aspect-ratio: 1;
+  border: 1px solid #a98752;
+  border-radius: 50%;
+  color: #ffedc4;
+  cursor: pointer;
+}
+.chipGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: .35rem;
+  margin-top: .6rem;
+}
+.chipGrid button {
+  display: grid;
+  place-items: center;
+  min-height: 3.5rem;
+  padding: .15rem;
+  border: 1px solid transparent;
+  border-radius: .65rem;
+  cursor: pointer;
+}
+.chipGrid button[aria-pressed="true"], .chipGrid button:hover:not(:disabled) {
+  border-color: #caa25f;
+  background: #a7843b26;
+}
+.chipGrid .stakeChip {
+  --chip-size: min(100%, clamp(3rem, 17vw, 4.65rem));
+  --chip-font: clamp(.8rem, 4.15vw, 1.2rem);
+}
+.stakes button:disabled { opacity: .56; cursor: default; }
+.stakes button:focus-visible { outline: 2px solid #f5cf80; outline-offset: 2px; }
+.stakes[data-quick="true"] {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: .22rem .4rem;
+  padding-bottom: .18rem;
+  background: none;
+}
+.stakes[data-quick="true"] .stakeTitle { text-align: center; }
+.stakes[data-quick="true"] .stakePicker {
+  min-height: 1.9rem;
+  border-color: #b987657b;
+  background: #541b2c;
+  font-size: .68rem;
+}
+.quickChips {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  justify-items: center;
+  gap: .15rem;
+}
+.quickChips button {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  min-height: 2.75rem;
+  min-width: 0;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.quickChips .stakeChip {
+  --chip-size: min(100%, 2.72rem);
+  --chip-font: clamp(.56rem, 2.27vw, .76rem);
+}
+.quickChips button[aria-pressed="true"] .stakeChip {
+  filter: drop-shadow(0 0 .25rem #ffd87e) drop-shadow(0 .13rem .1rem #ff9f37);
+}
+.quickChips button[aria-pressed="true"]:disabled { opacity: .9; }

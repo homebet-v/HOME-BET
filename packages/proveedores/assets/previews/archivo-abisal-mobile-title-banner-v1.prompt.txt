@@ -1,0 +1,13 @@
+Tool: image_gen (built-in). Mobile title banner design preview only; no game implementation changes.
+
+Use case: ui-mockup. Edit the attached portrait mobile screenshot of the Archivo Abisal slot into a precise polished DESIGN MOCKUP, not production implementation. Keep the same narrow mobile screen, same underwater navy and turquoise art, same gameplay symbols and 3x3 grid, same ornate turquoise/gold button skins, same current control layout: betting chip 50 on left, large GIRAR circle in center, speed ×1 ×2 ×3 vertical on right, Autojuego Sonido no Reglas in bottom row. Keep labels and actual values Fichas demo 9.950, Apuesta total 50, Último premio 0. No generic replacement icons or new game mechanics.
+
+REQUESTED NEW COMPOSITION from top to bottom:
+1. A compact top utility header with small LUMEN STUDIO · 3 × 3 on left and DEMO and close × on right. Remove the duplicate game name from this utility header.
+2. The three floating data values on the underwater background, WITHOUT a surrounding card.
+3. A beautiful WIDE THEMATIC GAME-NAME SIGN directly above the reel grid, inside screen width: exact text "ARCHIVO ABISAL", large elegant readable capital lettering, aged golden brass relief border with subtle coral/tentacle scrollwork and teal gemstone details, dark blue textured center, restrained aqua inner light. This is a genuine distinctive illustrated title banner, not just a line of plain text. Banner about 35–40px tall at a 390px screen width, compact and premium.
+4. The full 3x3 grid immediately below the banner, moved lower than in the reference. Keep its original rectangular proportions, underwater frame, 9 correct symbols, identical order: row1 map octopus map; row2 map octopus nautilus; row3 astrolabe nautilus nautilus.
+5. The existing controls card BELOW the grid, also moved lower, preserving all controls and original three-column arrangement with bottom actions row.
+6. Tiny demo footer at bottom.
+
+Use the currently unused blank space beneath the controls and compact the top header to make room for the new banner. All content must fit within ONE mobile screen, no scrolling, no clipping, no overlaps, enough gap between title, grid and controls. Keep the frame and comfortable mobile touch areas. The title sign must be clearly visible and prominent while the reels and spin button remain functional-looking. Present the entire revised mobile screen with minimal outside margin, front-on flat UI, crisp high fidelity raster mockup, no annotations, no watermark, no invented extra text.

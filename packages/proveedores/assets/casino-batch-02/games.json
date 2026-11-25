@@ -1,0 +1,562 @@
+[
+  {
+    "slug": "golden-sevens",
+    "name": "Golden Sevens",
+    "tagline": "Sietes rojos, campanas y el brillo del casino clásico.",
+    "accent": "#ef4444",
+    "secondary": "#fde68a",
+    "surface": "#21090c",
+    "motif": "brass",
+    "emblem": "7",
+    "scene": "red seven, polished gold coins, crimson velvet casino",
+    "symbols": [
+      "Moneda dorada",
+      "Cereza rubí",
+      "Limón dorado",
+      "Campana",
+      "Barra de oro",
+      "Siete rojo",
+      "Emblema WILD",
+      "Sello de giros gratis"
+    ],
+    "artSymbols": "gold coin, ruby cherry, lemon, gold bell, gold BAR ingot without text, large red number seven",
+    "bonus": {
+      "item": "campana",
+      "title": "Las campanas doradas",
+      "symbol": 3
+    },
+    "materials": "gold chrome, red enamel, classic slot machine bevels"
+  },
+  {
+    "slug": "cherry-fortune",
+    "name": "Cherry Fortune",
+    "tagline": "Frutas brillantes y cerezas de la suerte.",
+    "accent": "#f43f5e",
+    "secondary": "#bef264",
+    "surface": "#101e0b",
+    "motif": "botanical",
+    "emblem": "♣",
+    "scene": "glossy cherries, fruit-machine luxury, dark emerald casino",
+    "symbols": [
+      "Limón",
+      "Naranja",
+      "Ciruela",
+      "Uvas",
+      "Campana frutal",
+      "Cerezas",
+      "Emblema WILD",
+      "Sello de giros gratis"
+    ],
+    "artSymbols": "lemon, orange, purple plum, purple grape bunch, gold bell, pair of glossy red cherries",
+    "bonus": {
+      "item": "cerezas",
+      "title": "La cosecha de la suerte",
+      "symbol": 5
+    },
+    "materials": "cherry red enamel, emerald leaves, gold fruit-machine rims"
+  },
+  {
+    "slug": "royal-flush",
+    "name": "Royal Flush",
+    "tagline": "Ases, coronas y el lujo de una mesa real.",
+    "accent": "#dc2626",
+    "secondary": "#fef3c7",
+    "surface": "#1e0816",
+    "motif": "brass",
+    "emblem": "♠",
+    "scene": "royal crown, four card suits, ivory ace cards, burgundy high roller casino",
+    "symbols": [
+      "Trébol de ónix",
+      "Diamante rojo",
+      "Corazón rubí",
+      "Pica negra",
+      "As real",
+      "Corona real",
+      "Emblema WILD",
+      "Sello de giros gratis"
+    ],
+    "artSymbols": "black club suit, red diamond suit, ruby heart suit, black spade suit, ornate ace of spades playing card, jeweled royal crown",
+    "bonus": {
+      "item": "as real",
+      "title": "Las cartas de la corona",
+      "symbol": 4
+    },
+    "materials": "burgundy velvet enamel, gold card suit carvings, ivory details"
+  },
+  {
+    "slug": "roulette-royale",
+    "name": "Roulette Royale",
+    "tagline": "La elegancia de la ruleta llevada a los rodillos.",
+    "accent": "#22c55e",
+    "secondary": "#fcd34d",
+    "surface": "#071a13",
+    "motif": "brass",
+    "emblem": "♦",
+    "scene": "luxury roulette wheel, red black gold casino chips, emerald velvet",
+    "symbols": [
+      "Bola de marfil",
+      "Ficha roja",
+      "Ficha negra",
+      "Ficha verde",
+      "Torre de fichas",
+      "Ruleta dorada",
+      "Emblema WILD",
+      "Sello de giros gratis"
+    ],
+    "artSymbols": "ivory roulette ball, red casino chip, black casino chip, green casino chip, stacked gold casino chips, elegant roulette wheel",
+    "bonus": {
+      "item": "torre de fichas",
+      "title": "Las fichas del salón",
+      "symbol": 4
+    },
+    "materials": "green felt enamel, gold roulette wheel rims, black and red pockets without numbers"
+  },
+  {
+    "slug": "pharaohs-vault",
+    "name": "Pharaoh’s Vault",
+    "tagline": "Descubrí el tesoro sellado del faraón.",
+    "accent": "#eab308",
+    "secondary": "#60a5fa",
+    "surface": "#161020",
+    "motif": "brass",
+    "emblem": "☥",
+    "scene": "golden pharaoh mask, scarab, ancient treasure vault, lapis blue",
+    "symbols": [
+      "Anj de oro",
+      "Ojo de Horus",
+      "Loto egipcio",
+      "Cáliz lapislázuli",
+      "Escarabajo",
+      "Máscara del faraón",
+      "Emblema WILD",
+      "Sello de giros gratis"
+    ],
+    "artSymbols": "gold ankh, eye of Horus amulet, Egyptian lotus, lapis chalice, winged scarab, golden pharaoh mask",
+    "bonus": {
+      "item": "escarabajo",
+      "title": "Los sellos del faraón",
+      "symbol": 4
+    },
+    "materials": "ancient gold, lapis inlays, scarab wing reliefs"
+  },
+  {
+    "slug": "olympus-gold",
+    "name": "Olympus Gold",
+    "tagline": "Rayos y tesoros en la cima del Olimpo.",
+    "accent": "#60a5fa",
+    "secondary": "#fef08a",
+    "surface": "#101d36",
+    "motif": "celestial",
+    "emblem": "ϟ",
+    "scene": "original white-bearded thunder god, lightning, marble Olympus temple",
+    "symbols": [
+      "Laurel",
+      "Lira",
+      "Ánfora",
+      "Búho olímpico",
+      "Rayo de oro",
+      "Señor del trueno",
+      "Emblema WILD",
+      "Sello de giros gratis"
+    ],
+    "artSymbols": "gold laurel wreath, golden lyre, Greek amphora, marble owl, golden lightning bolt, original majestic white bearded thunder god bust",
+    "bonus": {
+      "item": "ánfora",
+      "title": "Los tesoros del Olimpo",
+      "symbol": 2
+    },
+    "materials": "white marble, polished gold, lightning blue enamel, Greek meanders"
+  },
+  {
+    "slug": "dragon-fortune",
+    "name": "Dragon Fortune",
+    "tagline": "Un dragón dorado custodia las joyas imperiales.",
+    "accent": "#ef4444",
+    "secondary": "#fde047",
+    "surface": "#240b0c",
+    "motif": "lantern",
+    "emblem": "龍",
+    "scene": "golden Chinese dragon, jade pearl, red lacquer imperial palace",
+    "symbols": [
+      "Abanico imperial",
+      "Lingote",
+      "Moneda imperial",
+      "Farol de seda",
+      "Perla de jade",
+      "Dragón dorado",
+      "Emblema WILD",
+      "Sello de giros gratis"
+    ],
+    "artSymbols": "imperial fan, gold ingot, square hole Chinese coin, red lantern, jade pearl, coiled golden Chinese dragon",
+    "bonus": {
+      "item": "perla de jade",
+      "title": "Las perlas del dragón",
+      "symbol": 4
+    },
+    "materials": "red lacquer, carved gold dragon scales, jade studs"
+  },
+  {
+    "slug": "lucky-coins",
+    "name": "Lucky Coins",
+    "tagline": "Monedas de fortuna entre seda roja y oro.",
+    "accent": "#f59e0b",
+    "secondary": "#fda4af",
+    "surface": "#260c0d",
+    "motif": "lantern",
+    "emblem": "❖",
+    "scene": "gold square hole fortune coins, red knots, peony, treasure ingots",
+    "symbols": [
+      "Nudo rojo",
+      "Sobre de la suerte",
+      "Lingote de oro",
+      "Moneda antigua",
+      "Peonía",
+      "Tesoro de monedas",
+      "Emblema WILD",
+      "Sello de giros gratis"
+    ],
+    "artSymbols": "red silk knot, red lucky envelope, gold ingot, square hole gold coin, pink peony, cluster of ornate gold fortune coins",
+    "bonus": {
+      "item": "sobre de la suerte",
+      "title": "Los sobres de la fortuna",
+      "symbol": 1
+    },
+    "materials": "red silk, polished gold square hole coins, floral peony engraving"
+  },
+  {
+    "slug": "pirates-bounty",
+    "name": "Pirate’s Bounty",
+    "tagline": "Cofres y joyas bajo la bandera del capitán.",
+    "accent": "#fbbf24",
+    "secondary": "#2dd4bf",
+    "surface": "#101d23",
+    "motif": "brass",
+    "emblem": "⚓",
+    "scene": "original pirate captain, open emerald treasure chest, sailing ship",
+    "symbols": [
+      "Mapa pirata",
+      "Ancla de bronce",
+      "Calavera",
+      "Sombrero pirata",
+      "Cofre de joyas",
+      "Capitán pirata",
+      "Emblema WILD",
+      "Sello de giros gratis"
+    ],
+    "artSymbols": "rolled pirate map, bronze anchor, jeweled skull, pirate tricorn hat, open treasure chest, original charismatic pirate captain bust",
+    "bonus": {
+      "item": "cofre de joyas",
+      "title": "Los cofres del capitán",
+      "symbol": 4
+    },
+    "materials": "weathered ship brass, rope knots, emerald gems, dark wood"
+  },
+  {
+    "slug": "wild-west-gold",
+    "name": "Wild West Gold",
+    "tagline": "Pepitas, herraduras y la ley del oro.",
+    "accent": "#f59e0b",
+    "secondary": "#fdba74",
+    "surface": "#26170b",
+    "motif": "brass",
+    "emblem": "★",
+    "scene": "original western cowboy sheriff, gold nuggets, saloon at sunset",
+    "symbols": [
+      "Bota vaquera",
+      "Sombrero del oeste",
+      "Herradura",
+      "Estrella del sheriff",
+      "Pepitas de oro",
+      "Pistolero del oro",
+      "Emblema WILD",
+      "Sello de giros gratis"
+    ],
+    "artSymbols": "western boot, cowboy hat, gold horseshoe, sheriff star badge, gold nugget cluster, original cowboy sheriff portrait without weapon",
+    "bonus": {
+      "item": "pepitas de oro",
+      "title": "Las pepitas del oeste",
+      "symbol": 4
+    },
+    "materials": "aged brass, leather stitching, horseshoe rim, saloon walnut"
+  },
+  {
+    "slug": "diamond-fever",
+    "name": "Diamond Fever",
+    "tagline": "Diamantes y gemas con brillo de alta joyería.",
+    "accent": "#7dd3fc",
+    "secondary": "#e0e7ff",
+    "surface": "#080e22",
+    "motif": "frost",
+    "emblem": "◇",
+    "scene": "enormous brilliant diamond, sapphire, platinum, luxury black casino",
+    "symbols": [
+      "Zafiro",
+      "Rubí",
+      "Esmeralda",
+      "Amatista",
+      "Corona de platino",
+      "Gran diamante",
+      "Emblema WILD",
+      "Sello de giros gratis"
+    ],
+    "artSymbols": "faceted sapphire, ruby, emerald, amethyst, platinum jeweled crown, giant brilliant cut diamond",
+    "bonus": {
+      "item": "gran diamante",
+      "title": "Las joyas del salón",
+      "symbol": 5
+    },
+    "materials": "polished platinum, diamond facets, sapphire blue enamel"
+  },
+  {
+    "slug": "emerald-fortune",
+    "name": "Emerald Fortune",
+    "tagline": "Tréboles y ollas de oro al final del arcoíris.",
+    "accent": "#4ade80",
+    "secondary": "#fcd34d",
+    "surface": "#071d13",
+    "motif": "botanical",
+    "emblem": "♣",
+    "scene": "shamrock, emerald gems, rainbow, overflowing pot of gold",
+    "symbols": [
+      "Herradura verde",
+      "Pipa dorada",
+      "Arcoíris",
+      "Trébol de esmeralda",
+      "Bolsa de monedas",
+      "Olla de oro",
+      "Emblema WILD",
+      "Sello de giros gratis"
+    ],
+    "artSymbols": "green horseshoe, golden ornamental pipe, rainbow over gold cloud, emerald shamrock, gold coin pouch, overflowing pot of gold",
+    "bonus": {
+      "item": "trébol de esmeralda",
+      "title": "Los tréboles dorados",
+      "symbol": 3
+    },
+    "materials": "emerald enamel, gold Celtic knots, shamrock relief"
+  },
+  {
+    "slug": "neon-nights",
+    "name": "Neon Nights",
+    "tagline": "Sietes y luces en una noche eléctrica de casino.",
+    "accent": "#f472b6",
+    "secondary": "#67e8f9",
+    "surface": "#180c2c",
+    "motif": "celestial",
+    "emblem": "ϟ",
+    "scene": "fictional glamorous casino boulevard, neon pink seven, blue chrome",
+    "symbols": [
+      "Cereza neón",
+      "Campana azul",
+      "Barra neón",
+      "Cóctel violeta",
+      "Ficha eléctrica",
+      "Siete neón",
+      "Emblema WILD",
+      "Sello de giros gratis"
+    ],
+    "artSymbols": "neon pink cherry, electric blue bell, glowing chrome bar without text, purple cocktail, neon casino chip, large magenta neon number seven",
+    "bonus": {
+      "item": "ficha eléctrica",
+      "title": "Las luces de la noche",
+      "symbol": 4
+    },
+    "materials": "purple chrome, hot pink and cyan neon tubes, glossy dark enamel"
+  },
+  {
+    "slug": "jungle-riches",
+    "name": "Jungle Riches",
+    "tagline": "Un jaguar protege los tesoros de la selva.",
+    "accent": "#22c55e",
+    "secondary": "#fde047",
+    "surface": "#091a10",
+    "motif": "botanical",
+    "emblem": "❧",
+    "scene": "fierce golden jaguar, emerald jungle, ancient gold treasure idol",
+    "symbols": [
+      "Hoja esmeralda",
+      "Guacamayo",
+      "Rubí selvático",
+      "Ídolo de piedra",
+      "Cofre selvático",
+      "Jaguar dorado",
+      "Emblema WILD",
+      "Sello de giros gratis"
+    ],
+    "artSymbols": "emerald jungle leaf, colorful macaw, jungle ruby gem, stone idol, gold jungle treasure chest, golden jaguar head",
+    "bonus": {
+      "item": "ídolo de piedra",
+      "title": "Los ídolos de la selva",
+      "symbol": 3
+    },
+    "materials": "carved jungle gold, emerald vines, jaguar spot ornaments"
+  },
+  {
+    "slug": "aztec-treasure",
+    "name": "Aztec Treasure",
+    "tagline": "Oro y mosaicos en el templo del sol.",
+    "accent": "#fb923c",
+    "secondary": "#2dd4bf",
+    "surface": "#1d1a0d",
+    "motif": "brass",
+    "emblem": "☼",
+    "scene": "Mesoamerican gold sun mask, turquoise mosaics, stepped temple treasure",
+    "symbols": [
+      "Vasija antigua",
+      "Cuchillo de obsidiana",
+      "Colgante de jade",
+      "Templo escalonado",
+      "Máscara dorada",
+      "Piedra del sol",
+      "Emblema WILD",
+      "Sello de giros gratis"
+    ],
+    "artSymbols": "Mesoamerican pottery vase, ceremonial obsidian blade, jade pendant, stepped stone temple, gold sun mask, carved sun stone medallion",
+    "bonus": {
+      "item": "máscara dorada",
+      "title": "Los sellos del templo",
+      "symbol": 4
+    },
+    "materials": "aged carved gold, turquoise mosaic, stepped geometric stone relief"
+  },
+  {
+    "slug": "desert-wishes",
+    "name": "Desert Wishes",
+    "tagline": "Una lámpara revela los secretos del palacio.",
+    "accent": "#c084fc",
+    "secondary": "#fcd34d",
+    "surface": "#21102e",
+    "motif": "brass",
+    "emblem": "✦",
+    "scene": "gold magic oil lamp, rich purple smoke, sapphire Arabian palace",
+    "symbols": [
+      "Dátiles dorados",
+      "Zapatilla real",
+      "Jarrón de palacio",
+      "Alfombra mágica",
+      "Zafiro del desierto",
+      "Lámpara mágica",
+      "Emblema WILD",
+      "Sello de giros gratis"
+    ],
+    "artSymbols": "golden dates, jeweled royal slipper, ornate palace vase, flying magic carpet, desert sapphire, ornate golden magic oil lamp",
+    "bonus": {
+      "item": "lámpara mágica",
+      "title": "Los deseos del palacio",
+      "symbol": 5
+    },
+    "materials": "Arabian gold filigree, purple enamel, sapphire inlays"
+  },
+  {
+    "slug": "lucky-carnival",
+    "name": "Lucky Carnival",
+    "tagline": "Máscaras y joyas en un carnaval de colores.",
+    "accent": "#e879f9",
+    "secondary": "#5eead4",
+    "surface": "#260d2d",
+    "motif": "lantern",
+    "emblem": "❖",
+    "scene": "glamorous jeweled carnival mask, purple feathers, magenta turquoise gold",
+    "symbols": [
+      "Campana festiva",
+      "Tambor",
+      "Pluma violeta",
+      "Joya de carnaval",
+      "Abanico de plumas",
+      "Máscara de carnaval",
+      "Emblema WILD",
+      "Sello de giros gratis"
+    ],
+    "artSymbols": "gold carnival bell, ceremonial carnival drum, purple feather, turquoise carnival jewel, colorful feather fan, jeweled carnival mask",
+    "bonus": {
+      "item": "máscara de carnaval",
+      "title": "Las máscaras de la suerte",
+      "symbol": 5
+    },
+    "materials": "magenta enamel, turquoise jewels, sculpted gold feather scrolls"
+  },
+  {
+    "slug": "midnight-lounge",
+    "name": "Midnight Lounge",
+    "tagline": "Ónix, fichas y elegancia Art Déco.",
+    "accent": "#d4af37",
+    "secondary": "#fef3c7",
+    "surface": "#101017",
+    "motif": "brass",
+    "emblem": "♠",
+    "scene": "Art Deco gold panther ornament, black onyx, champagne gold casino",
+    "symbols": [
+      "Cóctel dorado",
+      "Dados de ónix",
+      "Fichas del salón",
+      "As de medianoche",
+      "Reloj Art Déco",
+      "Pantera dorada",
+      "Emblema WILD",
+      "Sello de giros gratis"
+    ],
+    "artSymbols": "champagne gold cocktail, black onyx dice, gold black casino chips, elegant ace playing card, Art Deco clock, stylized gold panther sculpture",
+    "bonus": {
+      "item": "fichas del salón",
+      "title": "Los secretos de medianoche",
+      "symbol": 2
+    },
+    "materials": "black onyx, champagne gold Art Deco geometric sunbursts"
+  },
+  {
+    "slug": "ruby-queen",
+    "name": "Ruby Queen",
+    "tagline": "La reina custodia una colección de rubíes.",
+    "accent": "#f43f5e",
+    "secondary": "#e9d5ff",
+    "surface": "#260d23",
+    "motif": "brass",
+    "emblem": "♛",
+    "scene": "original regal ruby queen, ruby crown, purple velvet, royal gold",
+    "symbols": [
+      "Rosa rubí",
+      "Copa real",
+      "Anillo rubí",
+      "Cetro dorado",
+      "Corona de rubíes",
+      "Reina rubí",
+      "Emblema WILD",
+      "Sello de giros gratis"
+    ],
+    "artSymbols": "ruby rose, royal gold goblet, ruby ring, golden royal scepter, ruby jeweled crown, original regal queen bust with ruby crown",
+    "bonus": {
+      "item": "corona de rubíes",
+      "title": "Las joyas de la reina",
+      "symbol": 4
+    },
+    "materials": "royal gold, ruby cabochons, purple velvet enamel, crown ornaments"
+  },
+  {
+    "slug": "buffalo-thunder",
+    "name": "Buffalo Thunder",
+    "tagline": "La fuerza del bisonte bajo una tormenta del desierto.",
+    "accent": "#fb923c",
+    "secondary": "#c4b5fd",
+    "surface": "#211424",
+    "motif": "ember",
+    "emblem": "ϟ",
+    "scene": "majestic bison, lightning, red desert mesas, copper and violet storm",
+    "symbols": [
+      "Pluma del desierto",
+      "Herradura de cobre",
+      "Cristal ámbar",
+      "Rayo violeta",
+      "Águila de tormenta",
+      "Bisonte",
+      "Emblema WILD",
+      "Sello de giros gratis"
+    ],
+    "artSymbols": "desert feather, copper horseshoe, amber crystal, violet lightning bolt, storm eagle, majestic bison head",
+    "bonus": {
+      "item": "cristal ámbar",
+      "title": "Las piedras de la tormenta",
+      "symbol": 2
+    },
+    "materials": "burnished copper, amber, desert stone, carved bison horn curves"
+  }
+]

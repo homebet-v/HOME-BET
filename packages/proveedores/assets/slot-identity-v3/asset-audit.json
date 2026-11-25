@@ -1,0 +1,122 @@
+[
+  {
+    "slug": "jardin-de-luces",
+    "cover": "/images/slots/jardin-de-luces/identity-v3/cover.webp",
+    "controls": "apps/web/public/images/slots/jardin-de-luces/identity-v3",
+    "verified": true
+  },
+  {
+    "slug": "puerto-ambar",
+    "cover": "/images/slots/puerto-ambar/identity-v3/cover.webp",
+    "controls": "apps/web/public/images/slots/puerto-ambar/identity-v3",
+    "verified": true
+  },
+  {
+    "slug": "taller-de-cometas",
+    "cover": "/images/slots/taller-de-cometas/identity-v3/cover.webp",
+    "controls": "apps/web/public/images/slots/taller-de-cometas/identity-v3",
+    "verified": true
+  },
+  {
+    "slug": "biblioteca-lunar",
+    "cover": "/images/slots/biblioteca-lunar/identity-v3/cover.webp",
+    "controls": "apps/web/public/images/slots/biblioteca-lunar/identity-v3",
+    "verified": true
+  },
+  {
+    "slug": "aurora-glacial",
+    "cover": "/images/slots/aurora-glacial/identity-v3/cover.webp",
+    "controls": "apps/web/public/images/slots/aurora-glacial/identity-v3",
+    "verified": true
+  },
+  {
+    "slug": "oraculo-coral",
+    "cover": "/images/slots/oraculo-coral/identity-v3/cover.webp",
+    "controls": "apps/web/public/images/slots/oraculo-coral/skin-v2",
+    "verified": true
+  },
+  {
+    "slug": "caravana-solar",
+    "cover": "/images/slots/caravana-solar/identity-v3/cover.webp",
+    "controls": "apps/web/public/images/slots/caravana-solar/identity-v3",
+    "verified": true
+  },
+  {
+    "slug": "mercado-de-nubes",
+    "cover": "/images/slots/mercado-de-nubes/identity-v3/cover.webp",
+    "controls": "apps/web/public/images/slots/mercado-de-nubes/identity-v3",
+    "verified": true
+  },
+  {
+    "slug": "bosque-micelio",
+    "cover": "/images/slots/bosque-micelio/identity-v3/cover.webp",
+    "controls": "apps/web/public/images/slots/bosque-micelio/identity-v3",
+    "verified": true
+  },
+  {
+    "slug": "volcan-obsidiana",
+    "cover": "/images/slots/volcan-obsidiana/identity-v3/cover.webp",
+    "controls": "apps/web/public/images/slots/volcan-obsidiana/identity-v3",
+    "verified": true
+  },
+  {
+    "slug": "tren-constelaciones",
+    "cover": "/images/slots/tren-constelaciones/identity-v3/cover.webp",
+    "controls": "apps/web/public/images/slots/tren-constelaciones/identity-v3",
+    "verified": true
+  },
+  {
+    "slug": "reino-origami",
+    "cover": "/images/slots/reino-origami/identity-v3/cover.webp",
+    "controls": "apps/web/public/images/slots/reino-origami/identity-v3",
+    "verified": true
+  },
+  {
+    "slug": "laboratorio-nectar",
+    "cover": "/images/slots/laboratorio-nectar/identity-v3/cover.webp",
+    "controls": "apps/web/public/images/slots/laboratorio-nectar/identity-v3",
+    "verified": true
+  },
+  {
+    "slug": "catedral-cristal",
+    "cover": "/images/slots/catedral-cristal/identity-v3/cover.webp",
+    "controls": "apps/web/public/images/slots/catedral-cristal/identity-v3",
+    "verified": true
+  },
+  {
+    "slug": "festival-faroles",
+    "cover": "/images/slots/festival-faroles/identity-v3/cover.webp",
+    "controls": "apps/web/public/images/slots/festival-faroles/identity-v3",
+    "verified": true
+  },
+  {
+    "slug": "guardian-jade",
+    "cover": "/images/slots/guardian-jade/identity-v3/cover.webp",
+    "controls": "apps/web/public/images/slots/guardian-jade/identity-v3",
+    "verified": true
+  },
+  {
+    "slug": "islas-magneticas",
+    "cover": "/images/slots/islas-magneticas/identity-v3/cover.webp",
+    "controls": "apps/web/public/images/slots/islas-magneticas/identity-v3",
+    "verified": true
+  },
+  {
+    "slug": "oasis-de-cobre",
+    "cover": "/images/slots/oasis-de-cobre/identity-v3/cover.webp",
+    "controls": "apps/web/public/images/slots/oasis-de-cobre/identity-v3",
+    "verified": true
+  },
+  {
+    "slug": "jardin-relojes",
+    "cover": "/images/slots/jardin-relojes/identity-v3/cover.webp",
+    "controls": "apps/web/public/images/slots/jardin-relojes/identity-v3",
+    "verified": true
+  },
+  {
+    "slug": "archivo-abisal",
+    "cover": "/images/slots/archivo-abisal/identity-v3/cover.webp",
+    "controls": "apps/web/public/images/slots/archivo-abisal/identity-v3",
+    "verified": true
+  }
+]

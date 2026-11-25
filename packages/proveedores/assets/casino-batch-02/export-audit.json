@@ -1,0 +1,19 @@
+{
+  "audit": [
+    {
+      "slug": "dragon-fortune",
+      "kind": "symbols",
+      "file": "apps/web/public/images/slots/dragon-fortune/symbols-transparent-v2.webp",
+      "width": 1536,
+      "height": 192
+    },
+    {
+      "slug": "lucky-carnival",
+      "kind": "symbols",
+      "file": "apps/web/public/images/slots/lucky-carnival/symbols-transparent-v2.webp",
+      "width": 1536,
+      "height": 192
+    }
+  ],
+  "errors": []
+}

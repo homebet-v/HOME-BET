@@ -1,0 +1,33 @@
+{
+  "sources": 10,
+  "files": [
+    "apps/web/public/images/roulette/coral-palace/undo-v2.webp",
+    "apps/web/public/images/roulette/coral-palace/spin-v2.webp",
+    "apps/web/public/images/roulette/coral-palace/repeat-v2.webp",
+    "apps/web/public/images/roulette/coral-palace/chip-0-v2.webp",
+    "apps/web/public/images/roulette/coral-palace/chip-1-v2.webp",
+    "apps/web/public/images/roulette/coral-palace/chip-2-v2.webp",
+    "apps/web/public/images/roulette/coral-palace/chip-3-v2.webp",
+    "apps/web/public/images/roulette/coral-palace/cover.webp",
+    "apps/web/public/images/roulette/coral-palace/scene.webp",
+    "apps/web/public/images/roulette/cyber-wheel/undo-v2.webp",
+    "apps/web/public/images/roulette/cyber-wheel/spin-v2.webp",
+    "apps/web/public/images/roulette/cyber-wheel/repeat-v2.webp",
+    "apps/web/public/images/roulette/cyber-wheel/chip-0-v2.webp",
+    "apps/web/public/images/roulette/cyber-wheel/chip-1-v2.webp",
+    "apps/web/public/images/roulette/cyber-wheel/chip-2-v2.webp",
+    "apps/web/public/images/roulette/cyber-wheel/chip-3-v2.webp",
+    "apps/web/public/images/roulette/cyber-wheel/cover.webp",
+    "apps/web/public/images/roulette/cyber-wheel/scene.webp",
+    "apps/web/public/images/roulette/neon-vegas/undo-v2.webp",
+    "apps/web/public/images/roulette/neon-vegas/spin-v2.webp",
+    "apps/web/public/images/roulette/neon-vegas/repeat-v2.webp",
+    "apps/web/public/images/roulette/neon-vegas/chip-0-v2.webp",
+    "apps/web/public/images/roulette/neon-vegas/chip-1-v2.webp",
+    "apps/web/public/images/roulette/neon-vegas/chip-2-v2.webp",
+    "apps/web/public/images/roulette/neon-vegas/chip-3-v2.webp",
+    "apps/web/public/images/roulette/neon-vegas/cover.webp",
+    "apps/web/public/images/roulette/neon-vegas/scene.webp",
+    "apps/web/public/images/roulette/royal-gold/cover.webp"
+  ]
+}

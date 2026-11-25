@@ -1,0 +1,16 @@
+/* Decorative award art uses a reserved row, preserving the fixed 80% card size. */
+.slot-prize-overlay .slot-prize-card.has-prize-art { grid-template-rows: 29% 8% 10% minmax(0, 1fr) 18%; }
+.slot-prize-card.has-prize-art .slot-prize-decoration { display: none; }
+.slot-prize-badge { position: relative; display: flex; align-items: center; justify-content: center; min-height: 0; height: 100%; padding-top: 6px; }
+.slot-prize-badge > span { display: block; width: 34cqh; max-width: 48%; height: 100%; background-size: contain; background-position: center; background-repeat: no-repeat; filter: drop-shadow(0 0 8px color-mix(in srgb, var(--slot-accent) 25%, transparent)); animation: slot-prize-badge-appear 450ms ease-out both; }
+.slot-prize-badge > i { position: absolute; width: 4cqh; height: 4cqh; max-width: 14px; max-height: 14px; background: var(--slot-secondary); clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%); opacity: 0.65; }
+.slot-prize-badge > i:first-child { left: 22%; top: 45%; }
+.slot-prize-badge > i:last-child { right: 22%; top: 25%; transform: scale(0.65); }
+.slot-prize-overlay .has-prize-art .slot-prize-game { align-self: center; }
+.slot-prize-overlay .has-prize-art .slot-prize-total .slot-prize-number { font-size: min(22cqh, calc(125cqw / var(--prize-characters))); }
+@keyframes slot-prize-badge-appear { from { opacity: 0; transform: translateY(6px) scale(0.8); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .slot-prize-badge > span { animation: none; } }
+
+/* A native button covers the card, supporting touch, mouse and keyboard. */
+.slot-prize-card .slot-prize-dismiss { position: absolute; inset: 0; z-index: 2; width: 100%; height: 100%; padding: 0; border: 0; border-radius: inherit; background: transparent; cursor: pointer; pointer-events: auto; touch-action: manipulation; }
+.slot-prize-card .slot-prize-dismiss:focus-visible { outline: 3px solid var(--slot-secondary); outline-offset: -5px; }
