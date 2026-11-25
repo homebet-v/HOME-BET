@@ -20,7 +20,11 @@ function hostnameOf(hostHeader: string): string {
   return trimmed.split(":")[0] ?? trimmed;
 }
 
-export function resolveHost(hostHeader: string, rootDomain = "localhost"): Surface {
+export function resolveHost(
+  hostHeader: string,
+  rootDomain = "localhost",
+  homeAliases: readonly (string | undefined)[] = [],
+): Surface {
   const hostname = hostnameOf(hostHeader);
   const root = rootDomain.trim().toLowerCase().replace(/\.$/, "") || "localhost";
 
@@ -30,7 +34,8 @@ export function resolveHost(hostHeader: string, rootDomain = "localhost"): Surfa
     hostname === "::1" ||
     hostname === root ||
     hostname === `www.${root}` ||
-    hostname === `home.${root}`
+    hostname === `home.${root}` ||
+    (hostname.endsWith(".vercel.app") && homeAliases.includes(hostname))
   ) {
     return { kind: "home", slug: null };
   }

@@ -23,6 +23,14 @@ test("a house slug opens the player site and the sibling admin host", () => {
   });
 });
 
+test("Vercel aliases open Home on exact matches", () => {
+  const aliases = ["home-7j7mmlhwj-homebet.vercel.app", "home.vercel.app", undefined, "bet1.homebet.com"];
+  assert.deepEqual(resolveHost("home-7j7mmlhwj-homebet.vercel.app", "homebet.com", aliases), { kind: "home", slug: null });
+  assert.deepEqual(resolveHost("home.vercel.app", "homebet.com", aliases), { kind: "home", slug: null });
+  assert.deepEqual(resolveHost("other.vercel.app", "homebet.com", aliases), { kind: "unknown", slug: null });
+  assert.deepEqual(resolveHost("bet1.homebet.com", "homebet.com", aliases), { kind: "casa", slug: "bet1" });
+});
+
 test("nested hosts, reserved labels and foreign domains stay unknown", () => {
   assert.deepEqual(resolveHost("admin.bet1.localhost"), { kind: "unknown", slug: null });
   assert.deepEqual(resolveHost("api.localhost"), { kind: "unknown", slug: null });

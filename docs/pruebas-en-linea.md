@@ -7,7 +7,7 @@
 3. En **Settings → Domains**, agregá `ejemplo.com` y `*.ejemplo.com` al mismo proyecto. Para el wildcard, configurá los nameservers que indica Vercel. Si el dominio ya tiene correo u otros servicios, trasladá sus registros DNS antes de cambiar los nameservers.
 4. Cuando Vercel confirme DNS y HTTPS, ejecutá `bash scripts/check-staging.sh ejemplo.com` desde la raíz. La prueba usa `curl` y `rg`. Verifica el ápice, Home, los paneles y las casas de Krakenbet y Kairobet, la redirección de una ruta interna y una ruta inexistente. Para probar el mismo enrutamiento en local, iniciá la app con `npm run dev` y pasá `localhost` como dominio.
 
-Los hosts de prueba son `home.ejemplo.com`, `krakenbet.ejemplo.com`, `krakenbet-admin.ejemplo.com`, `kairobet.ejemplo.com` y `kairobet-admin.ejemplo.com`. El comodín cubre todos esos nombres. El alias automático `*.vercel.app` muestra la pantalla de host desconocido si está fuera del dominio configurado.
+Los hosts de prueba son `home.ejemplo.com`, `krakenbet.ejemplo.com`, `krakenbet-admin.ejemplo.com`, `kairobet.ejemplo.com` y `kairobet-admin.ejemplo.com`. El comodín cubre todos esos nombres. La URL de Vercel compartida para la prueba abre Home en los despliegues que incluyan este cambio. Las URLs nuevas que Vercel facilite mediante `VERCEL_URL` o `VERCEL_PROJECT_PRODUCTION_URL` también abren Home si terminan en `.vercel.app`. Usá el dominio propio para probar las casas y sus paneles.
 
 Las pantallas, usuarios, fichas y operaciones de esta etapa usan datos de demostración. Usá solamente datos ficticios durante la prueba, incluidos los formularios de cuenta y de cargas.
 
