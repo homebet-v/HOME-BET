@@ -13,7 +13,7 @@ import type { CatalogGame } from "@/lib/fixtures";
 import { providers } from "@/lib/fixtures";
 import { palettes, type Appearance } from "@/lib/appearance";
 
-const animatedBannerQuery = "(min-width: 768px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)";
+const animatedBannerQuery = "(prefers-reduced-motion: no-preference)";
 
 function subscribeToBannerPreference(onChange: () => void) {
   const query = window.matchMedia(animatedBannerQuery);

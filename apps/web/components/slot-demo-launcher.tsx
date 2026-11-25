@@ -26,7 +26,7 @@ export function SlotDemoLauncher({ game, duplicate = false, label = "Probar con 
   }
   return <>
     {!hideTrigger && <button type="button" tabIndex={duplicate ? -1 : undefined} onPointerDown={prepare} onClick={() => { prepare(); setOpen(true); }} className={className || "mt-3 w-full rounded-lg border border-amber-300/25 bg-amber-300/10 px-3 py-2.5 text-xs font-bold text-amber-100 hover:bg-amber-300/20"}>{label}</button>}
-    {open && <dialog ref={dialog} aria-label={`Demo de ${game.name}`} onCancel={(event) => { if (event.target !== event.currentTarget) return; event.preventDefault(); setOpen(false); }} className="slot-demo-dialog fixed inset-0 m-auto h-dvh max-h-dvh w-screen max-w-4xl overflow-y-auto rounded-none sm:h-[calc(100dvh-24px)] sm:max-h-[calc(100dvh-24px)] sm:w-[calc(100vw-24px)] sm:rounded-2xl border border-white/15 bg-[#070a13] p-0 text-white shadow-2xl backdrop:bg-black/85"><SlotPlayer game={game} onExit={() => setOpen(false)} /></dialog>}
+    {open && <dialog ref={dialog} aria-label={`Demo de ${game.name}`} onCancel={(event) => { if (event.target !== event.currentTarget) return; event.preventDefault(); setOpen(false); }} className="slot-demo-dialog fixed inset-0 m-auto h-dvh max-h-dvh w-screen max-w-4xl overflow-y-auto rounded-none sm:h-[calc(100dvh-24px)] sm:max-h-[calc(100dvh-24px)] sm:w-[calc(100vw-24px)] border border-white/15 bg-[#070a13] p-0 text-white shadow-2xl backdrop:bg-black/85"><SlotPlayer game={game} onExit={() => setOpen(false)} /></dialog>}
   </>;
 }
 

@@ -33,6 +33,10 @@ function SymbolTile({ game, symbol, className = "" }: { game: SlotGame; symbol: 
 
 type ReelMotion = { id: number; from: readonly number[]; to: readonly number[]; speed: number; reduced: boolean; compact: boolean };
 
+function reelDuration(column: number, speed: number) {
+  return (1000 + column * 200) / speed;
+}
+
 function SlotReel({ game, column, columns, rows, grid, motion, winningCells, onStop }: {
   game: SlotGame; column: number; columns: number; rows: number; grid: readonly number[]; motion: ReelMotion | null; winningCells: Set<number>; onStop: (cue: "stop", column: number, roundId: number) => void;
 }) {
@@ -51,13 +55,19 @@ function SlotReel({ game, column, columns, rows, grid, motion, winningCells, onS
   // This also starts a new spin on its first frame, without flashing its result.
   useLayoutEffect(() => {
     if (!motion || motion.reduced || !track.current) return;
-    const animation = track.current.animate([
+    const keyframes = motion.compact ? [
+      { transform: "translate3d(0, 0, 0)", offset: 0, easing: "cubic-bezier(0.45, 0, 0.7, 0.65)" },
+      { transform: `translate3d(0, ${offset * 0.1}%, 0)`, offset: 0.15 },
+      { transform: `translate3d(0, ${offset * 0.74}%, 0)`, offset: 0.6, easing: "cubic-bezier(0.2, 0.45, 0.45, 1)" },
+      { transform: `translate3d(0, ${offset}%, 0)`, offset: 1 },
+    ] : [
       { transform: "translateY(0)", offset: 0 },
       { transform: `translateY(${offset - 6 / symbols.length}%)`, offset: 0.92 },
       { transform: `translateY(${offset}%)`, offset: 1 },
-    ], {
-      duration: (1000 + column * 200) / motion.speed,
-      easing: "cubic-bezier(0.16, 0.65, 0.28, 1)",
+    ];
+    const animation = track.current.animate(keyframes, {
+      duration: reelDuration(column, motion.speed),
+      easing: motion.compact ? "linear" : "cubic-bezier(0.16, 0.65, 0.28, 1)",
       fill: "forwards",
     });
     animation.onfinish = () => onStop("stop", column, motion.id);
@@ -103,10 +113,13 @@ export default function SlotPlayer({ game, onExit }: { game: SlotGame; onExit?: 
   const [spinning, setSpinning] = useState(false);
   const [reelMotion, setReelMotion] = useState<ReelMotion | null>(null);
   const spinLock = useRef(false);
-  const [ready, setReady] = useState(false);
   const [loaded, setLoaded] = useState(0);
   const [loadError, setLoadError] = useState(false);
   const [retry, setRetry] = useState(0);
+  const [elapsedAttempt, setElapsedAttempt] = useState<number | null>(null);
+  const assetsLoaded = loaded === preloadSources.length;
+  const ready = !loadError && assetsLoaded && elapsedAttempt === retry;
+  const loadPercent = Math.round(loaded * 100 / preloadSources.length);
   const [message, setMessage] = useState("");
   const [rulesOpen, setRulesOpen] = useState(false);
   const [autoOpen, setAutoOpen] = useState(false);
@@ -131,7 +144,17 @@ export default function SlotPlayer({ game, onExit }: { game: SlotGame; onExit?: 
 
   useSlotViewport(player, ready, controlLayout, sound, autoOpen, rulesOpen, engine.columns / engine.rows);
 
+  useLayoutEffect(() => {
+    if (!reelMotion || !finishSpin.current) return;
+    // Start the fallback once the reels are mounted so rendering time cannot cut the spin short.
+    const delay = reelMotion.reduced ? 100 : reelDuration(columnCount - 1, reelMotion.speed) + 300;
+    const fallback = setTimeout(finishSpin.current, delay);
+    timer.current = fallback;
+    return () => clearTimeout(fallback);
+  }, [columnCount, reelMotion]);
+
   useEffect(() => {
+    const minimumLoadTime = window.setTimeout(() => setElapsedAttempt(retry), 1500);
     let alive = true;
     let count = 0;
     for (const src of preloadSources) {
@@ -140,7 +163,10 @@ export default function SlotPlayer({ game, onExit }: { game: SlotGame; onExit?: 
         () => { if (alive) setLoadError(true); },
       );
     }
-    return () => { alive = false; };
+    return () => {
+      alive = false;
+      window.clearTimeout(minimumLoadTime);
+    };
   }, [preloadSources, retry]);
   const linePreviewRound = !spinning && session.lastRound?.wins.length ? session.lastRound.id : null;
   useEffect(() => {
@@ -218,9 +244,6 @@ export default function SlotPlayer({ game, onExit }: { game: SlotGame; onExit?: 
         }
       };
       finishSpin.current = complete;
-      // Normal completion comes from the three animation finish events.
-      // The timer only handles reduced motion or a missing browser event.
-      timer.current = setTimeout(complete, reduced ? 100 : Math.ceil((1000 + (engine.columns - 1) * 200) / speed) + 100);
     } catch (error) { finishSpin.current = null; if (timer.current) clearTimeout(timer.current); timer.current = null; spinLock.current = false; setSpinning(false); setReelMotion(null); setMessage((error as Error).message); stopAuto(); }
   }, [ready, bet, rtp, speed, stopAuto, playCue, bonusReveal, betOpen, theme.bonus.title, engine, initialGrid]);
   useEffect(() => {
@@ -282,7 +305,37 @@ export default function SlotPlayer({ game, onExit }: { game: SlotGame; onExit?: 
     <img src={sceneArt} alt="" className="slot-scene-image pointer-events-none absolute inset-0 -z-20 h-full w-full object-cover opacity-25" />
     <div className="slot-scene-shade pointer-events-none absolute inset-0 -z-10 bg-gradient-to-b from-[#070a13]/10 via-[#070a13]/65 to-[#070a13]" />
     <header className="slot-theme-header flex items-center justify-between gap-3 border-b border-white/10 bg-black/25 px-4 py-3"><div className="min-w-0"><p className="text-[9px] font-semibold uppercase tracking-[0.25em] text-amber-200">{isPolished ? `Lumen Studio${engine.columns === 5 ? ` · ${engine.edition} · ${engine.columns}×${engine.rows}` : ""}` : "Lumen Studio · 3 × 3"}</p></div><div className="flex shrink-0 items-center gap-2"><span className="slot-demo-badge rounded-full border border-amber-300/20 bg-amber-300/10 px-2 py-1 text-[9px] font-bold text-amber-200">DEMO</span>{isPolished && <><button type="button" className="slot-lumen-header-button" aria-label={sound ? "Silenciar sonido" : "Activar sonido"} aria-pressed={sound} onClick={() => setSound(!sound)}><SkinSoundGlyph sound={sound} /></button><button type="button" className="slot-lumen-header-button" aria-label="Abrir reglas y premios" aria-expanded={rulesOpen} onClick={() => setRulesOpen(!rulesOpen)}>i</button></>}{onExit && <button type="button" aria-label="Salir del juego" onClick={() => { stopAuto(); onExit(); }} className={buttonClass}>×</button>}</div></header>
-    {!ready ? <div className="relative flex min-h-[440px] flex-1 flex-col items-center justify-center gap-5 p-6 text-center"><img src={game.loading} alt={game.name} className="absolute inset-0 -z-10 h-full w-full object-cover opacity-40" /><img src={game.icon} alt="" className="size-24 rounded-3xl border border-white/20 object-cover shadow-2xl" /><h2 className="text-3xl font-black">{game.name}</h2><p className="max-w-sm text-sm leading-6 text-slate-200">{game.tagline}</p><div className="h-1.5 w-48 overflow-hidden rounded-full bg-white/10"><div className="h-full rounded-full transition-[width]" style={{ width: `${loaded * 100 / preloadSources.length}%`, background: game.accent }} /></div>{loadError ? <><p role="alert" className="text-xs text-red-200">No se pudieron cargar los gráficos.</p><button className={buttonClass} onClick={() => { setLoaded(0); setLoadError(false); setRetry((value) => value + 1); }}>Reintentar carga</button></> : <button disabled={loaded < preloadSources.length} onClick={() => setReady(true)} className="rounded-full px-8 py-3 text-sm font-black text-black disabled:opacity-40" style={{ background: game.accent }}>{loaded < preloadSources.length ? "Cargando recursos…" : "Entrar con 10.000 fichas demo"}</button>}<p className="max-w-sm text-[10px] leading-5 text-slate-300">Sin dinero real. Las fichas y la sesión se reinician al cerrar. RTP teórico: {(rtp / 100).toFixed(2)}%.</p></div> : <>
+    {!ready ? (
+      <div className="flex min-h-72 flex-1 items-center justify-center bg-gradient-to-b from-black/25 via-black/70 to-black/45 px-6 py-8">
+        <div className="w-full max-w-64 text-center">
+          <h2 className="mb-5 text-xl font-bold text-white drop-shadow-md">{game.name}</h2>
+          <div className="mb-2 flex items-center justify-between gap-2 text-xs font-medium text-white">
+            <span>{loadError ? "Carga interrumpida" : assetsLoaded ? "Preparando juego" : "Cargando juego"}</span>
+            <span aria-hidden="true" className="tabular-nums">{loadPercent}%</span>
+          </div>
+          <div
+            className="h-2.5 overflow-hidden rounded-full border border-white/30 bg-black/65"
+            role="progressbar"
+            aria-label="Carga del juego"
+            aria-valuenow={loadPercent}
+          >
+            <div
+              className="h-full rounded-full transition-[width] duration-200 ease-out motion-reduce:transition-none"
+              style={{
+                width: `${loadPercent}%`,
+                background: `linear-gradient(90deg, ${visual.accent}, ${visual.secondary})`,
+              }}
+            />
+          </div>
+          {loadError && (
+            <div className="mt-4 space-y-3">
+              <p role="alert" className="text-xs text-red-200">No se pudieron cargar los gráficos.</p>
+              <button className={buttonClass} onClick={() => { setLoaded(0); setLoadError(false); setRetry((value) => value + 1); }}>Reintentar carga</button>
+            </div>
+          )}
+        </div>
+      </div>
+    ) : <>
       <div className="game-entry slot-play-area mx-auto w-full max-w-xl flex-1 space-y-3 px-3 py-4 sm:px-6">
           <div className="slot-balance-strip slot-stats-panel">
             <div className="slot-saldo-stat"><span>{isPolished ? "Saldo demo" : "Fichas demo"}</span><strong>{chips(session.balanceCents)}</strong></div>

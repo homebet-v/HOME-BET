@@ -714,7 +714,12 @@
   animation: prism-mark-number var(--prism-reveal-step) steps(1, end) var(--boost-delay) both;
 }
 
+.rg-player[data-variant="prism"] .rg-wheel-stage:has(> .rg-prize) {
+  z-index: 6;
+}
+
 .rg-player[data-variant="prism"] .rg-prize {
+  z-index: 6;
   container-type: inline-size;
   width: min(92%, 390px);
   height: auto;
