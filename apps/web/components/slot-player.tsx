@@ -5,7 +5,8 @@ import { BETS, FREE_SPINS_AWARD, MULTIPLIERS, effectiveRtp, newSession, settleBo
 import { slotThemes, defaultSlotTheme, type SlotGame } from "@homebet/proveedores/catalog";
 import { slotEngineProfile } from "@/lib/slot-engine-profile";
 import { SlotEditionRules } from "./slot-edition-rules";
-import { slotVisualProfile } from "@/lib/slot-visual-profile";
+import { preloadGameImage } from "@/lib/preload-game-image";
+import { slotStartupImages, slotVisualProfile } from "@/lib/slot-visual-profile";
 import { SkinRoundMetrics, SkinSoundGlyph, SkinSpinGlyph } from "./slot-skin-parts";
 import { SlotGameTitle } from "./slot-game-title";
 import { useSlotViewport } from "@/lib/use-slot-viewport";
@@ -82,12 +83,12 @@ export default function SlotPlayer({ game, onExit }: { game: SlotGame; onExit?: 
   const PAYLINES = engine.paylines;
   const initialGrid = engine.initialGrid;
   const player = useRef<HTMLDivElement>(null);
-  const visual = slotVisualProfile(game, theme);
+  const visual = useMemo(() => slotVisualProfile(game, theme), [game, theme]);
   const titleArt = visual.title, buttonArt = visual.button, spinArt = visual.spin, chipArt = visual.chip;
   const sceneArt = visual.scene;
   const isPolished = visual.premium;
   const prizeBadges = visual.prizeBadges;
-  const preloadSources = useMemo(() => [...new Set([sceneArt, game.sprite, buttonArt, spinArt, chipArt, titleArt, ...prizeBadges])], [sceneArt, game.sprite, buttonArt, spinArt, chipArt, titleArt, prizeBadges]);
+  const preloadSources = useMemo(() => slotStartupImages(game, visual), [game, visual]);
   const controlLayout = useGameSlotLayout(game.slug);
   const settings = useSlotSettings();
   const rtp = effectiveRtp(settings, game.slug);
@@ -133,14 +134,13 @@ export default function SlotPlayer({ game, onExit }: { game: SlotGame; onExit?: 
   useEffect(() => {
     let alive = true;
     let count = 0;
-    const images = preloadSources.map((src) => {
-      const image = new Image();
-      image.onload = () => { if (alive) setLoaded(++count); };
-      image.onerror = () => { if (alive) setLoadError(true); };
-      image.src = src;
-      return image;
-    });
-    return () => { alive = false; images.forEach((image) => { image.onload = null; image.onerror = null; }); };
+    for (const src of preloadSources) {
+      void preloadGameImage(src).then(
+        () => { if (alive) setLoaded(++count); },
+        () => { if (alive) setLoadError(true); },
+      );
+    }
+    return () => { alive = false; };
   }, [preloadSources, retry]);
   const linePreviewRound = !spinning && session.lastRound?.wins.length ? session.lastRound.id : null;
   useEffect(() => {

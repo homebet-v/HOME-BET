@@ -33,3 +33,10 @@ export function slotVisualProfile(game: Pick<SlotGame, "slug" | "accent" | "them
     chip: `${directory}/chip.webp`,
   };
 }
+
+export function slotStartupImages(game: SlotGame, visual: ReturnType<typeof slotVisualProfile>) {
+  return [...new Set([
+    visual.scene, game.sprite, game.banner, visual.button, visual.spin,
+    visual.chip, visual.title, ...visual.prizeBadges,
+  ])];
+}
