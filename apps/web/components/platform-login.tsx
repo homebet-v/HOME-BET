@@ -67,10 +67,18 @@ export function PlatformLogin({ player = false }: { player?: boolean }) {
   </form>;
 }
 
-export function SignOut() {
+export function SignOut({ sidebar }: { sidebar?: "expanded" | "compact" } = {}) {
   const router = useRouter();
-  return <button type="button" className="rounded-lg border border-white/15 px-3 py-2" onClick={async () => {
+  const className = sidebar
+    ? `flex min-h-10 w-full items-center rounded-lg text-xs font-medium text-slate-300 hover:bg-white/5 hover:text-white focus-visible:outline-2 focus-visible:outline-sky-300 ${sidebar === "compact" ? "justify-center" : "gap-3 px-3"}`
+    : "rounded-lg border border-white/15 px-3 py-2";
+  return <button type="button" className={className} title={sidebar === "compact" ? "Cerrar sesión" : undefined} onClick={async () => {
     await endSession();
     router.refresh();
-  }}>Cerrar sesión</button>;
+  }}>
+    {sidebar && <svg className="size-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M10 17l5-5-5-5m5 5H3m10-8h6a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-6" />
+    </svg>}
+    <span className={sidebar === "compact" ? "sr-only" : undefined}>Cerrar sesión</span>
+  </button>;
 }

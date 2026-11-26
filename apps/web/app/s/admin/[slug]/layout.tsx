@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense, type ReactNode } from "react";
 import { AdminShell } from "@/components/admin-shell";
-import { SignOut } from "@/components/platform-login";
 import { PlatformPanelLogin } from "@/components/platform-panel-login";
 import { adminSession } from "@/lib/platform";
 
@@ -11,10 +10,7 @@ async function AuthorizedAdmin({ params, children }: { params: Promise<{ slug: s
   const { slug } = await params;
   const authorized = await adminSession(slug);
   if (!authorized) return <PlatformPanelLogin title="Ingresar al panel de la casa" />;
-  return <AdminShell name={authorized.casino.name}>
-    <div className="mb-4 flex justify-end"><SignOut /></div>
-    {children}
-  </AdminShell>;
+  return <AdminShell name={authorized.casino.name}>{children}</AdminShell>;
 }
 
 export default function AdminLayout({ children, params }: { children: ReactNode; params: Promise<{ slug: string }> }) {
