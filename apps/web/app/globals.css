@@ -312,6 +312,15 @@ html::-webkit-scrollbar-button {
   height: 2px;
 }
 
+@keyframes house-load {
+  0% { transform: translateX(-120%); }
+  100% { transform: translateX(320%); }
+}
+.house-load-bar {
+  width: 38%;
+  animation: house-load 1.15s ease-in-out infinite;
+}
+
 .casino-scenery {
   --casino-glow: color-mix(in srgb, var(--casino-accent, #2dd4bf) 20%, transparent);
   background-image:

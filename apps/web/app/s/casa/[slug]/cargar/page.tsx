@@ -21,7 +21,7 @@ export default function LoadPage({ params }: { params: Promise<{ slug: string }>
         account.session.auth,
       ),
     ]);
-    return <section className="mx-auto max-w-lg space-y-4 p-4">
+    return <section className="mx-auto max-w-lg space-y-4 p-4 text-white">
       <h1 className="text-xl font-semibold">Cargar fichas</h1>
       <HouseSubmissionForm action={submitDeposit} label="Enviar comprobante" rememberRequest>
         <label className="grid gap-1 text-sm">Monto en fichas<input name="amount" inputMode="decimal" className={field} required /></label>

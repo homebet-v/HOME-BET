@@ -1,0 +1,20 @@
+.load-chip-shine {
+  position: absolute;
+  top: -40%;
+  bottom: -40%;
+  left: 0;
+  width: 28%;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgba(244, 247, 251, 0.2) 28%, #f4f7fb 50%, rgba(244, 247, 251, 0.2) 72%, transparent);
+  transform: translateX(-180%) skewX(-18deg);
+  animation: load-chip-shine 4.8s ease-in-out infinite;
+}
+
+@keyframes load-chip-shine {
+  0%, 18% { transform: translateX(-180%) skewX(-18deg); }
+  62%, 100% { transform: translateX(460%) skewX(-18deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .load-chip-shine { animation: none; opacity: 0; }
+}

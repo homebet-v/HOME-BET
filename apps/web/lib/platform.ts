@@ -7,7 +7,7 @@ import { sessionCookie, supabaseConfigured, supabaseRequest } from "./supabase";
 export type Casino = { id: string; slug: string; name: string; status: "active" | "suspended" };
 export type Profile = {
   id: string; casino_id: string | null; role: "player" | "casino_admin" | "superadmin";
-  display_name: string | null; created_at: string; verified_at: string | null;
+  display_name: string | null; identity_number: string | null; created_at: string; verified_at: string | null;
 };
 type Entry = { id: string; amount_cents: number; kind: LedgerKind; created_at: string };
 
@@ -30,7 +30,7 @@ export const platformSession = cache(async () => {
     throw error;
   }
   const [profile] = await supabaseRequest<Profile[]>(
-    `/rest/v1/profiles?select=id,casino_id,role,display_name,created_at,verified_at&id=eq.${user.id}`, auth,
+    `/rest/v1/profiles?select=id,casino_id,role,display_name,identity_number,created_at,verified_at&id=eq.${user.id}`, auth,
   );
   return profile ? { auth, profile } : null;
 });

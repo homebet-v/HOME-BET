@@ -19,7 +19,7 @@ export function HouseGate({
   children: (slug: string) => ReactNode | Promise<ReactNode>;
 }) {
   return (
-    <Suspense fallback={<p className="text-sm text-zinc-500">Cargando la casa…</p>}>
+    <Suspense fallback={null}>
       <ReadSlug params={params}>{children}</ReadSlug>
     </Suspense>
   );

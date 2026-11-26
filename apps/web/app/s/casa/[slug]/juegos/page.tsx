@@ -9,23 +9,9 @@ async function Games({ slug }: { slug: string }) {
 
   const games = house.status === "suspended" ? [] : await publicHouseCatalog(slug);
 
-  return (
-    <div className="flex flex-col gap-8" data-screen="casa-juegos">
-      <section className="flex flex-col gap-2">
-        <h1 className="text-xl font-semibold">Juegos</h1>
-        <p className="max-w-xl text-sm leading-6 text-zinc-400">
-          {house.status === "suspended"
-            ? "La casa está suspendida y no muestra juegos."
-            : "Solo aparecen los juegos que esta casa tiene activos."}
-        </p>
-      </section>
-      {games.length === 0 ? (
-        <p className="text-sm text-zinc-400">No hay juegos activos.</p>
-      ) : (
-        <GameCatalog games={games} />
-      )}
-    </div>
-  );
+  return <div className="casino-catalog-scenery px-4 pt-4 sm:px-5" data-screen="casa-juegos">
+    {house.status === "suspended" ? <p className="text-sm text-zinc-400">La casa está suspendida y no muestra juegos.</p> : games.length === 0 ? <p className="text-sm text-zinc-400">No hay juegos activos.</p> : <GameCatalog games={games} />}
+  </div>;
 }
 
 export default function CasaGamesPage({ params }: { params: Promise<{ slug: string }> }) {

@@ -11,7 +11,7 @@ export default function WalletPage({ params }: { params: Promise<{ slug: string 
   return <HouseGate params={params}>{async (slug) => {
     const wallet = await playerLedger(slug);
     if (!wallet) return <Link href="/cuenta">Ingresá para ver tu saldo</Link>;
-    return <section className="space-y-4 p-4">
+    return <section className="mx-auto max-w-lg space-y-4 p-4 text-white">
       <h1 className="text-xl font-bold">Saldo</h1>
       <WalletBreakdown totalCents={wallet.balanceCents} withdrawableCents={wallet.withdrawableCents} />
       <h2 className="font-semibold">Últimos movimientos</h2>

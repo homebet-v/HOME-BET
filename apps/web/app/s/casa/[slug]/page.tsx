@@ -11,7 +11,7 @@ async function Lobby({ slug }: { slug: string }) {
   const games = await publicHouseCatalog(slug);
   const suspended = house.status === "suspended";
 
-  return suspended ? <p className="text-sm text-zinc-400">Esta casa está suspendida.</p> : <CasinoLobby appearance={defaultAppearance(house.name)} games={games} />;
+  return suspended ? <p className="text-sm text-zinc-400">Esta casa está suspendida.</p> : <CasinoLobby appearance={defaultAppearance(house.name)} games={games} framed={false} />;
 
 }
 

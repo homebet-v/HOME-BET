@@ -1,13 +1,10 @@
 "use client";
 
 import { useEffect, useRef, type CSSProperties } from "react";
-import Link from "next/link";
-import { PlatformLogin, SignOut } from "@/components/platform-login";
-import { usePlayerSession } from "@/components/player-session";
+import { PlatformLogin } from "@/components/platform-login";
 import { palettes, type Appearance } from "@/lib/appearance";
 
 export function PlayerAccess({ appearance, open, onClose }: { appearance: Appearance; open: boolean; onClose: () => void }) {
-  const account = usePlayerSession();
   const dialog = useRef<HTMLDialogElement>(null);
   const palette = palettes[appearance.palette];
 
@@ -36,21 +33,11 @@ export function PlayerAccess({ appearance, open, onClose }: { appearance: Appear
         className="absolute top-2 right-2 grid size-10 place-items-center rounded-full border border-white/20 bg-black/50 text-xl hover:border-[color:var(--access-accent)]">×</button>
       <div className="grid justify-items-center gap-3 text-center">
         {appearance.logoImage && <img src={appearance.logoImage} alt={appearance.brand} className="h-12 w-44 object-contain" />}
-        <h2 id="player-access-title" className="text-xl font-bold">{account ? "Mi cuenta" : appearance.logoImage ? "Acceso de jugadores" : appearance.brand}</h2>
+        <h2 id="player-access-title" className="text-xl font-bold">{appearance.logoImage ? "Acceso de jugadores" : appearance.brand}</h2>
       </div>
     </div>
     <div className="p-5 sm:p-6">
-      {account ? <div className="space-y-4 text-sm">
-        {account.displayName && <p className="break-words">{account.displayName}</p>}
-        {account.balanceCents !== null
-          ? <p className="text-lg font-semibold text-[color:var(--access-accent)]">{new Intl.NumberFormat("es-PY").format(account.balanceCents / 100)} fichas</p>
-          : <p className="text-[color:var(--access-accent)]">Completá la verificación para jugar.</p>}
-        <div className="flex flex-wrap items-center gap-4">
-          {account.verified && <Link href="/saldo" className="underline" onClick={() => dialog.current?.close()}>Ver movimientos</Link>}
-          <Link href="/verificacion" className="underline" onClick={() => dialog.current?.close()}>Datos y verificación</Link>
-        <SignOut />
-        </div>
-      </div> : <PlatformLogin player />}
+      <PlatformLogin player />
     </div>
   </dialog>;
 }
