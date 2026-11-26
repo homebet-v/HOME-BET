@@ -76,7 +76,7 @@ El navegador no escribe `ledger_entries` ni `game_rounds`. Eso lo hace el servid
 
 Roles en `public.profiles`:
 
-- `superadmin`: `casino_id` nulo. Ve y opera todas las casas. Entra por Home.
+- `superadmin`: `casino_id` nulo. Ve y opera todas las casas. Entra por Home y puede iniciar sesión en cualquiera de los paneles de administración.
 - `casino_admin`: una casa. Entra por `{slug}-admin`. No lee otra casa.
 - `player`: una casa. Entra solo por el host de esa casa.
 

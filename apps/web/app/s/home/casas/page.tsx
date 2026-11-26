@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { AssignHouseAdminForm } from "@/components/assign-house-admin-form";
 import { CreateCasinoForm } from "@/components/create-casino-form";
 import { homeCasinos, homeSession } from "@/lib/platform";
 import { surfaceOrigin } from "@/lib/tenant";
@@ -12,6 +13,7 @@ async function Houses() {
   return <section className="space-y-5">
     <h1 className="text-xl font-bold">Casas</h1>
     <CreateCasinoForm />
+    {houses.length > 0 && <AssignHouseAdminForm houses={houses.map(({ id, name }) => ({ id, name }))} />}
     {houses.length ? <ul className="divide-y divide-white/10">
       {houses.map((house) => <li key={house.id} className="flex flex-wrap items-center gap-4 py-3">
         <strong>{house.name}</strong><span>{house.status === "active" ? "Activa" : "Suspendida"}</span>

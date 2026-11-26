@@ -28,7 +28,7 @@ export async function authenticate(form: FormData): Promise<ActionResult> {
 
   try {
     const casino = surface === "admin" || isPlayer ? await casinoBySlug(slug) : null;
-    if ((surface === "admin" || isPlayer) && casino?.status !== "active")
+    if ((surface === "admin" && !casino) || (isPlayer && casino?.status !== "active"))
       return { ok: false, message: "Esta casa no está disponible." };
 
     // Auth accepts email/password. Use a stable internal identifier scoped to the house.
@@ -41,22 +41,30 @@ export async function authenticate(form: FormData): Promise<ActionResult> {
         return { ok: false, message: "Revisá la confirmación de la contraseña." };
       const name = String(form.get("name") ?? "").trim();
       if (name.length < 2 || name.length > 80) return { ok: false, message: "Ingresá tu nombre." };
+      // Check the deployed schema before creating an Auth account.
+      await supabaseRequest("/rest/v1/profiles?select=verified_at&limit=0", "service");
       await supabaseRequest("/auth/v1/admin/users", "service", {
         email, password, email_confirm: true,
         app_metadata: { player_casino_slug: slug },
         user_metadata: { display_name: name },
       });
+      return { ok: true, message: "Cuenta creada. El administrador de la casa debe verificarla antes de que puedas ingresar." };
     }
     const session = await supabaseRequest<Session & { user: { id: string } }>(
       "/auth/v1/token?grant_type=password", "public", { email, password },
     );
-    const [profile] = await supabaseRequest<{ role: string; casino_id: string | null }[]>(
-      `/rest/v1/profiles?select=role,casino_id&id=eq.${session.user.id}`, { token: session.access_token },
+    const [profile] = await supabaseRequest<{ role: string; casino_id: string | null; verified_at?: string | null }[]>(
+      `/rest/v1/profiles?select=role,casino_id${isPlayer ? ",verified_at" : ""}&id=eq.${session.user.id}`, { token: session.access_token },
     );
     const allowed = surface === "home" ? profile?.role === "superadmin"
-      : surface === "admin" ? profile?.role === "casino_admin" && profile.casino_id === casino?.id
+      : surface === "admin" ? profile?.role === "superadmin" || (profile?.role === "casino_admin" && profile.casino_id === casino?.id)
       : surface === "casa" && profile?.role === "player" && profile.casino_id === casino?.id;
-    if (!allowed) return { ok: false, message: "La cuenta no tiene acceso a esta dirección." };
+    if (!allowed || (isPlayer && !profile?.verified_at)) {
+      await supabaseRequest("/auth/v1/logout?scope=local", { token: session.access_token }, {}).catch(() => {});
+      return { ok: false, message: isPlayer && (!profile || allowed)
+        ? "Tu cuenta está pendiente de verificación. Contactá al administrador de la casa."
+        : "La cuenta no tiene acceso a esta dirección." };
+    }
     const jar = await cookies();
     const options = sessionCookieOptions(request.get("host") ?? "");
     for (const [key, value] of Object.entries(sessionValues(session))) jar.set(key, value, options);
@@ -84,7 +92,7 @@ export async function creditChips(form: FormData): Promise<ActionResult> {
   const amount = String(form.get("amount") ?? "");
   const playerId = String(form.get("playerId") ?? "");
   const reference = String(form.get("reference") ?? "");
-  if (!account || account.session.profile.role !== "casino_admin" || account.casino.status !== "active")
+  if (!account || account.casino.status !== "active")
     return { ok: false, message: "Acceso denegado." };
   if (!/^\d{1,7}(?:[.,]\d{1,2})?$/.test(amount) ||
     !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(reference) ||
@@ -139,8 +147,55 @@ export async function setHouseGame(form: FormData) {
   const account = await adminSession(slug);
   if (account?.casino.status !== "active") return;
   await supabaseRequest("/rest/v1/rpc/set_house_game", account.session.auth, {
-    target_game: String(form.get("game") ?? ""), target_enabled: form.get("enabled") === "true",
+    target_casino: account.casino.id, target_game: String(form.get("game") ?? ""), target_enabled: form.get("enabled") === "true",
   });
   revalidatePath(`/s/admin/${slug}/juegos`);
   revalidatePath(`/s/casa/${slug}`, "layout");
+}
+
+export async function verifyPlayer(form: FormData) {
+  const request = await headers();
+  const slug = request.get("x-homebet-slug") ?? "";
+  if (request.get("x-homebet-surface") !== "admin" || !slug) return;
+  const account = await adminSession(slug);
+  const playerId = String(form.get("playerId") ?? "");
+  if (account?.casino.status !== "active" || !/^[0-9a-f-]{36}$/i.test(playerId)) return;
+  await supabaseRequest("/rest/v1/rpc/verify_house_player", account.session.auth, { target_casino: account.casino.id, target_player: playerId });
+  revalidatePath(`/s/admin/${slug}/registros`);
+  revalidatePath(`/s/admin/${slug}/jugadores`);
+}
+
+export async function assignHouseAdmin(form: FormData): Promise<ActionResult> {
+  const request = await headers();
+  const session = await homeSession();
+  if (request.get("x-homebet-surface") !== "home" || !session)
+    return { ok: false, message: "Acceso denegado." };
+
+  const casinoId = String(form.get("casino") ?? "");
+  const email = String(form.get("email") ?? "").trim().toLowerCase();
+  const password = String(form.get("password") ?? "");
+  if (!/^[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i.test(casinoId) ||
+    email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ||
+    (password && (password.length < 8 || password.length > 72)))
+    return { ok: false, message: "Revisá la casa, el correo y la contraseña." };
+
+  const assign = () => supabaseRequest<"assigned" | "user_not_found" | "house_not_found" | "role_conflict">(
+    "/rest/v1/rpc/assign_house_admin", session.auth, { target_casino: casinoId, admin_email: email },
+  );
+
+  try {
+    let result = await assign();
+    if (result === "user_not_found" && password) {
+      await supabaseRequest("/auth/v1/admin/users", "service", { email, password, email_confirm: true });
+      result = await assign();
+    }
+    if (result === "assigned") return { ok: true, message: "Administrador asignado. Ya puede ingresar al panel de esta casa." };
+    if (result === "user_not_found")
+      return { ok: false, message: "Ese correo todavía no tiene cuenta. Ingresá una contraseña inicial para crearla." };
+    if (result === "role_conflict")
+      return { ok: false, message: "La cuenta ya tiene otro rol o pertenece a otra casa. Usá otro correo." };
+    return { ok: false, message: "La casa seleccionada ya no está disponible." };
+  } catch {
+    return { ok: false, message: "No se pudo asignar el administrador. Verificá el correo y volvé a intentar." };
+  }
 }

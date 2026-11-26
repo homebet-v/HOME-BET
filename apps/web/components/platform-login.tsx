@@ -12,14 +12,20 @@ export function PlatformLogin({ player = false }: { player?: boolean }) {
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const form = new FormData(event.currentTarget);
+    const element = event.currentTarget;
+    const form = new FormData(element);
     form.set("mode", register ? "register" : "login");
     setPending(true);
     setMessage("");
     try {
       const result = await authenticate(form);
       setMessage(result.message);
-      if (result.ok) router.refresh();
+      if (result.ok && register) {
+        element.reset();
+        setRegister(false);
+      } else if (result.ok) {
+        router.refresh();
+      }
     } catch {
       setMessage("No se pudo conectar. Volvé a intentar.");
     } finally {

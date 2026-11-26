@@ -51,17 +51,9 @@ En Supabase Auth, habilitá el proveedor correo para el acceso de Home y adminis
    ```
 
 2. Entrá en Home con esa cuenta. Creá cada casa en **Casas**. Para conservar las identidades existentes, usá sus nombres y slugs previstos, por ejemplo **Kairobet** con `kairobet` y **Krakenbet** con `krakenbet`.
-3. Creá en Auth una cuenta independiente para el administrador de cada casa. Vinculala al UUID de la casa en SQL Editor.
-
-   ```sql
-   insert into public.profiles (id, role, casino_id)
-   select 'UUID_DEL_USUARIO_ADMIN', 'casino_admin', id
-   from public.casinos
-   where slug = 'SLUG_DE_LA_CASA';
-   ```
-
+3. En **Home → Casas → Asignar administrador**, elegí la casa y escribí el correo del administrador. Si el correo todavía no tiene cuenta, completá la contraseña inicial. Si ya tiene cuenta, dejá ese campo vacío. El administrador asignado ingresa en el host de su panel. El superadmin puede ingresar con su propia cuenta en cualquiera de esos paneles.
 4. Desde **Catálogo** en Home, publicá la biblioteca de juegos incluida. En **Juegos** del panel de cada casa, activá los que quieras mostrar a sus jugadores.
-5. Registrá un jugador con su CI desde el portal de la casa. La sesión se abre al finalizar el registro. En el panel de la misma casa, usá **Cargas** para acreditar fichas. En el portal, verificá saldo y movimiento. Probá también que un usuario de la otra casa no pueda entrar con esa cuenta ni leer el movimiento.
+5. Registrá un jugador con su CI desde el portal de la casa. En el panel de la misma casa, revisá la cuenta en **Registros** y aprobala después de verificarla. El jugador ya puede iniciar sesión con su CI. En el panel de la misma casa, usá **Cargas** para acreditar fichas. En el portal, verificá saldo y movimiento. Probá también que un usuario de la otra casa no pueda entrar con esa cuenta ni leer el movimiento.
 
 Los saldos nuevos empiezan en cero y se calculan a partir del historial de fichas. Los juegos siguen funcionando con fichas de prueba separadas de la cuenta. Las rondas con saldo de cuenta, los retiros y la revisión de comprobantes aún requieren flujos propios.
 

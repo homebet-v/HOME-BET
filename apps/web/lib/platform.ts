@@ -6,7 +6,7 @@ import { sessionCookie, supabaseConfigured, supabaseRequest } from "./supabase";
 export type Casino = { id: string; slug: string; name: string; status: "active" | "suspended" };
 export type Profile = {
   id: string; casino_id: string | null; role: "player" | "casino_admin" | "superadmin";
-  display_name: string | null; created_at: string;
+  display_name: string | null; created_at: string; verified_at: string | null;
 };
 type Entry = { id: string; amount_cents: number; kind: "stake" | "win" | "adjustment"; created_at: string };
 
@@ -29,24 +29,24 @@ export const platformSession = cache(async () => {
     throw error;
   }
   const [profile] = await supabaseRequest<Profile[]>(
-    `/rest/v1/profiles?select=id,casino_id,role,display_name,created_at&id=eq.${user.id}`, auth,
+    `/rest/v1/profiles?select=id,casino_id,role,display_name,created_at,verified_at&id=eq.${user.id}`, auth,
   );
   return profile ? { auth, profile } : null;
 });
 
 export async function playerAccount(slug: string) {
   const [casino, session] = await Promise.all([casinoBySlug(slug), platformSession()]);
-  if (casino?.status !== "active" || session?.profile.role !== "player" || session.profile.casino_id !== casino.id) return null;
+  if (casino?.status !== "active" || session?.profile.role !== "player" || !session.profile.verified_at || session.profile.casino_id !== casino.id) return null;
   const balanceCents = await supabaseRequest<number>("/rest/v1/rpc/player_chip_balance", session.auth, {});
   return { displayName: session.profile.display_name, balanceCents, casino, session };
 }
 
 export async function housePlayers(slug: string) {
-  const [casino, session] = await Promise.all([casinoBySlug(slug), platformSession()]);
-  if (!casino || !session || !(session.profile.role === "superadmin" ||
-    (session.profile.role === "casino_admin" && session.profile.casino_id === casino.id))) return null;
+  const account = await adminSession(slug);
+  if (!account) return null;
+  const { casino, session } = account;
   const players = await supabaseRequest<Profile[]>(
-    `/rest/v1/profiles?select=id,casino_id,role,display_name,created_at&casino_id=eq.${casino.id}&role=eq.player&order=created_at.desc&limit=100`,
+    `/rest/v1/profiles?select=id,casino_id,role,display_name,created_at,verified_at&casino_id=eq.${casino.id}&role=eq.player&order=created_at.desc&limit=100`,
     session.auth,
   );
   return { casino, players, session };
@@ -69,7 +69,8 @@ export const homeSession = cache(async () => {
 
 export const adminSession = cache(async (slug: string) => {
   const [casino, session] = await Promise.all([casinoBySlug(slug), platformSession()]);
-  return casino && session?.profile.role === "casino_admin" && session.profile.casino_id === casino.id
+  return casino && session && (session.profile.role === "superadmin" ||
+    (session.profile.role === "casino_admin" && session.profile.casino_id === casino.id))
     ? { casino, session }
     : null;
 });
