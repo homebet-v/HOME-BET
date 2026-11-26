@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 
-export function CopyIdentity({ value }: { value: string }) {
+export function CopyIdentity({ value, label = "CI" }: { value: string; label?: string }) {
   const [copied, setCopied] = useState(false);
 
-  return <button type="button" aria-label={copied ? "CI copiado" : "Copiar CI"} className="inline-flex size-5 shrink-0 items-center justify-center rounded text-slate-400 hover:text-white" onClick={async () => {
+  return <button type="button" aria-label={copied ? `${label} copiado` : `Copiar ${label}`} className="inline-flex size-5 shrink-0 items-center justify-center rounded text-slate-400 hover:text-white" onClick={async () => {
     try {
       await navigator.clipboard.writeText(value);
       setCopied(true);

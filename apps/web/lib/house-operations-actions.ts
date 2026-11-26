@@ -3,8 +3,9 @@
 import { randomUUID } from "node:crypto";
 import { headers } from "next/headers";
 import { revalidatePath } from "next/cache";
+import { depositAccountFields } from "./deposit-account";
 import { parseDepositAmount } from "./deposits";
-import { withdrawalDestination, withdrawalRequestCents } from "./withdrawals";
+import { withdrawalPayout, withdrawalRequestCents } from "./withdrawals";
 import { playerIdentitySession, type PlayerMovement } from "./house-operations";
 import { adminSession, playerAccount } from "./platform";
 import { signedHouseDocument, supabaseRequest, uploadHouseDocument } from "./supabase";
@@ -137,6 +138,33 @@ export async function submitIdentity(form: FormData) {
   }
 }
 
+export async function saveDepositAccount(form: FormData) {
+  const account = await adminAccount();
+  if (!account || account.casino.status !== "active") return { ok: false, message: "Esta casa no puede guardar la cuenta de cargas." };
+  try {
+    const fields = depositAccountFields({
+      holder: String(form.get("holder") ?? ""),
+      identity: String(form.get("identity") ?? ""),
+      alias: String(form.get("alias") ?? ""),
+      bank: String(form.get("bank") ?? ""),
+    });
+    await supabaseRequest("/rest/v1/rpc/save_house_deposit_account", "service", {
+      target_casino: account.casino.id,
+      actor_id: account.session.profile.id,
+      holder: fields.holderName,
+      identity: fields.identityNumber,
+      payout_alias: fields.alias,
+      bank: fields.bankName,
+    });
+    revalidatePath(`/s/admin/${account.casino.slug}/cuentas`);
+    revalidatePath(`/s/casa/${account.casino.slug}/cargar`);
+    return { ok: true, message: "Cuenta guardada. Los jugadores ya la ven al cargar." };
+  } catch (error) {
+    if (error instanceof Error && !error.message.startsWith("Supabase")) return { ok: false, message: error.message };
+    return { ok: false, message: "No se pudo guardar la cuenta." };
+  }
+}
+
 export async function submitDeposit(form: FormData) {
   const slug = await surfaceSlug("casa");
   const account = slug ? await playerAccount(slug) : null;
@@ -181,19 +209,54 @@ export async function submitWithdrawal(form: FormData) {
     );
     const same = open.find((row) => row.id === id);
     if (open.some((row) => row.id !== id)) return { ok: false, message: "Ya tenés un retiro en revisión." };
-    const destination = withdrawalDestination(String(form.get("destination") ?? ""));
+    const payout = withdrawalPayout({
+      method: String(form.get("method") ?? ""),
+      alias: String(form.get("alias") ?? ""),
+      holder: String(form.get("holder") ?? ""),
+      bank: String(form.get("bank") ?? ""),
+      account: String(form.get("account") ?? ""),
+      identity: String(form.get("identity") ?? ""),
+    });
     const amount = withdrawalRequestCents(parseDepositAmount(String(form.get("amount") ?? "")), account.withdrawableCents, 0);
-    if (same) return same.requested_cents === amount && same.destination === destination
+    if (same) return same.requested_cents === amount && same.destination === payout.summary
       ? { ok: true, message: "El retiro ya está registrado." }
       : { ok: false, message: "Esa referencia ya está vinculada a otra solicitud." };
-    await supabaseRequest("/rest/v1/rpc/submit_player_withdrawal", "service", {
+    await supabaseRequest("/rest/v1/rpc/place_player_withdrawal", "service", {
       target_casino: account.casino.id, target_player: account.session.profile.id, target_id: id,
-      requested_amount: amount, payout: destination,
+      requested_amount: amount, payout: payout.summary, payout_method: payout.method,
+      holder: payout.holderName, bank: payout.bankName, account_number: payout.accountNumber, payout_identity: payout.payoutIdentity,
     });
-    return { ok: true, message: "Retiro enviado. La casa lo revisa y confirma el pago." };
+    revalidatePath(`/s/admin/${account.casino.slug}/retiros`);
+    revalidatePath(`/s/casa/${account.casino.slug}`, "layout");
+    return { ok: true, message: "Retiro enviado. Esas fichas ya salieron de tu saldo." };
   } catch (error) {
     if (error instanceof Error && !error.message.startsWith("Supabase")) return { ok: false, message: error.message };
     return { ok: false, message: "No se pudo enviar el retiro. Revisá el monto y los datos de pago." };
+  }
+}
+
+export async function reviewWithdrawal(id: string, decision: "pending" | "reviewing" | "accepted" | "rejected") {
+  const account = await adminAccount();
+  if (!account || account.casino.status !== "active" || !uuid.test(id)) return { ok: false, message: "No se pudo actualizar el retiro." };
+  try {
+    await supabaseRequest("/rest/v1/rpc/review_player_withdrawal", "service", {
+      target_casino: account.casino.id, target_id: id, actor_id: account.session.profile.id, decision,
+    });
+    revalidatePath(`/s/admin/${account.casino.slug}/retiros`);
+    revalidatePath(`/s/casa/${account.casino.slug}`, "layout");
+    const message = decision === "accepted"
+      ? "Pago confirmado."
+      : decision === "rejected"
+        ? "Retiro rechazado. Las fichas volvieron al jugador."
+        : "Estado actualizado.";
+    return { ok: true, message };
+  } catch {
+    const message = decision === "accepted"
+      ? "No se pudo confirmar el pago."
+      : decision === "rejected"
+        ? "No se pudo rechazar el retiro."
+        : "No se pudo actualizar el retiro.";
+    return { ok: false, message };
   }
 }
 

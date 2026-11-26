@@ -37,7 +37,8 @@ export default function WalletPage({ params }: { params: Promise<{ slug: string 
       <h2 className="font-semibold">Últimos movimientos</h2>
       {moves.length ? <ul className="space-y-2">
         {moves.map((move) => {
-          const paid = settled.has(move.status);
+          const reserved = move.label === "Retiro" && (move.status === "Pendiente" || move.status === "En proceso" || move.status === "Pagado");
+          const paid = settled.has(move.status) || reserved;
           const outbound = move.label === "Retiro" || move.label === "Apuesta";
           const amount = `${paid ? (outbound ? "−" : "+") : ""}${display.format(move.cents / 100)} fichas`;
           return <li key={move.id} className="rounded-[6px] border border-white/10 bg-black px-4 py-3 text-sm">
