@@ -23,6 +23,8 @@ export function PlatformLogin({ player = false }: { player?: boolean }) {
       if (result.ok && register) {
         element.reset();
         setRegister(false);
+      } else if (result.ok && result.next) {
+        router.push(result.next);
       } else if (result.ok) {
         router.refresh();
       }

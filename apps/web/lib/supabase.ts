@@ -9,7 +9,7 @@ export function supabaseConfigured() {
     (process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY));
 }
 
-export async function supabaseRequest<T>(path: string, access: Access = "public", body?: object) {
+export async function supabaseRequest<T>(path: string, access: Access = "public", body?: object | Blob) {
   const projectUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = access === "service"
     ? process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY
@@ -18,11 +18,11 @@ export async function supabaseRequest<T>(path: string, access: Access = "public"
   const headers = new Headers({ apikey: key });
   if (typeof access === "object") headers.set("Authorization", `Bearer ${access.token}`);
   if (access === "service" && key.startsWith("eyJ")) headers.set("Authorization", `Bearer ${key}`);
-  if (body !== undefined) headers.set("Content-Type", "application/json");
+  if (body !== undefined) headers.set("Content-Type", body instanceof Blob ? body.type : "application/json");
   const response = await fetch(new URL(path, projectUrl), {
     method: body === undefined ? "GET" : "POST",
     headers,
-    body: body === undefined ? undefined : JSON.stringify(body),
+    body: body instanceof Blob || body === undefined ? body : JSON.stringify(body),
     cache: "no-store",
   });
   if (!response.ok) throw new Error(`Supabase HTTP ${response.status}`);
@@ -46,4 +46,28 @@ export function sessionCookieOptions(host: string) {
     path: "/",
     maxAge: 60 * 60 * 24 * 7,
   };
+}
+
+const documentBucket = "house-documents";
+
+export async function uploadHouseDocument(prefix: string, image: File, limit: number) {
+  const extensions: Record<string, string> = { "image/jpeg": "jpg", "image/png": "png", "image/webp": "webp" };
+  const extension = extensions[image.type];
+  if (!extension || image.size === 0 || image.size > limit) throw new Error("Formato o tamaño de imagen inválido.");
+  const bytes = new Uint8Array(await image.slice(0, 12).arrayBuffer());
+  const valid = extension === "jpg" ? bytes[0] === 255 && bytes[1] === 216 && bytes[2] === 255
+    : extension === "png" ? [137, 80, 78, 71, 13, 10, 26, 10].every((byte, index) => byte === bytes[index])
+    : String.fromCharCode(...bytes.slice(0, 4)) === "RIFF" && String.fromCharCode(...bytes.slice(8, 12)) === "WEBP";
+  if (!valid) throw new Error("La imagen no coincide con el formato declarado.");
+  const path = `${prefix}.${extension}`;
+  await supabaseRequest(`/storage/v1/object/${documentBucket}/${path}`, "service", image);
+  return path;
+}
+
+export async function signedHouseDocument(path: string) {
+  const { signedURL } = await supabaseRequest<{ signedURL: string }>(
+    `/storage/v1/object/sign/${documentBucket}/${path}`, "service", { expiresIn: 120 },
+  );
+  const url = signedURL.startsWith("/storage/v1/") ? signedURL : `/storage/v1${signedURL}`;
+  return new URL(url, process.env.NEXT_PUBLIC_SUPABASE_URL).href;
 }

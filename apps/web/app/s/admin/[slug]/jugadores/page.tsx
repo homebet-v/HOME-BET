@@ -1,5 +1,11 @@
-import { HousePlayerList } from "@/components/house-player-list";
+import { HouseGate } from "@/components/house-gate";
+import { RegistrationReview } from "@/components/registration-review";
+import { housePlayerDirectory } from "@/lib/house-operations";
 
 export default function Page({ params }: { params: Promise<{ slug: string }> }) {
-  return <HousePlayerList params={params} title="Jugadores" />;
+  return <HouseGate params={params}>{async (slug) => {
+    const directory = await housePlayerDirectory(slug);
+    if (!directory) return null;
+    return <RegistrationReview players={directory.players} houseName={directory.casino.name} mode="players" />;
+  }}</HouseGate>;
 }

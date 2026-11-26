@@ -8,7 +8,7 @@ import { isSlug, resolveHost } from "./tenant";
 import { adminSession, casinoBySlug, homeSession, housePlayers } from "./platform";
 import { sessionCookie, sessionCookieOptions, sessionValues, supabaseConfigured, supabaseRequest, type Session } from "./supabase";
 
-type ActionResult = { message: string; ok: boolean };
+type ActionResult = { message: string; ok: boolean; next?: string };
 
 export async function authenticate(form: FormData): Promise<ActionResult> {
   if (!supabaseConfigured()) return { ok: false, message: "El acceso todavía no está configurado." };
@@ -46,9 +46,9 @@ export async function authenticate(form: FormData): Promise<ActionResult> {
       await supabaseRequest("/auth/v1/admin/users", "service", {
         email, password, email_confirm: true,
         app_metadata: { player_casino_slug: slug },
-        user_metadata: { display_name: name },
+        user_metadata: { display_name: name, identity_number: identifier },
       });
-      return { ok: true, message: "Cuenta creada. El administrador de la casa debe verificarla antes de que puedas ingresar." };
+      return { ok: true, message: "Cuenta creada. Ingresá con tu CI para enviar los datos de verificación." };
     }
     const session = await supabaseRequest<Session & { user: { id: string } }>(
       "/auth/v1/token?grant_type=password", "public", { email, password },
@@ -59,16 +59,21 @@ export async function authenticate(form: FormData): Promise<ActionResult> {
     const allowed = surface === "home" ? profile?.role === "superadmin"
       : surface === "admin" ? profile?.role === "superadmin" || (profile?.role === "casino_admin" && profile.casino_id === casino?.id)
       : surface === "casa" && profile?.role === "player" && profile.casino_id === casino?.id;
-    if (!allowed || (isPlayer && !profile?.verified_at)) {
+    if (!allowed) {
       await supabaseRequest("/auth/v1/logout?scope=local", { token: session.access_token }, {}).catch(() => {});
-      return { ok: false, message: isPlayer && (!profile || allowed)
+      return { ok: false, message: isPlayer && !profile
         ? "Tu cuenta está pendiente de verificación. Contactá al administrador de la casa."
         : "La cuenta no tiene acceso a esta dirección." };
     }
     const jar = await cookies();
     const options = sessionCookieOptions(request.get("host") ?? "");
     for (const [key, value] of Object.entries(sessionValues(session))) jar.set(key, value, options);
-    return { ok: true, message: "" };
+    if (isPlayer && casino) {
+      await supabaseRequest("/rest/v1/rpc/record_player_ci", "service", {
+        target_casino: casino.id, target_player: session.user.id, ci: identifier,
+      }).catch(() => {});
+    }
+    return { ok: true, message: "", next: isPlayer && !profile?.verified_at ? "/verificacion" : undefined };
   } catch {
     return { ok: false, message: isPlayer
       ? register ? "No se pudo crear la cuenta. Si ya te registraste, probá ingresar con tu CI."
@@ -151,18 +156,6 @@ export async function setHouseGame(form: FormData) {
   });
   revalidatePath(`/s/admin/${slug}/juegos`);
   revalidatePath(`/s/casa/${slug}`, "layout");
-}
-
-export async function verifyPlayer(form: FormData) {
-  const request = await headers();
-  const slug = request.get("x-homebet-slug") ?? "";
-  if (request.get("x-homebet-surface") !== "admin" || !slug) return;
-  const account = await adminSession(slug);
-  const playerId = String(form.get("playerId") ?? "");
-  if (account?.casino.status !== "active" || !/^[0-9a-f-]{36}$/i.test(playerId)) return;
-  await supabaseRequest("/rest/v1/rpc/verify_house_player", account.session.auth, { target_casino: account.casino.id, target_player: playerId });
-  revalidatePath(`/s/admin/${slug}/registros`);
-  revalidatePath(`/s/admin/${slug}/jugadores`);
 }
 
 export async function assignHouseAdmin(form: FormData): Promise<ActionResult> {

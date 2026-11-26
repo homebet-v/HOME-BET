@@ -53,8 +53,11 @@ En Supabase Auth, habilitá el proveedor correo para el acceso de Home y adminis
 2. Entrá en Home con esa cuenta. Creá cada casa en **Casas**. Para conservar las identidades existentes, usá sus nombres y slugs previstos, por ejemplo **Kairobet** con `kairobet` y **Krakenbet** con `krakenbet`.
 3. En **Home → Casas → Asignar administrador**, elegí la casa y escribí el correo del administrador. Si el correo todavía no tiene cuenta, completá la contraseña inicial. Si ya tiene cuenta, dejá ese campo vacío. El administrador asignado ingresa en el host de su panel. El superadmin puede ingresar con su propia cuenta en cualquiera de esos paneles.
 4. Desde **Catálogo** en Home, publicá la biblioteca de juegos incluida. En **Juegos** del panel de cada casa, activá los que quieras mostrar a sus jugadores.
-5. Registrá un jugador con su CI desde el portal de la casa. En el panel de la misma casa, revisá la cuenta en **Registros** y aprobala después de verificarla. El jugador ya puede iniciar sesión con su CI. En el panel de la misma casa, usá **Cargas** para acreditar fichas. En el portal, verificá saldo y movimiento. Probá también que un usuario de la otra casa no pueda entrar con esa cuenta ni leer el movimiento.
+5. Registrá un jugador con su CI. Ingresá para completar sus datos y subir frente y reverso de CI y selfie. Revisá las imágenes desde **Registros** en el panel de la casa. Después de aprobarlo, el jugador puede entrar al portal completo.
+6. Desde el portal del jugador, enviá una solicitud de carga con comprobante. En **Cargas** del panel se puede revisar, acreditar o rechazar. La acreditación y el cambio de estado se registran en una sola transacción. La acreditación manual sigue disponible como operación aparte.
+7. Probá que un administrador de otra casa no vea la ficha, sus documentos ni la solicitud.
 
-Los saldos nuevos empiezan en cero y se calculan a partir del historial de fichas. Los juegos siguen funcionando con fichas de prueba separadas de la cuenta. Las rondas con saldo de cuenta, los retiros y la revisión de comprobantes aún requieren flujos propios.
+Los saldos empiezan en cero y se calculan a partir del historial real. Los comprobantes y las fotos se guardan en un bucket privado y el panel genera un enlace temporal al abrirlos. El editor de **Cajeros** guarda la configuración. El acceso operativo de cajeros, los retiros y las partidas con saldo de cuenta requieren flujos propios. Los juegos conservan sus fichas de prueba separadas.
+
 
 [Flujo de migraciones de Supabase](https://supabase.com/docs/guides/local-development/cli-workflows) · [Permisos de la Data API](https://supabase.com/docs/guides/api/securing-your-api)

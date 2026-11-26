@@ -1,16 +1,20 @@
-import Link from "next/link";
 import { HouseGate } from "@/components/house-gate";
 import { CreditChipsForm } from "@/components/credit-chips-form";
-import { housePlayers } from "@/lib/platform";
+import { DepositReview } from "@/components/deposit-review";
+import { houseDeposits, housePlayerDirectory } from "@/lib/house-operations";
 
 export default function Page({ params }: { params: Promise<{ slug: string }> }) {
   return <HouseGate params={params}>{async (slug) => {
-    const data = await housePlayers(slug);
-    if (!data) return null;
-    return <section className="space-y-4">
-      <h1 className="text-xl font-bold">Acreditar fichas</h1>
-      {data.players.length ? <CreditChipsForm players={data.players} /> : <p>Las cuentas aparecerán cuando los jugadores se registren en esta casa.</p>}
-      <Link className="text-sm underline" href="/jugadores">Ver jugadores</Link>
-    </section>;
+    const [queue, directory] = await Promise.all([houseDeposits(slug), housePlayerDirectory(slug)]);
+    if (!queue || !directory) return null;
+    const players = directory.players.filter((player) => player.status === "verified")
+      .map((player) => ({ id: player.id, display_name: [player.details.firstName, player.details.lastName].filter(Boolean).join(" ") }));
+    return <div className="space-y-5">
+      <DepositReview casinoId={queue.casino.id} requests={queue.deposits} players={directory.players} reviewer={queue.session.profile.id} />
+      {players.length > 0 && <details className="space-y-4 rounded-xl border border-white/10 p-4">
+        <summary className="cursor-pointer font-semibold">Acreditación manual</summary>
+        <CreditChipsForm players={players} />
+      </details>}
+    </div>;
   }}</HouseGate>;
 }
