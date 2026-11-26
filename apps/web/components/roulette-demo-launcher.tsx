@@ -2,6 +2,8 @@
 
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+import { loadHouseRoulette, playHouseRoulette } from "@/lib/house-play-actions";
 import { preloadGameImage } from "@/lib/preload-game-image";
 import type { RouletteTheme } from "@homebet/proveedores/roulette-catalog";
 
@@ -32,13 +34,21 @@ function prepareRoulette(theme: RouletteTheme) {
   return Promise.allSettled([theme.scene, ...controls].map(preloadGameImage));
 }
 
-export function RouletteDemoLauncher({ theme, duplicate = false }: {
+export function RouletteDemoLauncher({ theme, duplicate = false, house = false }: {
   theme: RouletteTheme;
   duplicate?: boolean;
+  house?: boolean;
 }) {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [assetsReady, setAssetsReady] = useState(false);
+  const [openingBalance, setOpeningBalance] = useState<number | null>(null);
+  const [loadError, setLoadError] = useState("");
   const dialog = useRef<HTMLDialogElement>(null);
+  function close() {
+    setOpen(false);
+    if (house) router.refresh();
+  }
 
   useEffect(() => {
     const modal = dialog.current;
@@ -56,25 +66,40 @@ export function RouletteDemoLauncher({ theme, duplicate = false }: {
     if (!open) return;
     let active = true;
     void prepareRoulette(theme).then(() => { if (active) setAssetsReady(true); });
+    if (house) {
+      setOpeningBalance(null);
+      setLoadError("");
+      void loadHouseRoulette(theme.slug).then((result) => {
+        if (!active) return;
+        if (!result.ok) setLoadError(result.message);
+        else setOpeningBalance(result.state.balanceCents);
+      }).catch(() => { if (active) setLoadError("No se pudo leer el saldo."); });
+    }
     return () => { active = false; };
-  }, [open, theme]);
+  }, [open, theme, house]);
 
   return <>
     <button type="button" tabIndex={duplicate ? -1 : undefined} onPointerDown={() => { void prepareRoulette(theme); }}
       onClick={() => { setAssetsReady(false); setOpen(true); }}
       className="mt-3 w-full rounded-lg border border-amber-300/25 bg-amber-300/10 px-3 py-2.5 text-xs font-bold text-amber-100 hover:bg-amber-300/20">
-      Jugar demo
+      {house ? "Jugar" : "Jugar demo"}
     </button>
-    {open && <dialog ref={dialog} aria-label={`Demo de ${theme.name}`}
+    {open && <dialog ref={dialog} aria-label={house ? theme.name : `Demo de ${theme.name}`}
       onCancel={(event) => {
         if (event.target !== event.currentTarget) return;
         event.preventDefault();
-        setOpen(false);
+        close();
       }}
       className="rg-demo-dialog fixed inset-0 m-auto h-dvh max-h-dvh w-screen max-w-[480px] overflow-y-auto border border-white/15 bg-[#071015] p-0 text-white shadow-2xl backdrop:bg-black/90">
-      {assetsReady
-        ? <RoulettePlayer theme={theme} onExit={() => setOpen(false)} />
-        : <p role="status" className="p-8 text-center text-amber-100">Cargando recursos de la ruleta…</p>}
+      {loadError
+        ? <p role="alert" className="p-8 text-center text-amber-100">{loadError}</p>
+        : assetsReady && (!house || openingBalance !== null)
+        ? <RoulettePlayer theme={theme} openingBalance={house ? openingBalance ?? undefined : undefined} play={house ? async (roundId, bets) => {
+            const result = await playHouseRoulette(theme.slug, roundId, bets);
+            if (!result.ok) throw new Error(result.message);
+            return result.state;
+          } : undefined} onExit={close} />
+        : <p role="status" className="p-8 text-center text-amber-100">{house && assetsReady ? "Cargando tu saldo…" : "Cargando recursos de la ruleta…"}</p>}
     </dialog>}
   </>;
 }

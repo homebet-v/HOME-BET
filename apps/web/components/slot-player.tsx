@@ -1,7 +1,9 @@
 "use client";
 
+import Link from "next/link";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { BETS, FREE_SPINS_AWARD, MULTIPLIERS, effectiveRtp, newSession, settleBonus, type SlotSession } from "@homebet/proveedores/engine";
+import { HOUSE_RTP_BPS, viewToSession, type HouseSlotView } from "@/lib/house-play";
 import { slotThemes, defaultSlotTheme, type SlotGame } from "@homebet/proveedores/catalog";
 import { slotEngineProfile } from "@/lib/slot-engine-profile";
 import { SlotEditionRules } from "./slot-edition-rules";
@@ -86,7 +88,14 @@ function SlotReel({ game, column, columns, rows, grid, motion, winningCells, onS
   </div>;
 }
 
-export default function SlotPlayer({ game, onExit }: { game: SlotGame; onExit?: () => void }) {
+type HouseSlotApi = {
+  load: () => Promise<{ ok: true; state: HouseSlotView } | { ok: false; message: string }>;
+  spin: (roundId: string, betCents: number) => Promise<{ ok: true; state: HouseSlotView } | { ok: false; message: string }>;
+  bonus: (roundId: string) => Promise<{ ok: true; state: HouseSlotView } | { ok: false; message: string }>;
+};
+
+export default function SlotPlayer({ game, onExit, house }: { game: SlotGame; onExit?: () => void; house?: HouseSlotApi }) {
+  const cash = house != null;
   const theme = slotThemes[game.themeSlug ?? game.slug] ?? defaultSlotTheme;
   const engine = slotEngineProfile(game);
   const columnCount = game.engine === "5x3" || game.engine === "5x5" ? 5 : 3;
@@ -102,10 +111,13 @@ export default function SlotPlayer({ game, onExit }: { game: SlotGame; onExit?: 
   const controlLayout = useGameSlotLayout(game.slug);
   const settings = useSlotSettings();
   const rtp = effectiveRtp(settings, game.slug);
-  const [session, setSession] = useState<SlotSession>(() => newSession());
+  const [session, setSession] = useState<SlotSession>(() => newSession(cash ? 0 : undefined));
+  const [houseReady, setHouseReady] = useState(!cash);
+  const [houseError, setHouseError] = useState("");
   const [dismissedPrizeRound, setDismissedPrizeRound] = useState<number | null>(null);
   const [prizeReadyRound, setPrizeReadyRound] = useState<number | null>(null);
   const sessionRef = useRef(session);
+  const visualRound = useRef(0);
   const [bet, setBet] = useState<number>(BETS[2]);
   const [betOpen, setBetOpen] = useState(false);
   const availableBets: readonly number[] = BETS;
@@ -118,7 +130,7 @@ export default function SlotPlayer({ game, onExit }: { game: SlotGame; onExit?: 
   const [retry, setRetry] = useState(0);
   const [elapsedAttempt, setElapsedAttempt] = useState<number | null>(null);
   const assetsLoaded = loaded === preloadSources.length;
-  const ready = !loadError && assetsLoaded && elapsedAttempt === retry;
+  const ready = !loadError && assetsLoaded && elapsedAttempt === retry && houseReady && !houseError;
   const loadPercent = Math.round(loaded * 100 / preloadSources.length);
   const [message, setMessage] = useState("");
   const [rulesOpen, setRulesOpen] = useState(false);
@@ -168,6 +180,25 @@ export default function SlotPlayer({ game, onExit }: { game: SlotGame; onExit?: 
       window.clearTimeout(minimumLoadTime);
     };
   }, [preloadSources, retry]);
+  useEffect(() => {
+    if (!house) return;
+    let alive = true;
+    void house.load().then((result) => {
+      if (!alive) return;
+      if (!result.ok) {
+        setHouseError(result.message);
+        return;
+      }
+      const next = viewToSession(result.state);
+      sessionRef.current = next;
+      visualRound.current = next.rounds;
+      setSession(next);
+      setHouseReady(true);
+    }).catch((error: unknown) => {
+      if (alive) setHouseError(error instanceof Error ? error.message : "No se pudo leer el saldo.");
+    });
+    return () => { alive = false; };
+  }, [house]);
   const linePreviewRound = !spinning && session.lastRound?.wins.length ? session.lastRound.id : null;
   useEffect(() => {
     if (linePreviewRound === null) return;
@@ -205,6 +236,61 @@ export default function SlotPlayer({ game, onExit }: { game: SlotGame; onExit?: 
   }, [playCue, columnCount]);
   const performSpin = useCallback(() => {
     if (spinLock.current || !ready || document.hidden || sessionRef.current.pendingBonus || bonusReveal || betOpen) return;
+    if (house) {
+      spinLock.current = true;
+      setSpinning(true);
+      setDismissedPrizeRound(null);
+      setPrizeReadyRound(null);
+      setMessage("");
+      const roundId = crypto.randomUUID();
+      const previousGrid = sessionRef.current.lastRound?.grid ?? initialGrid;
+      void house.spin(roundId, bet).then((result) => {
+        if (!result.ok) throw new Error(result.message);
+        const localId = ++visualRound.current;
+        const next = viewToSession(result.state, localId);
+        const round = next.lastRound;
+        if (!round) throw new Error("No se pudo leer la jugada.");
+        sessionRef.current = next;
+        setSession((current) => ({ ...current, balanceCents: next.balanceCents - round.payoutCents }));
+        playCue("spin");
+        const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        setReelMotion({ id: localId, from: previousGrid, to: round.grid, speed, reduced, compact: window.matchMedia("(pointer: coarse)").matches });
+        stoppedReels.current.clear();
+        const complete = () => {
+          if (finishSpin.current !== complete) return;
+          finishSpin.current = null;
+          if (timer.current) clearTimeout(timer.current);
+          timer.current = null;
+          spinLock.current = false;
+          setSpinning(false);
+          setReelMotion(null);
+          setSession(next);
+          if (round.kind === "bonus" || round.kind === "free-spins") playCue("bonus");
+          else if (round.payoutCents > 0) playCue("win");
+          setMessage(round.kind === "free-spins" ? "¡Cinco giros gratis! Conservan la apuesta que los activó." : round.kind === "bonus" ? `¡${theme.bonus.title}! Elegí una opción para descubrir tu premio.` : round.payoutCents ? `¡Ganaste ${chips(round.payoutCents)} fichas!` : round.isFree ? `Giro gratis terminado. Quedan ${next.freeSpins}.` : "");
+          if (auto.current.remaining > 0) {
+            auto.current.remaining--;
+            const delta = next.balanceCents - auto.current.start;
+            if (round.kind === "bonus" || round.kind === "free-spins") stopAuto();
+            else if (delta <= -auto.current.loss) stopAuto("Autojuego detenido: alcanzaste el límite de pérdida.");
+            else if (delta >= auto.current.profit) stopAuto("Autojuego detenido: alcanzaste la meta de ganancia.");
+            else if (next.balanceCents < bet && !next.freeSpins) stopAuto("Autojuego detenido: fichas insuficientes.");
+            else setAutoRemaining(auto.current.remaining);
+          }
+        };
+        finishSpin.current = complete;
+      }).catch((error: unknown) => {
+        finishSpin.current = null;
+        if (timer.current) clearTimeout(timer.current);
+        timer.current = null;
+        spinLock.current = false;
+        setSpinning(false);
+        setReelMotion(null);
+        setMessage(error instanceof Error ? error.message : "No se pudo cerrar la jugada.");
+        stopAuto();
+      });
+      return;
+    }
     spinLock.current = true;
     setSpinning(true);
     setDismissedPrizeRound(null);
@@ -245,7 +331,7 @@ export default function SlotPlayer({ game, onExit }: { game: SlotGame; onExit?: 
       };
       finishSpin.current = complete;
     } catch (error) { finishSpin.current = null; if (timer.current) clearTimeout(timer.current); timer.current = null; spinLock.current = false; setSpinning(false); setReelMotion(null); setMessage((error as Error).message); stopAuto(); }
-  }, [ready, bet, rtp, speed, stopAuto, playCue, bonusReveal, betOpen, theme.bonus.title, engine, initialGrid]);
+  }, [ready, bet, rtp, speed, stopAuto, playCue, bonusReveal, betOpen, theme.bonus.title, engine, initialGrid, house]);
   useEffect(() => {
     if (!autoRemaining || spinning || !ready || session.pendingBonus) return;
     const winningRound = session.lastRound?.wins.length ? session.lastRound.id : null;
@@ -263,25 +349,55 @@ export default function SlotPlayer({ game, onExit }: { game: SlotGame; onExit?: 
   function pickBonus(choice: number) {
     if (spinLock.current || bonusReveal || !sessionRef.current.pendingBonus) return;
     spinLock.current = true;
+    const payoutCents = sessionRef.current.pendingBonus.rewardCents;
     setBonusReveal({ choice, phase: "opening", payoutCents: 0 });
     setMessage("Descubriendo tu premio…");
     playCue("spin");
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    bonusTimer.current = setTimeout(() => {
-      bonusTimer.current = null;
-      try {
-        const next = settleBonus(sessionRef.current);
+    const delay = reduced ? 100 : 700;
+    if (!house) {
+      bonusTimer.current = setTimeout(() => {
+        bonusTimer.current = null;
+        try {
+          const next = settleBonus(sessionRef.current);
+          sessionRef.current = next;
+          setSession(next);
+          const paid = next.lastRound!.payoutCents;
+          setBonusReveal({ choice, phase: "revealed", payoutCents: paid });
+          setMessage(`¡Premio descubierto! ${chips(paid)} fichas acreditadas.`);
+          playCue("bonus");
+        } catch (error) {
+          setBonusReveal(null);
+          setMessage((error as Error).message);
+        } finally { spinLock.current = false; }
+      }, delay);
+      return;
+    }
+    const started = Date.now();
+    void house.bonus(crypto.randomUUID()).then((result) => {
+      bonusTimer.current = setTimeout(() => {
+        bonusTimer.current = null;
+        if (!result.ok) {
+          setBonusReveal(null);
+          setMessage(result.message);
+          spinLock.current = false;
+          return;
+        }
+        const localId = ++visualRound.current;
+        const next = viewToSession(result.state, localId);
+        if (!next.lastRound && sessionRef.current.lastRound) next.lastRound = { ...sessionRef.current.lastRound, id: localId, payoutCents };
         sessionRef.current = next;
         setSession(next);
-        const payoutCents = next.lastRound!.payoutCents;
         setBonusReveal({ choice, phase: "revealed", payoutCents });
         setMessage(`¡Premio descubierto! ${chips(payoutCents)} fichas acreditadas.`);
         playCue("bonus");
-      } catch (error) {
-        setBonusReveal(null);
-        setMessage((error as Error).message);
-      } finally { spinLock.current = false; }
-    }, reduced ? 100 : 700);
+        spinLock.current = false;
+      }, Math.max(0, delay - (Date.now() - started)));
+    }).catch((error: unknown) => {
+      setBonusReveal(null);
+      setMessage(error instanceof Error ? error.message : "No se pudo acreditar el premio.");
+      spinLock.current = false;
+    });
   }
   function resetDemo() {
     if (spinLock.current || auto.current.remaining || sessionRef.current.pendingBonus || sessionRef.current.freeSpins || bonusReveal || betOpen) return;
@@ -304,7 +420,7 @@ export default function SlotPlayer({ game, onExit }: { game: SlotGame; onExit?: 
   return <div ref={player} className={`slot-player relative isolate flex min-h-full flex-col overflow-x-clip bg-[#070a13] text-white ${isPolished ? "slot-lumen-skin" : ""}`} data-art-style={game.artStyle ?? "jewel"} data-engine={engine.id} data-motif={theme.motif} data-control-layout={controlLayout} style={{ "--slot-accent": visual.accent, "--slot-secondary": visual.secondary, "--slot-surface": visual.surface } as CSSProperties}>
     <img src={sceneArt} alt="" className="slot-scene-image pointer-events-none absolute inset-0 -z-20 h-full w-full object-cover opacity-25" />
     <div className="slot-scene-shade pointer-events-none absolute inset-0 -z-10 bg-gradient-to-b from-[#070a13]/10 via-[#070a13]/65 to-[#070a13]" />
-    <header className="slot-theme-header flex items-center justify-between gap-3 border-b border-white/10 bg-black/25 px-4 py-3"><div className="min-w-0"><p className="text-[9px] font-semibold uppercase tracking-[0.25em] text-amber-200">{isPolished ? `Lumen Studio${engine.columns === 5 ? ` · ${engine.edition} · ${engine.columns}×${engine.rows}` : ""}` : "Lumen Studio · 3 × 3"}</p></div><div className="flex shrink-0 items-center gap-2"><span className="slot-demo-badge rounded-full border border-amber-300/20 bg-amber-300/10 px-2 py-1 text-[9px] font-bold text-amber-200">DEMO</span>{isPolished && <><button type="button" className="slot-lumen-header-button" aria-label={sound ? "Silenciar sonido" : "Activar sonido"} aria-pressed={sound} onClick={() => setSound(!sound)}><SkinSoundGlyph sound={sound} /></button><button type="button" className="slot-lumen-header-button" aria-label="Abrir reglas y premios" aria-expanded={rulesOpen} onClick={() => setRulesOpen(!rulesOpen)}>i</button></>}{onExit && <button type="button" aria-label="Salir del juego" onClick={() => { stopAuto(); onExit(); }} className={buttonClass}>×</button>}</div></header>
+    <header className="slot-theme-header flex items-center justify-between gap-3 border-b border-white/10 bg-black/25 px-4 py-3"><div className="min-w-0"><p className="text-[9px] font-semibold uppercase tracking-[0.25em] text-amber-200">{isPolished ? `Lumen Studio${engine.columns === 5 ? ` · ${engine.edition} · ${engine.columns}×${engine.rows}` : ""}` : "Lumen Studio · 3 × 3"}</p></div><div className="flex shrink-0 items-center gap-2">{!cash && <span className="slot-demo-badge rounded-full border border-amber-300/20 bg-amber-300/10 px-2 py-1 text-[9px] font-bold text-amber-200">DEMO</span>}{isPolished && <><button type="button" className="slot-lumen-header-button" aria-label={sound ? "Silenciar sonido" : "Activar sonido"} aria-pressed={sound} onClick={() => setSound(!sound)}><SkinSoundGlyph sound={sound} /></button><button type="button" className="slot-lumen-header-button" aria-label="Abrir reglas y premios" aria-expanded={rulesOpen} onClick={() => setRulesOpen(!rulesOpen)}>i</button></>}{onExit && <button type="button" aria-label="Salir del juego" onClick={() => { stopAuto(); onExit(); }} className={buttonClass}>×</button>}</div></header>
     {!ready ? (
       <div className="flex min-h-72 flex-1 items-center justify-center bg-gradient-to-b from-black/25 via-black/70 to-black/45 px-6 py-8">
         <div className="w-full max-w-64 text-center">
@@ -327,10 +443,10 @@ export default function SlotPlayer({ game, onExit }: { game: SlotGame; onExit?: 
               }}
             />
           </div>
-          {loadError && (
+          {(loadError || houseError) && (
             <div className="mt-4 space-y-3">
-              <p role="alert" className="text-xs text-red-200">No se pudieron cargar los gráficos.</p>
-              <button className={buttonClass} onClick={() => { setLoaded(0); setLoadError(false); setRetry((value) => value + 1); }}>Reintentar carga</button>
+              <p role="alert" className="text-xs text-red-200">{houseError || "No se pudieron cargar los gráficos."}</p>
+              {loadError && <button className={buttonClass} onClick={() => { setLoaded(0); setLoadError(false); setRetry((value) => value + 1); }}>Reintentar carga</button>}
             </div>
           )}
         </div>
@@ -338,7 +454,7 @@ export default function SlotPlayer({ game, onExit }: { game: SlotGame; onExit?: 
     ) : <>
       <div className="game-entry slot-play-area mx-auto w-full max-w-xl flex-1 space-y-3 px-3 py-4 sm:px-6">
           <div className="slot-balance-strip slot-stats-panel">
-            <div className="slot-saldo-stat"><span>{isPolished ? "Saldo demo" : "Fichas demo"}</span><strong>{chips(session.balanceCents)}</strong></div>
+            <div className="slot-saldo-stat"><span>{cash ? "Saldo" : isPolished ? "Saldo demo" : "Fichas demo"}</span><strong>{chips(session.balanceCents)}</strong></div>
             <div className="slot-bet-stat"><span>Apuesta total</span><strong>{chips(activeBet)}</strong></div>
             <div className="slot-prize-stat"><span>Último premio</span><strong className="slot-prize-value">{spinning ? "—" : chips(session.lastRound?.payoutCents ?? 0)}</strong></div>
           </div>
@@ -359,10 +475,10 @@ export default function SlotPlayer({ game, onExit }: { game: SlotGame; onExit?: 
         </div>
         {session.freeSpins > 0 && <p className="slot-free-spins slot-grid-notice" role="status"><span>{theme.emblem}</span> {session.freeSpins} giros gratis restantes · apuesta {chips(session.featureBetCents)}</p>}
           {!spinning && wins.length === 0 && message && !session.pendingBonus && !bonusReveal && !session.freeSpins && <p role="status" aria-live="polite" className="slot-grid-notice">{message}</p>}
-          {wins.length > 0 && prizeReadyRound === session.lastRound?.id && dismissedPrizeRound !== session.lastRound?.id && !betOpen && <div className="slot-prize-overlay" style={{ position: "absolute", inset: 0, zIndex: 6, display: "grid", placeItems: "center", pointerEvents: "none" }}><SlotPrizeCard onDismiss={() => { setDismissedPrizeRound(session.lastRound!.id); spinButton.current?.focus({ preventScroll: true }); }} badge={prizeBadges[session.lastRound!.payoutCents >= session.lastRound!.betCents * 20 ? 2 : session.lastRound!.payoutCents >= session.lastRound!.betCents * 5 ? 1 : 0]} key={session.lastRound!.id} game={game} theme={theme} amount={session.lastRound!.payoutCents} format={chips} duration={(autoRemaining ? 350 : 1400) / speed}>
+          {wins.length > 0 && prizeReadyRound === session.lastRound?.id && dismissedPrizeRound !== session.lastRound?.id && !betOpen && <div className="slot-prize-overlay" style={{ position: "absolute", inset: 0, zIndex: 6, display: "grid", placeItems: "center", pointerEvents: "none" }}><SlotPrizeCard onDismiss={() => { setDismissedPrizeRound(session.lastRound!.id); spinButton.current?.focus({ preventScroll: true }); }} badge={prizeBadges[session.lastRound!.payoutCents >= session.lastRound!.betCents * 20 ? 2 : session.lastRound!.payoutCents >= session.lastRound!.betCents * 5 ? 1 : 0]} key={session.lastRound!.id} game={game} theme={theme} amount={session.lastRound!.payoutCents} format={chips} duration={(autoRemaining ? 350 : 1400) / speed} unit={cash ? "fichas" : "fichas demo"}>
           {wins.length > 1 ? <p><strong>{wins.length} líneas ganadoras</strong><small>Líneas {wins.map(win => win.line + 1).join(", ")} · premios sumados</small></p> : wins.map((win) => <p key={win.line}><strong>Línea {win.line + 1} · {engine.columns === 3 ? lineNames[win.line] : `${win.count} consecutivos`}</strong><small>{game.symbols[win.symbol]} · {win.multiplier}× la apuesta{session.lastRound!.grid.some((symbol, index) => symbol === 6 && (win.cells ?? PAYLINES[win.line]).some((cell) => cell === index)) ? " · con WILD" : ""}</small></p>)}
         </SlotPrizeCard></div>}
-        {(session.pendingBonus || bonusReveal) && <div className="slot-bonus-layer"><SlotBonus game={game} theme={theme} reveal={bonusReveal} onPick={pickBonus} onContinue={() => { setBonusReveal(null); requestAnimationFrame(() => { spinButton.current?.focus({ preventScroll: true }); board.current?.scrollIntoView({ block: "start", behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" }); }); }} format={chips} /></div>}
+        {(session.pendingBonus || bonusReveal) && <div className="slot-bonus-layer"><SlotBonus game={game} theme={theme} reveal={bonusReveal} onPick={pickBonus} cash={cash} onContinue={() => { setBonusReveal(null); requestAnimationFrame(() => { spinButton.current?.focus({ preventScroll: true }); board.current?.scrollIntoView({ block: "start", behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" }); }); }} format={chips} /></div>}
           {betOpen && <SlotChipPicker options={availableBets} value={bet} theme={theme} chipArt={chipArt} buttonArt={buttonArt} trigger={betTrigger} format={chips} onClose={() => setBetOpen(false)} onConfirm={(amount) => {
             if (spinLock.current || auto.current.remaining || sessionRef.current.pendingBonus || sessionRef.current.freeSpins || !availableBets.includes(amount)) return;
             setBet(amount);
@@ -393,7 +509,9 @@ export default function SlotPlayer({ game, onExit }: { game: SlotGame; onExit?: 
           </div>
           </>}
         </section>}
-        {!session.balanceCents && !session.freeSpins && !session.pendingBonus && !bonusReveal && <button type="button" className="w-full rounded-xl border border-amber-300/30 p-3 text-sm font-bold text-amber-200" onClick={resetDemo}>Recibir 10.000 fichas demo</button>}
+        {!session.balanceCents && !session.freeSpins && !session.pendingBonus && !bonusReveal && (cash
+          ? <Link href="/cargar" className="block w-full rounded-xl border border-amber-300/30 p-3 text-center text-sm font-bold text-amber-200">No tenés fichas. Cargar</Link>
+          : <button type="button" className="w-full rounded-xl border border-amber-300/30 p-3 text-sm font-bold text-amber-200" onClick={resetDemo}>Recibir 10.000 fichas demo</button>)}
         <div className="slot-control-dock slot-control-dock-theme" inert={betOpen} style={{ "--slot-dock-background": `url("${game.banner}")`, "--slot-button-art": `url("${buttonArt}")`, "--slot-spin-art": `url("${spinArt}")`, "--slot-chip-art": `url("${chipArt}")`, "--slot-dock-art": `url("${game.sprite}")`, "--slot-dock-symbol": `${theme.bonus.symbol * 100 / 7}% 50%` } as CSSProperties}>
           <div className="slot-dock-brand" aria-hidden="true"><span>{theme.emblem}</span><span>{game.name}</span><span className="slot-dock-brand-line" /></div>
           <div className="slot-primary-controls slot-layout-grid">
@@ -409,7 +527,7 @@ export default function SlotPlayer({ game, onExit }: { game: SlotGame; onExit?: 
           {sound && <label className="slot-volume"><span>Volumen</span><input type="range" min="0" max="100" step="5" value={volume} onChange={(event) => setVolume(Number(event.target.value))} aria-label="Volumen del juego" aria-valuetext={`${volume}%`} /><output>{volume}%</output></label>}
         </div>
       </div>
-      <footer className="border-t border-white/10 px-4 py-3 text-center text-[9px] text-slate-500">Solo demostración · Sin apuestas reales · RTP {(rtp / 100).toFixed(2)}% · Motor {`${engine.edition} · ${engine.columns}×${engine.rows}`}</footer>
+      <footer className="border-t border-white/10 px-4 py-3 text-center text-[9px] text-slate-500">{cash ? `Fichas de tu saldo · RTP ${(HOUSE_RTP_BPS / 100).toFixed(2)}%` : `Solo demostración · Sin apuestas reales · RTP ${(rtp / 100).toFixed(2)}%`} · Motor {`${engine.edition} · ${engine.columns}×${engine.rows}`}</footer>
     </>}
   </div>;
 }

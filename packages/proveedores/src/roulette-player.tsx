@@ -7,7 +7,7 @@ import {ChipPicker} from './chip-picker';
 import {rouletteSpinMotion} from './roulette-motion';
 import {PrismBoosts, PRISM_REVEAL_STEP_MS} from './roulette-prism-boosts';
 import {PrismHistory, PRISM_RESULT_FLIGHT_MS, PRISM_RESULT_PAUSE_MS} from './roulette-prism-history';
-import {EUROPEAN_WHEEL,ROULETTE_CHIPS,ROULETTE_SPOTS,ROULETTE_SPOT_BY_ID,newRouletteSession,rouletteColor,rouletteStake,spinRoulette,spinPrismRoulette,PRISM_BASE_PAYOUT,type RouletteBoost,type RouletteBet,type RouletteBetKind,type RouletteSession} from './roulette-engine';
+import {EUROPEAN_WHEEL,ROULETTE_CHIPS,ROULETTE_SPOTS,ROULETTE_SPOT_BY_ID,newRouletteSession,rouletteColor,rouletteStake,spinRoulette,spinPrismRoulette,PRISM_BASE_PAYOUT,type RouletteBoost,type RouletteBet,type RouletteBetKind,type RouletteRound,type RouletteSession} from './roulette-engine';
 import './roulette-player.css';
 import './roulette-royal-skin.css';
 import './roulette-layouts.css';
@@ -74,7 +74,8 @@ function Wheel({ theme, result }: { theme: RouletteTheme; result?: number }) {
 function ActionIcon({kind}:{kind:'undo'|'spin'|'repeat'}){
  return <svg className="rg-action-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round">{kind==='undo'?<path d="M9 5L4 10L9 15M4 10H14C18 10 20 13 20 17"/>:kind==='repeat'?<path d="M20 9A8 8 0 1 0 20 16M16 9H21V4"/>:<path d="M4 7A8 8 0 0 1 18 5L21 8M21 3V8H16M20 17A8 8 0 0 1 6 19L3 16M3 21V16H8"/>}</svg>;
 }
-export default function RoulettePlayer({onExit,theme=defaultRouletteTheme}:{onExit?:()=>void;theme?:RouletteTheme}){
+export default function RoulettePlayer({onExit,theme=defaultRouletteTheme,openingBalance,play}:{onExit?:()=>void;theme?:RouletteTheme;openingBalance?:number;play?:(roundId:string,bets:readonly RouletteBet[])=>Promise<{balanceCents:number;lastRound:RouletteRound}>}){
+ const cash = play != null;
  const isPrism = theme.variant === 'prism';
  const [revealingBoosts, setRevealingBoosts] = useState(false);
  const wheelStage = useRef<HTMLElement>(null);
@@ -82,22 +83,22 @@ export default function RoulettePlayer({onExit,theme=defaultRouletteTheme}:{onEx
  const [view,setView]=useState<'table'|'wheel'>('table');
  const chipTrigger=useRef<HTMLButtonElement>(null);
  const [chipOpen,setChipOpen]=useState(false);
- const [session,setSession]=useState(newRouletteSession);
+ const [session,setSession]=useState(()=>newRouletteSession(openingBalance));
  const [bets,setBets]=useState<RouletteBet[]>([]);const [chip,setChip]=useState<number>(5000);
  const [spinning,setSpinning]=useState(false),[rotation,setRotation]=useState(0),[ballRotation,setBallRotation]=useState(0),[duration,setDuration]=useState(4600),[wheelDuration,setWheelDuration]=useState(4600);
  const [panel,setPanel]=useState<'table'|'rules'|null>(null),[kind,setKind]=useState<RouletteBetKind>('straight'),[chosen,setChosen]=useState('split-1-2');
- const [notice,setNotice]=useState('Elegí una ficha y tocá el tablero.'),[prize,setPrize]=useState(false),[sound,setSound]=useState(false);
+ const [notice,setNotice]=useState(cash && openingBalance === 0 ? 'No tenés fichas. Cargalas desde el panel.' : 'Elegí una ficha y tocá el tablero.'),[prize,setPrize]=useState(false),[sound,setSound]=useState(false);
  const [betFeedback, setBetFeedback] = useState<{ id: string; amount: number; sequence: number } | null>(null);
  const feedbackSequence = useRef(0);
  const feedbackTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
  const prizeTimer=useRef<ReturnType<typeof setTimeout>|null>(null);
- const pending=useRef<RouletteSession|null>(null),timer=useRef<ReturnType<typeof setTimeout>|null>(null),audio=useRef<AudioContext|null>(null),panelRef=useRef<HTMLDialogElement>(null);
+ const pending=useRef<RouletteSession|null>(null),busy=useRef(false),timer=useRef<ReturnType<typeof setTimeout>|null>(null),audio=useRef<AudioContext|null>(null),panelRef=useRef<HTMLDialogElement>(null);
  useEffect(()=>()=>{if(timer.current)clearTimeout(timer.current);if(prizeTimer.current)clearTimeout(prizeTimer.current);if(feedbackTimer.current)clearTimeout(feedbackTimer.current);void audio.current?.close()},[]);
  useEffect(()=>{if(panel)panelRef.current?.showModal();else panelRef.current?.close()},[panel]);
  const stake=rouletteStake(bets);const amounts=new Map<string,number>();for(const b of bets)amounts.set(b.spotId,(amounts.get(b.spotId)??0)+b.amountCents);
  const tone=(frequency:number)=>{if(!sound)return;try{audio.current??=new AudioContext();void audio.current.resume();const oscillator=audio.current.createOscillator(),gain=audio.current.createGain();oscillator.connect(gain);gain.connect(audio.current.destination);oscillator.type=theme.voice;oscillator.frequency.value=frequency*theme.note/440;gain.gain.setValueAtTime(.035,audio.current.currentTime);gain.gain.exponentialRampToValueAtTime(.001,audio.current.currentTime+.15);oscillator.start();oscillator.stop(audio.current.currentTime+.16)}catch{/* Sound is optional. */}};
  const add = (id: string) => {
-  if (pending.current || spinning) return;
+  if (pending.current || spinning || busy.current) return;
   try {
    const next = [...bets, { spotId: id, amountCents: chip }];
    if (rouletteStake(next) > session.balanceCents) throw new Error('Fichas insuficientes para esta apuesta.');
@@ -133,53 +134,72 @@ export default function RoulettePlayer({onExit,theme=defaultRouletteTheme}:{onEx
   }
   tone(result.payoutCents ? 880 : 220);
  };
- const spin = () => {
-  if (pending.current) return;
-  if (prizeTimer.current) clearTimeout(prizeTimer.current);
-  try {
-   const next = isPrism ? spinPrismRoulette(session, bets) : spinRoulette(session, bets);
-   const round = next.lastRound!;
-   const landing = crypto.getRandomValues(new Uint32Array(1))[0] / 0x100000000 * 360;
-   const motion = rouletteSpinMotion(round.number, rotation, ballRotation, landing);
-   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-   const wheelMs = reduced ? 1 : theme.spinsMs;
-   const ballMs = reduced ? 1 : wheelMs + 720;
-
-   pending.current = next;
-   setView('wheel');
-   setSession({ ...session, balanceCents: session.balanceCents - stake });
-   setBets([]);
-   setBetFeedback(null);
-   setPanel(null);
-   setPrize(false);
-   setSpinning(true);
-
-   const startWheel = () => {
-    setRevealingBoosts(false);
-    setWheelDuration(wheelMs);
-    setDuration(ballMs);
-    setRotation(motion.wheelDegrees);
-    setBallRotation(motion.ballDegrees);
-    setNotice('La rueda está girando.');
-    tone(440);
-    timer.current = setTimeout(finish, ballMs + 150);
-   };
-
-   if (round.boosts?.length) {
-    setSpinningBoosts(round.boosts);
-    if (!reduced) {
-     setRevealingBoosts(true);
-     setNotice('Revelando los multiplicadores.');
-     timer.current = setTimeout(startWheel, round.boosts.length * PRISM_REVEAL_STEP_MS + 120);
-     return;
-    }
+ const beginRound = (next: RouletteSession) => {
+  const round = next.lastRound!;
+  const landing = crypto.getRandomValues(new Uint32Array(1))[0] / 0x100000000 * 360;
+  const motion = rouletteSpinMotion(round.number, rotation, ballRotation, landing);
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const wheelMs = reduced ? 1 : theme.spinsMs;
+  const ballMs = reduced ? 1 : wheelMs + 720;
+  pending.current = next;
+  setView('wheel');
+  setSession({ ...session, balanceCents: next.balanceCents - round.payoutCents });
+  setBets([]);
+  setBetFeedback(null);
+  setPanel(null);
+  setPrize(false);
+  setSpinning(true);
+  const startWheel = () => {
+   setRevealingBoosts(false);
+   setWheelDuration(wheelMs);
+   setDuration(ballMs);
+   setRotation(motion.wheelDegrees);
+   setBallRotation(motion.ballDegrees);
+   setNotice('La rueda está girando.');
+   tone(440);
+   timer.current = setTimeout(finish, ballMs + 150);
+  };
+  if (round.boosts?.length) {
+   setSpinningBoosts(round.boosts);
+   if (!reduced) {
+    setRevealingBoosts(true);
+    setNotice('Revelando los multiplicadores.');
+    timer.current = setTimeout(startWheel, round.boosts.length * PRISM_REVEAL_STEP_MS + 120);
+    return;
    }
-   startWheel();
-  } catch (error) {
-   setNotice((error as Error).message);
   }
+  startWheel();
  };
- const repeat=()=>{if(pending.current)return;const previous=session.lastRound?.bets;if(!previous){setNotice('Todavía no hay una ronda para repetir.');return}if(rouletteStake(previous)>session.balanceCents){setNotice('Fichas insuficientes para repetir.');return}setBets(previous.map(b=>({...b})));setPrize(false);setNotice('Apuestas de la última ronda restauradas.')};
+ const spin = () => {
+  if (pending.current || busy.current) return;
+  if (prizeTimer.current) clearTimeout(prizeTimer.current);
+  if (!play) {
+   try { beginRound(isPrism ? spinPrismRoulette(session, bets) : spinRoulette(session, bets)); }
+   catch (error) { setNotice((error as Error).message); }
+   return;
+  }
+  busy.current = true;
+  setSpinning(true);
+  setNotice('Confirmando la apuesta…');
+  const placed = bets.map((bet) => ({ spotId: bet.spotId, amountCents: bet.amountCents }));
+  void play(crypto.randomUUID(), placed).then((outcome) => {
+   busy.current = false;
+   try {
+    beginRound({ balanceCents: outcome.balanceCents, rounds: session.rounds + 1, history: [outcome.lastRound.number, ...session.history].slice(0, 20), lastRound: outcome.lastRound });
+   } catch {
+    pending.current = null;
+    setSession((current) => ({ ...current, balanceCents: outcome.balanceCents, lastRound: outcome.lastRound }));
+    setSpinning(false);
+    setBets([]);
+    setNotice('La jugada quedó registrada en tu saldo.');
+   }
+  }).catch((error: unknown) => {
+   busy.current = false;
+   setSpinning(false);
+   setNotice(error instanceof Error ? error.message : 'No se pudo cerrar la jugada.');
+  });
+ };
+ const repeat=()=>{if(pending.current||busy.current)return;const previous=session.lastRound?.bets;if(!previous){setNotice('Todavía no hay una ronda para repetir.');return}if(rouletteStake(previous)>session.balanceCents){setNotice('Fichas insuficientes para repetir.');return}setBets(previous.map(b=>({...b})));setPrize(false);setNotice('Apuestas de la última ronda restauradas.')};
  const boosts = spinning ? spinningBoosts : session.lastRound?.boosts ?? [];
  const prismResult = isPrism && !spinning ? session.lastRound?.number : undefined;
  const betButton = (id: string, label: string, className = '') => {
@@ -254,7 +274,7 @@ export default function RoulettePlayer({onExit,theme=defaultRouletteTheme}:{onEx
    </svg> : 'i'}
   </button>
  </>;
- return <main className="rg-player" data-theme={theme.slug} data-variant={theme.variant} data-volt-lettering={theme.voltFinish?.lettering} data-volt-reward={theme.voltFinish?.rewardArt} data-layout={theme.layout} data-view={view} data-spinning={spinning && !revealingBoosts} data-prism-revealing={revealingBoosts || undefined} style={themeStyle} aria-label={`${theme.name}, ruleta europea demo${isPrism ? ` de ${voltFoundry.name}` : ''}`}>
+ return <main className="rg-player" data-theme={theme.slug} data-variant={theme.variant} data-volt-lettering={theme.voltFinish?.lettering} data-volt-reward={theme.voltFinish?.rewardArt} data-layout={theme.layout} data-view={view} data-spinning={spinning && !revealingBoosts} data-prism-revealing={revealingBoosts || undefined} style={themeStyle} aria-label={`${theme.name}, ruleta europea${cash ? '' : ' demo'}${isPrism ? ` de ${voltFoundry.name}` : ''}`}>
   {!isPrism && <header className="rg-top">
    <span>✦ LUMEN STUDIO</span>
    <div>{playerTools}{onExit && <button type="button" onClick={onExit} aria-label="Cerrar ruleta">×</button>}</div>
@@ -265,7 +285,7 @@ export default function RoulettePlayer({onExit,theme=defaultRouletteTheme}:{onEx
      <path d="M19 12H5m0 0 6 6m-6-6 6-6" />
     </svg>
    </button>}
-   <div><span className="rg-counter-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="23" height="23"><path d="M3 8v10c0 2 4 4 9 4s9-2 9-4V8" fill="#b87d24" stroke="#f8d77b"/><ellipse cx="12" cy="8" rx="9" ry="4" fill="#ffe295" stroke="#a66b19"/><path d="M3 12c3 4 15 4 18 0M3 16c3 4 15 4 18 0" fill="none" stroke="#ffe39a" strokeWidth="1.3"/></svg></span><small>SALDO DEMO</small><strong>{money(session.balanceCents)}</strong></div><div><span className="rg-counter-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="23" height="23"><path d="M7 5H3v3c0 4 3 5 6 5M17 5h4v3c0 4-3 5-6 5" fill="none" stroke="#e5b857" strokeWidth="2"/><path d="M6 3h12v5c0 4-2 7-6 7S6 12 6 8Z" fill="#efc96b" stroke="#9f661e"/><path d="M12 15v5M7 21h10" stroke="#ffe39a" strokeWidth="3" strokeLinecap="round"/><path d="M9 5v5c0 2 1 3 2 3" fill="none" stroke="#fff3bc" strokeWidth="1.5"/></svg></span><small>{isPrism ? 'ÚLTIMO PREMIO' : 'ÚLTIMO COBRO'}</small><strong>{money(session.lastRound?.payoutCents??0)}</strong></div></div>
+   <div><span className="rg-counter-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="23" height="23"><path d="M3 8v10c0 2 4 4 9 4s9-2 9-4V8" fill="#b87d24" stroke="#f8d77b"/><ellipse cx="12" cy="8" rx="9" ry="4" fill="#ffe295" stroke="#a66b19"/><path d="M3 12c3 4 15 4 18 0M3 16c3 4 15 4 18 0" fill="none" stroke="#ffe39a" strokeWidth="1.3"/></svg></span><small>{cash ? 'SALDO' : 'SALDO DEMO'}</small><strong>{money(session.balanceCents)}</strong></div><div><span className="rg-counter-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="23" height="23"><path d="M7 5H3v3c0 4 3 5 6 5M17 5h4v3c0 4-3 5-6 5" fill="none" stroke="#e5b857" strokeWidth="2"/><path d="M6 3h12v5c0 4-2 7-6 7S6 12 6 8Z" fill="#efc96b" stroke="#9f661e"/><path d="M12 15v5M7 21h10" stroke="#ffe39a" strokeWidth="3" strokeLinecap="round"/><path d="M9 5v5c0 2 1 3 2 3" fill="none" stroke="#fff3bc" strokeWidth="1.5"/></svg></span><small>{isPrism ? 'ÚLTIMO PREMIO' : 'ÚLTIMO COBRO'}</small><strong>{money(session.lastRound?.payoutCents??0)}</strong></div></div>
   <div className="rg-title">
    <span>♛</span>
    {isPrism && !theme.voltFinish ? <h1 className="rg-prism-wordmark" aria-label={theme.name}>
@@ -297,13 +317,13 @@ export default function RoulettePlayer({onExit,theme=defaultRouletteTheme}:{onEx
   {theme.layout==='compact'&&<section className="rg-quick-bets"><header><h2>APUESTAS RÁPIDAS</h2><button type="button" disabled={spinning} onClick={()=>setPanel('table')}>Tablero completo ↗</button></header><div>{[['red','◆ ROJO'],['black','◆ NEGRO'],['even','PAR'],['odd','IMPAR'],['low','1–18'],['high','19–36']].map(([id,label])=>betButton(id,label,id==='red'?'rg-red':id==='black'?'rg-black':''))}</div><small>{bets.length?`${amounts.size} zonas apostadas · total ${money(stake)}`:'Números y combinaciones en Tablero completo'}</small></section>}
   {chips}<div className="rg-stake"><span>APUESTA TOTAL</span><strong>{money(stake)}</strong>{!isPrism && clearBets}</div>{isPrism && clearBets}
   <div className="rg-actions"><button type="button" disabled={spinning||!bets.length} onClick={()=>setBets(bets.slice(0,-1))}><span className="rg-action-content"><ActionIcon kind="undo"/><span className="rg-action-label">Deshacer</span></span></button><button type="button" className={`rg-spin ${spinning&&!revealingBoosts?'rg-spinning':''}`} disabled={spinning||!stake} onClick={spin}><span className="rg-action-content"><ActionIcon kind="spin"/><span className="rg-action-label">{revealingBoosts?'REVELANDO':spinning?'GIRANDO':'GIRAR'}</span></span></button><button type="button" disabled={spinning||!session.lastRound} onClick={repeat}><span className="rg-action-content"><ActionIcon kind="repeat"/><span className="rg-action-label">Repetir</span></span></button></div>
-  <p className="rg-notice" role="status" aria-live="polite">{notice}</p><footer>DEMOSTRACIÓN · FICHAS SIN VALOR REAL</footer>
+  <p className="rg-notice" role="status" aria-live="polite">{notice}</p><footer>{cash ? 'FICHAS DE TU SALDO' : 'DEMOSTRACIÓN · FICHAS SIN VALOR REAL'}</footer>
   <dialog ref={panelRef} className={`rg-panel ${panel==='table'?'rg-panel-table':''}`} aria-label={panel==='rules'?'Reglas y pagos':'Tablero ampliado'} onCancel={e=>{e.preventDefault();setPanel(null)}}><header><h2>{panel==='rules'?'Reglas y pagos':'Colocá tus apuestas'}</h2><button type="button" onClick={()=>setPanel(null)} aria-label="Cerrar panel">×</button></header>
   {panel==='rules'?<div className="rg-rules"><p>37 números equiprobables: 0 al 36. Colocá fichas y pulsá GIRAR. Podés combinar apuestas; se suman todos los aciertos. El cero no cuenta como rojo, negro, par, impar, docena, columna ni 1–18.</p><table><thead><tr><th>Apuesta</th><th>Ganancia</th><th>Cobro total</th></tr></thead><tbody>{[['Pleno · 1 número',isPrism?'29:1':'35:1',isPrism?`${PRISM_BASE_PAYOUT}×`:'36×'],['Caballo · 2','17:1','18×'],['Calle / trío · 3','11:1','12×'],['Cuadro · 4','8:1','9×'],['Línea · 6','5:1','6×'],['Docena / columna','2:1','3×'],['Color / paridad / mitad','1:1','2×']].map(row=><tr key={row[0]}>{row.map((v,i)=><td key={i}>{v}</td>)}</tr>)}</tbody></table>{isPrism ? <>
     <p>Al cerrar las apuestas aparecen tres números distintos con 50×, 100× o 250×. Cada número marcado recibe uno de esos multiplicadores con probabilidades respectivas de 52 %, 28 % y 20 %.</p>
     <p>Solo un pleno ganador recibe el multiplicador. Si apostaste 50 al 17, sale el 17 y tiene 100×, cobrás 5.000 fichas en total, incluida la apuesta. La bola se sortea de forma independiente.</p>
    </> : <p>El cobro incluye la devolución de cada apuesta ganadora. Ejemplo: 50 a un pleno ganador devuelve 1.800 en total: 1.750 de ganancia y 50 apostadas.</p>}
-   <p>Retorno teórico: 36/37 ≈ 97,30 %. Máximo por ronda: 100.000 fichas. El saldo se descuenta al iniciar el giro y se acredita el cobro al terminar.</p><p>Las fichas son de demostración, no se guardan al cerrar. Las rondas anteriores no predicen el siguiente resultado.</p></div>:<><div className="rg-panel-tabs">{kinds.map(k=><button key={k.id} type="button" aria-pressed={kind===k.id} onClick={()=>setKind(k.id)}>{k.label}</button>)}</div>{kind==='straight'?<div className="rg-expanded-numbers">{Array.from({length:37},(_,n)=>betButton(`n-${n}`,`${n}`,`rg-${rouletteColor(n)}`))}</div>:<div className="rg-combo"><label>Apuesta<select value={selectedSpot.id} onChange={e=>setChosen(e.target.value)}>{options.map(s=><option key={s.id} value={s.id}>{s.label}{amounts.has(s.id)?` · ${money(amounts.get(s.id)!)} fichas`:''}</option>)}</select></label><p>Cubre: {selectedSpot.numbers.join(' · ')}<br/>Ganancia {selectedSpot.profitOdds}:1 · cobro total {selectedSpot.profitOdds+1}×</p><button type="button" className="rg-add" onClick={()=>add(selectedSpot.id)}>+ {money(chip)} fichas a {selectedSpot.label}</button></div>}{chips}<div className="rg-panel-total">Total: {money(stake)} · Disponible: {money(session.balanceCents-stake)}</div><p className="rg-panel-notice" role="status">{notice}</p><button type="button" className="rg-add" onClick={()=>setPanel(null)}>Listo · volver a la rueda</button></>}
+   <p>Retorno teórico: 36/37 ≈ 97,30 %. Máximo por ronda: 100.000 fichas. El saldo se descuenta al iniciar el giro y se acredita el cobro al terminar.</p><p>{cash ? 'Las fichas salen de tu saldo cargado. Cada giro queda registrado.' : 'Las fichas son de demostración, no se guardan al cerrar. Las rondas anteriores no predicen el siguiente resultado.'}</p></div>:<><div className="rg-panel-tabs">{kinds.map(k=><button key={k.id} type="button" aria-pressed={kind===k.id} onClick={()=>setKind(k.id)}>{k.label}</button>)}</div>{kind==='straight'?<div className="rg-expanded-numbers">{Array.from({length:37},(_,n)=>betButton(`n-${n}`,`${n}`,`rg-${rouletteColor(n)}`))}</div>:<div className="rg-combo"><label>Apuesta<select value={selectedSpot.id} onChange={e=>setChosen(e.target.value)}>{options.map(s=><option key={s.id} value={s.id}>{s.label}{amounts.has(s.id)?` · ${money(amounts.get(s.id)!)} fichas`:''}</option>)}</select></label><p>Cubre: {selectedSpot.numbers.join(' · ')}<br/>Ganancia {selectedSpot.profitOdds}:1 · cobro total {selectedSpot.profitOdds+1}×</p><button type="button" className="rg-add" onClick={()=>add(selectedSpot.id)}>+ {money(chip)} fichas a {selectedSpot.label}</button></div>}{chips}<div className="rg-panel-total">Total: {money(stake)} · Disponible: {money(session.balanceCents-stake)}</div><p className="rg-panel-notice" role="status">{notice}</p><button type="button" className="rg-add" onClick={()=>setPanel(null)}>Listo · volver a la rueda</button></>}
    {panel==='table'&&chipPicker}
   </dialog>
   {theme.layout==='table'&&prizeCard}

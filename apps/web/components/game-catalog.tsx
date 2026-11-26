@@ -49,7 +49,7 @@ export function GameCatalog({ games }: { games: readonly CatalogGame[] }) {
     {filtered.length === 0 ? <p className="py-8 text-center text-sm text-zinc-400">No encontramos juegos con esos filtros.</p> : <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
       {filtered.map((game) => <li key={game.slug} className="overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03]">
         {game.coverImage && <img src={game.coverImage} style={{ imageRendering: game.artStyle === "pixel" ? "pixelated" : "auto" }} alt={`Portada de ${game.name}`} loading="lazy" className={game.runtime && game.coverFormat !== "portrait" ? "aspect-[3/2] w-full object-contain" : "aspect-[4/5] w-full object-cover"} />}
-        <div className="p-3"><h2 className="text-sm font-medium">{game.name}</h2><p className="mt-1 text-xs text-zinc-400">{[game.category ? categoryNames[game.category] : null, providers.find((item) => item.slug === game.providerSlug)?.name ?? game.providerSlug].filter(Boolean).join(" · ")}</p><p className="mt-1 text-xs text-zinc-500">Versión {game.version} · Muestra</p><GameEntry name={game.name} slug={game.slug} runtime={game.runtime} /></div>
+        <div className="p-3"><h2 className="text-sm font-medium">{game.name}</h2><p className="mt-1 text-xs text-zinc-400">{[game.category ? categoryNames[game.category] : null, providers.find((item) => item.slug === game.providerSlug)?.name ?? game.providerSlug].filter(Boolean).join(" · ")}</p><p className="mt-1 text-xs text-zinc-500">Versión {game.version}</p><GameEntry name={game.name} slug={game.slug} runtime={game.runtime} /></div>
       </li>)}
     </ul>}
   </section>;

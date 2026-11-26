@@ -79,15 +79,15 @@ function AnimatedPrizeAmount({ amount, format, duration = 1400 }: { amount: numb
   return <><span ref={number} className="slot-prize-number" style={{ "--prize-characters": Math.max(5, format(amount).length) } as CSSProperties} aria-hidden="true">{format(0)}</span><span className="sr-only">{format(amount)}</span></>;
 }
 
-export function SlotPrizeCard({ game, theme, amount, format, duration, children, badge, onDismiss }: {
-  game: SlotGame; theme: SlotTheme; amount: number; format: (amount: number) => string; duration: number; children: ReactNode; badge?: string; onDismiss?: () => void;
+export function SlotPrizeCard({ game, theme, amount, format, duration, children, badge, onDismiss, unit = "fichas demo" }: {
+  game: SlotGame; theme: SlotTheme; amount: number; format: (amount: number) => string; duration: number; children: ReactNode; badge?: string; onDismiss?: () => void; unit?: string;
 }) {
   return <section className={`slot-prize-card ${badge ? "has-prize-art" : ""}`} aria-label="Premio ganado">
     {badge && <div className="slot-prize-badge" aria-hidden="true"><i /><span style={{ backgroundImage: `url("${badge}")` }} /><i /></div>}
     <div className="slot-prize-decoration" aria-hidden="true"><span>{theme.emblem}</span><span>{theme.emblem}</span></div>
     <p className="slot-prize-game">{game.name}</p>
     <h2 className="slot-prize-heading">¡Ganaste!</h2>
-    <p className="slot-prize-total" role="status" aria-atomic="true"><span className="sr-only">Premio ganado: </span><AnimatedPrizeAmount amount={amount} format={format} duration={duration} /><span className="slot-prize-unit">fichas demo</span></p>
+    <p className="slot-prize-total" role="status" aria-atomic="true"><span className="sr-only">Premio ganado: </span><AnimatedPrizeAmount amount={amount} format={format} duration={duration} /><span className="slot-prize-unit">{unit}</span></p>
     <div className="slot-prize-details">{children}</div>
     {onDismiss && <button type="button" className="slot-prize-dismiss" aria-label="Cerrar premio y ver los rodillos" onClick={onDismiss}><span className="sr-only">Tocá para cerrar el premio</span></button>}
   </section>;
@@ -95,9 +95,9 @@ export function SlotPrizeCard({ game, theme, amount, format, duration, children,
 
 export type BonusReveal = { choice: number; phase: "opening" | "revealed"; payoutCents: number };
 
-export function SlotBonus({ game, theme, reveal, onPick, onContinue, format }: {
+export function SlotBonus({ game, theme, reveal, onPick, onContinue, format, cash = false }: {
   game: SlotGame; theme: SlotTheme; reveal: BonusReveal | null;
-  onPick: (choice: number) => void; onContinue: () => void; format: (amount: number) => string;
+  onPick: (choice: number) => void; onContinue: () => void; format: (amount: number) => string; cash?: boolean;
 }) {
   const heading = useRef<HTMLHeadingElement>(null);
   const continueButton = useRef<HTMLButtonElement>(null);
@@ -114,7 +114,7 @@ export function SlotBonus({ game, theme, reveal, onPick, onContinue, format }: {
   return <section className={`slot-bonus ${reveal ? `is-${reveal.phase}` : ""}`} aria-labelledby="slot-bonus-title" aria-busy={reveal?.phase === "opening"}>
     <p className="slot-bonus-eyebrow">Bono especial · premio de 1× a 5×</p>
     <h2 ref={heading} id="slot-bonus-title" tabIndex={-1}>{theme.bonus.title}</h2>
-    <p className="slot-bonus-help">{!reveal ? `Elegí un elemento para descubrir tu premio.` : reveal.phase === "opening" ? "Descubriendo tu premio…" : "Premio acreditado en tus fichas demo."}</p>
+    <p className="slot-bonus-help">{!reveal ? `Elegí un elemento para descubrir tu premio.` : reveal.phase === "opening" ? "Descubriendo tu premio…" : cash ? "Premio acreditado en tu saldo." : "Premio acreditado en tus fichas demo."}</p>
     <div className="slot-bonus-options">
       {[0, 1, 2].map((choice) => <button key={choice} type="button" disabled={!!reveal} onClick={() => onPick(choice)} className={`slot-bonus-option ${reveal?.choice === choice ? "is-chosen" : ""}`} aria-label={`Elegir ${theme.bonus.item} ${choice + 1}`}>
         <span className="slot-bonus-object" aria-hidden="true">
