@@ -42,9 +42,11 @@ export function PlayerAccess({ appearance, open, onClose }: { appearance: Appear
     <div className="p-5 sm:p-6">
       {account ? <div className="space-y-4 text-sm">
         {account.displayName && <p className="break-words">{account.displayName}</p>}
-        <p className="text-lg font-semibold text-[color:var(--access-accent)]">{new Intl.NumberFormat("es-PY").format(account.balanceCents / 100)} fichas</p>
+        {account.balanceCents !== null
+          ? <p className="text-lg font-semibold text-[color:var(--access-accent)]">{new Intl.NumberFormat("es-PY").format(account.balanceCents / 100)} fichas</p>
+          : <p className="text-[color:var(--access-accent)]">Completá la verificación para jugar.</p>}
         <div className="flex flex-wrap items-center gap-4">
-          <Link href="/saldo" className="underline" onClick={() => dialog.current?.close()}>Ver movimientos</Link>
+          {account.verified && <Link href="/saldo" className="underline" onClick={() => dialog.current?.close()}>Ver movimientos</Link>}
           <Link href="/verificacion" className="underline" onClick={() => dialog.current?.close()}>Datos y verificación</Link>
         <SignOut />
         </div>

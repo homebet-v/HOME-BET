@@ -1,6 +1,6 @@
 import "server-only";
 
-import { adminSession, casinoBySlug, platformSession } from "./platform";
+import { adminSession, playerHouseSession } from "./platform";
 import { supabaseRequest } from "./supabase";
 import { emptyDetails, emptyPhotos, type IdentityDetails, type IdentityPhotos, type Registration } from "./verification";
 import type { DepositBonus, DepositRequest } from "./deposits";
@@ -69,11 +69,12 @@ export async function houseBonuses(casinoId: string, auth: { token: string }) {
 }
 
 export async function playerIdentitySession(slug: string) {
-  const [casino, session] = await Promise.all([casinoBySlug(slug), platformSession()]);
-  if (casino?.status !== "active" || session?.profile.role !== "player" || session.profile.casino_id !== casino.id) return null;
+  const account = await playerHouseSession(slug);
+  if (!account) return null;
+  const { casino, session } = account;
   const [details] = await supabaseRequest<{
-    identity_number: string | null; identity_details: Partial<IdentityDetails>; identity_files: Partial<IdentityPhotos>;
+    identity_number: string | null; identity_details: Partial<IdentityDetails>; identity_files: Partial<IdentityPhotos>; identity_draft_saved_at: string | null;
     verification_decision: "pending" | "denied" | "rejected"; verification_reason: string; verification_submitted_at: string | null;
-  }[]>(`/rest/v1/profiles?select=identity_number,identity_details,identity_files,verification_decision,verification_reason,verification_submitted_at&id=eq.${session.profile.id}`, session.auth);
+  }[]>(`/rest/v1/profiles?select=identity_number,identity_details,identity_files,identity_draft_saved_at,verification_decision,verification_reason,verification_submitted_at&id=eq.${session.profile.id}`, session.auth);
   return details ? { casino, session, details } : null;
 }

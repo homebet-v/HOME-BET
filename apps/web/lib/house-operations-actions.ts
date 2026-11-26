@@ -7,7 +7,7 @@ import { parseDepositAmount } from "./deposits";
 import { playerIdentitySession, type PlayerMovement } from "./house-operations";
 import { adminSession, playerAccount } from "./platform";
 import { signedHouseDocument, supabaseRequest, uploadHouseDocument } from "./supabase";
-import { validateDetails, type IdentityDetails, type IdentityPhotos } from "./verification";
+import { emptyDetails, validateDetails, type IdentityDetails, type IdentityPhotos } from "./verification";
 
 const identityKeys = ["firstName", "lastName", "email", "phone", "birthDate"] as const;
 const photoKeys = ["front", "back", "selfie"] as const;
@@ -84,14 +84,27 @@ export async function reviewAdminPlayer(playerId: string, decision: "verified" |
   return ok ? "Decisión guardada." : "No se pudo actualizar la verificación.";
 }
 
+export async function saveIdentityBasics(form: FormData) {
+  const slug = await surfaceSlug("casa");
+  const account = slug ? await playerIdentitySession(slug) : null;
+  if (!account) return { ok: false, message: "Ingresá con tu CI para guardar tus datos." };
+  const { details, error } = readIdentity(form);
+  if (error) return { ok: false, message: error };
+  const ok = await supabaseRequest<boolean>("/rest/v1/rpc/save_player_identity_draft", "service", {
+    target_casino: account.casino.id, target_player: account.session.profile.id, details,
+  });
+  return { ok, message: ok ? "Datos guardados." : "La cuenta todavía no admite cambios." };
+}
+
 export async function submitIdentity(form: FormData) {
   const slug = await surfaceSlug("casa");
   const account = slug ? await playerIdentitySession(slug) : null;
   if (!account || account.session.profile.verified_at || account.details.verification_decision === "rejected" ||
       (account.details.verification_submitted_at && account.details.verification_decision !== "denied"))
     return { ok: false, message: "La cuenta todavía no admite otra solicitud." };
-  const { details, error } = readIdentity(form);
-  if (error) return { ok: false, message: error };
+  const details = { ...emptyDetails, ...account.details.identity_details };
+  if (!account.details.identity_draft_saved_at || validateDetails(details))
+    return { ok: false, message: "Primero completá y guardá tus datos personales." };
   const directory = `${account.casino.id}/${account.session.profile.id}/identity/`;
   const prefix = `${directory}${randomUUID()}`;
   try {

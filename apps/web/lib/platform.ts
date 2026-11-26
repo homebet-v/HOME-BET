@@ -34,12 +34,18 @@ export const platformSession = cache(async () => {
   return profile ? { auth, profile } : null;
 });
 
-export async function playerAccount(slug: string) {
+export const playerHouseSession = cache(async (slug: string) => {
   const [casino, session] = await Promise.all([casinoBySlug(slug), platformSession()]);
-  if (casino?.status !== "active" || session?.profile.role !== "player" || !session.profile.verified_at || session.profile.casino_id !== casino.id) return null;
-  const balanceCents = await supabaseRequest<number>("/rest/v1/rpc/player_chip_balance", session.auth, {});
-  return { displayName: session.profile.display_name, balanceCents, casino, session };
-}
+  if (casino?.status !== "active" || session?.profile.role !== "player" || session.profile.casino_id !== casino.id) return null;
+  return { casino, session };
+});
+
+export const playerAccount = cache(async (slug: string) => {
+  const account = await playerHouseSession(slug);
+  if (!account?.session.profile.verified_at) return null;
+  const balanceCents = await supabaseRequest<number>("/rest/v1/rpc/player_chip_balance", account.session.auth, {});
+  return { ...account, displayName: account.session.profile.display_name, balanceCents };
+});
 
 export async function housePlayers(slug: string) {
   const account = await adminSession(slug);

@@ -3,7 +3,7 @@ import { Suspense, type ReactNode, type CSSProperties } from "react";
 import Link from "next/link";
 import { GameAssetCache } from "@/components/game-asset-cache";
 import { PlayerSessionProvider } from "@/components/player-session";
-import { casinoBySlug, playerAccount } from "@/lib/platform";
+import { casinoBySlug, playerAccount, playerHouseSession } from "@/lib/platform";
 import { defaultAppearance, palettes } from "@/lib/appearance";
 import { MissingHouse } from "@/components/missing-house";
 
@@ -18,13 +18,13 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 async function CasaFrame({ params, children }: { params: Promise<{ slug: string }>; children: ReactNode }) {
   const { slug } = await params;
-  const [house, account] = await Promise.all([casinoBySlug(slug), playerAccount(slug)]);
+  const [house, account, player] = await Promise.all([casinoBySlug(slug), playerAccount(slug), playerHouseSession(slug)]);
   if (!house) return <MissingHouse slug={slug} />;
   if (house.status !== "active") return <p className="p-6">Esta casa está suspendida.</p>;
   const appearance = defaultAppearance(house.name);
   const overlay = Math.round((appearance.backgroundOverlay ?? 45) * 2.55).toString(16).padStart(2, "0");
   return (
-    <PlayerSessionProvider key={slug} account={account ? { displayName: account.displayName, balanceCents: account.balanceCents } : null}>
+    <PlayerSessionProvider key={slug} account={player ? { displayName: player.session.profile.display_name, balanceCents: account?.balanceCents ?? null, verified: Boolean(account) } : null}>
       <GameAssetCache />
       <div
         className="casino-scenery min-h-dvh min-w-0 flex-1"

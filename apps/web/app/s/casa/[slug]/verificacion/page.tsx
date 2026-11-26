@@ -67,7 +67,7 @@ export default function Page({ params }: { params: Promise<{ slug: string }> }) 
           </dl>
           {verified && <Link href="/" className="inline-block text-sm font-semibold text-[color:var(--identity-accent)] underline">Volver a la casa</Link>}
         </section>
-        : <PlayerIdentityForm initial={initial} ci={details.identity_number} savedPhotos={savedPhotos} />}
+        : <PlayerIdentityForm initial={initial} ci={details.identity_number} savedPhotos={savedPhotos} hasDraft={Boolean(details.identity_draft_saved_at)} />}
       <SignOut />
     </section>;
   }}</HouseGate>;

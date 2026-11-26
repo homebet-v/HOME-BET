@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { compressIdentityImage } from "@/lib/identity-image";
-import { submitIdentity } from "@/lib/house-operations-actions";
+import { saveIdentityBasics, submitIdentity } from "@/lib/house-operations-actions";
 import { validateDetails, type IdentityDetails } from "@/lib/verification";
 
 const fields = [
@@ -26,8 +26,12 @@ const inputClass = "min-w-0 w-full rounded-xl border border-white/15 bg-black/30
 const labelClass = "text-sm font-medium text-white/90";
 const panelClass = "overflow-hidden rounded-2xl border border-[color:var(--identity-line)] bg-black/25";
 
-export function PlayerIdentityForm({ initial, ci, savedPhotos }: { initial: IdentityDetails; ci: string | null; savedPhotos: PhotoKey[] }) {
+export function PlayerIdentityForm({ initial, ci, savedPhotos, hasDraft }: {
+  initial: IdentityDetails; ci: string | null; savedPhotos: PhotoKey[]; hasDraft: boolean;
+}) {
   const router = useRouter();
+  const [step, setStep] = useState<"data" | "photos">(hasDraft ? "photos" : "data");
+  const stepHeading = useRef<HTMLHeadingElement>(null);
   const [details, setDetails] = useState(initial);
   const [images, setImages] = useState<Partial<Record<PhotoKey, Photo>>>({});
   const [processing, setProcessing] = useState<Partial<Record<PhotoKey, boolean>>>({});
@@ -75,24 +79,32 @@ export function PlayerIdentityForm({ initial, ci, savedPhotos }: { initial: Iden
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (sending || pendingPhoto) return;
-    const error = validateDetails(details);
-    if (error || completedPhotos !== photos.length) {
-      setNotice(error || "Adjuntá el frente, el reverso y la selfie.");
+    const error = step === "data" ? validateDetails(details)
+      : completedPhotos !== photos.length ? "Adjuntá el frente, el reverso y la selfie." : "";
+    if (error) {
+      setNotice(error);
       requestAnimationFrame(() => result.current?.focus());
       return;
     }
 
     const form = new FormData(event.currentTarget);
-    for (const { key } of photos) {
-      const photo = images[key];
-      if (photo) form.set(key, photo.file);
+    if (step === "photos") {
+      for (const { key } of photos) {
+        const photo = images[key];
+        if (photo) form.set(key, photo.file);
+      }
     }
     setSending(true);
     setNotice("");
     try {
-      const response = await submitIdentity(form);
-      setNotice(response.message);
-      if (response.ok) router.refresh();
+      const response = await (step === "data" ? saveIdentityBasics(form) : submitIdentity(form));
+      if (response.ok && step === "data") {
+        setStep("photos");
+        requestAnimationFrame(() => stepHeading.current?.focus());
+      } else {
+        setNotice(response.message);
+        if (response.ok) router.refresh();
+      }
     } catch {
       setNotice("No se pudo enviar. Conservamos tus datos y fotos en esta pantalla para que puedas reintentar.");
     } finally {
@@ -108,9 +120,13 @@ export function PlayerIdentityForm({ initial, ci, savedPhotos }: { initial: Iden
       </div>
       <progress className="block h-2 w-full overflow-hidden rounded-full accent-[var(--identity-accent)]" aria-label="Progreso de la verificación" max={total} value={completedData + completedPhotos} />
     </div>
-    <fieldset disabled={sending} className={`min-w-0 ${panelClass}`}>
+    <ol aria-label="Pasos de verificación" className="grid grid-cols-2 gap-2 text-sm">
+      <li aria-current={step === "data" ? "step" : undefined} className={`rounded-xl border p-3 ${step === "data" ? "border-[color:var(--identity-line)] bg-black/35 text-[color:var(--identity-accent)]" : "border-white/10 text-white/75"}`}>1. Datos personales</li>
+      <li aria-current={step === "photos" ? "step" : undefined} className={`rounded-xl border p-3 ${step === "photos" ? "border-[color:var(--identity-line)] bg-black/35 text-[color:var(--identity-accent)]" : "border-white/10 text-white/75"}`}>2. Fotos</li>
+    </ol>
+    {step === "data" ? <fieldset disabled={sending} className={`min-w-0 ${panelClass}`}>
       <div className="border-b border-white/10 px-4 py-4 sm:px-6">
-        <h2 className="font-semibold">Datos personales</h2>
+        <h2 ref={stepHeading} tabIndex={-1} className="font-semibold">Datos personales</h2>
         <p className="mt-1 text-sm text-white/70">Completalos tal como aparecen en tu cédula.</p>
       </div>
       <div className="divide-y divide-white/10">
@@ -125,8 +141,8 @@ export function PlayerIdentityForm({ initial, ci, savedPhotos }: { initial: Iden
         </label>)}
       </div>
     </fieldset>
-    <fieldset disabled={sending} className={`min-w-0 p-4 sm:p-6 ${panelClass}`}>
-      <h2 className="font-semibold">Fotos del documento</h2>
+    : <fieldset disabled={sending} className={`min-w-0 p-4 sm:p-6 ${panelClass}`}>
+      <h2 ref={stepHeading} tabIndex={-1} className="font-semibold">Fotos del documento</h2>
       <p className="mt-1 mb-4 text-sm text-white/70">Sacá una foto o elegila de tu galería. Se comprime en tu dispositivo antes del envío.</p>
       <div className="grid gap-3 md:grid-cols-3">
         {photos.map(({ key, label, hint }) => {
@@ -150,11 +166,14 @@ export function PlayerIdentityForm({ initial, ci, savedPhotos }: { initial: Iden
           </div>;
         })}
       </div>
-    </fieldset>
+    </fieldset>}
     <div className="flex flex-wrap items-center justify-between gap-3">
-      <p className="text-xs text-white/70">JPG, PNG o WebP. Una foto por casilla.</p>
+      {step === "photos" && <button type="button" disabled={sending} className="min-h-11 rounded-xl border border-white/15 px-4"
+        onClick={() => { setNotice(""); setStep("data"); requestAnimationFrame(() => stepHeading.current?.focus()); }}>
+        Volver a mis datos
+      </button>}
       <button disabled={sending || pendingPhoto} className="min-h-11 w-full rounded-xl bg-[color:var(--identity-accent)] px-5 py-2 font-semibold text-slate-950 disabled:opacity-50 sm:w-auto">
-        {sending ? "Enviando a revisión…" : "Enviar a revisión"}
+        {step === "data" ? sending ? "Guardando…" : "Guardar y continuar" : sending ? "Enviando a revisión…" : "Enviar a revisión"}
       </button>
     </div>
     <p role="status" tabIndex={-1} ref={result} className="text-sm text-white/90">{notice}</p>
