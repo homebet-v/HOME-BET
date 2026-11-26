@@ -2,7 +2,6 @@ import type { CSSProperties } from "react";
 import Link from "next/link";
 import { HouseGate } from "@/components/house-gate";
 import { PlayerIdentityForm } from "@/components/player-identity-form";
-import { SignOut } from "@/components/platform-login";
 import { defaultAppearance, palettes } from "@/lib/appearance";
 import { playerIdentitySession } from "@/lib/house-operations";
 import { emptyDetails } from "@/lib/verification";
@@ -36,13 +35,11 @@ export default function Page({ params }: { params: Promise<{ slug: string }> }) 
       "--identity-ink": palette.ink,
       "--identity-line": `color-mix(in srgb, ${palette.accent} 35%, transparent)`,
     } as CSSProperties}>
-      <header className="relative isolate overflow-hidden rounded-3xl border border-[color:var(--identity-line)] bg-[color:var(--identity-ink)] px-5 py-6 sm:px-8 sm:py-8">
-        {theme.backgroundImage && <img src={theme.backgroundImage} alt="" className="pointer-events-none absolute inset-0 -z-20 size-full object-cover" />}
-        <div className="pointer-events-none absolute inset-0 -z-10 bg-linear-to-r from-[color:var(--identity-ink)] to-black/40" />
+      <header className="rounded-[6px] border border-white/10 bg-black px-5 py-6 sm:px-8 sm:py-8">
         <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
           {theme.logoImage ? <img src={theme.logoImage} alt={casino.name} className="h-10 w-36 object-contain object-left" />
             : <span className="font-semibold text-[color:var(--identity-accent)]">{casino.name}</span>}
-          <span className="rounded-full border border-[color:var(--identity-line)] bg-black/50 px-3 py-1 text-xs font-semibold text-[color:var(--identity-accent)]">{status}</span>
+          <span className={verified ? "rounded-full bg-[#00c853] px-3 py-1 text-xs font-semibold text-black" : "rounded-full border border-white/15 bg-black px-3 py-1 text-xs font-semibold text-white"}>{status}</span>
         </div>
         <h1 className="text-2xl font-bold sm:text-3xl">Verificación de identidad</h1>
         <p className="mt-2 max-w-md text-sm leading-6 text-white/85">
@@ -52,9 +49,9 @@ export default function Page({ params }: { params: Promise<{ slug: string }> }) 
         </p>
       </header>
 
-      {details.verification_reason && <p className="rounded-xl border border-amber-200/25 bg-black/50 p-4 text-sm text-amber-100">{details.verification_reason}</p>}
+      {details.verification_reason && <p className="rounded-[6px] border border-white/10 bg-black p-4 text-sm text-amber-100">{details.verification_reason}</p>}
       {verified || waiting || rejected
-        ? <section className="space-y-3 rounded-2xl border border-[color:var(--identity-line)] bg-black/30 p-4 sm:p-6">
+        ? <section className="space-y-3 rounded-[6px] border border-white/10 bg-black p-4 sm:p-6">
           <h2 className="font-semibold">Datos de mi cuenta</h2>
           <dl className="divide-y divide-white/10 text-sm">
             {([
@@ -67,7 +64,6 @@ export default function Page({ params }: { params: Promise<{ slug: string }> }) 
           </dl>
         </section>
         : <PlayerIdentityForm initial={initial} ci={details.identity_number} savedPhotos={savedPhotos} hasDraft={Boolean(details.identity_draft_saved_at)} />}
-      <SignOut />
     </section>;
   }}</HouseGate>;
 }

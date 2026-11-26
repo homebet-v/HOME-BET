@@ -10,6 +10,6 @@
     "build": "npm run build -w @homebet/web",
     "lint": "npm run lint -w @homebet/web",
     "typecheck": "npm run typecheck -w @homebet/web",
-    "test": "node --experimental-strip-types --test apps/web/lib/tenant.test.ts apps/web/lib/wallet.test.ts apps/web/lib/verification.test.ts apps/web/lib/deposits.test.ts packages/proveedores/src/slot-engine.test.ts apps/web/lib/slot-chip-label.test.ts packages/proveedores/src/slot-layouts.test.ts apps/web/lib/slot-visual-profile.test.ts packages/proveedores/src/slot-engine-5x3.test.ts packages/proveedores/src/slot-engine-5x5.test.ts packages/proveedores/src/roulette-engine.test.ts packages/proveedores/src/roulette-motion.test.ts packages/proveedores/src/preview-engines.test.ts"
+    "test": "node --experimental-strip-types --test apps/web/lib/tenant.test.ts apps/web/lib/wallet.test.ts apps/web/lib/verification.test.ts apps/web/lib/deposits.test.ts apps/web/lib/withdrawals.test.ts packages/proveedores/src/slot-engine.test.ts apps/web/lib/slot-chip-label.test.ts packages/proveedores/src/slot-layouts.test.ts apps/web/lib/slot-visual-profile.test.ts packages/proveedores/src/slot-engine-5x3.test.ts packages/proveedores/src/slot-engine-5x5.test.ts packages/proveedores/src/roulette-engine.test.ts packages/proveedores/src/roulette-motion.test.ts packages/proveedores/src/preview-engines.test.ts"
   }
 }

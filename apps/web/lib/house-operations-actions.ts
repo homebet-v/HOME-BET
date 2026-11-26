@@ -4,6 +4,7 @@ import { randomUUID } from "node:crypto";
 import { headers } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { parseDepositAmount } from "./deposits";
+import { withdrawalDestination, withdrawalRequestCents } from "./withdrawals";
 import { playerIdentitySession, type PlayerMovement } from "./house-operations";
 import { adminSession, playerAccount } from "./platform";
 import { signedHouseDocument, supabaseRequest, uploadHouseDocument } from "./supabase";
@@ -164,6 +165,35 @@ export async function submitDeposit(form: FormData) {
     return { ok: true, message: "Carga enviada a revisión." };
   } catch {
     return { ok: false, message: "No se pudo enviar la carga. Revisá el monto, el bono y el comprobante." };
+  }
+}
+
+export async function submitWithdrawal(form: FormData) {
+  const slug = await surfaceSlug("casa");
+  const account = slug ? await playerAccount(slug) : null;
+  if (!account) return { ok: false, message: "Ingresá con una cuenta verificada para pedir un retiro." };
+  try {
+    const id = String(form.get("requestId") ?? "");
+    if (!uuid.test(id)) return { ok: false, message: "La referencia de la solicitud no es válida." };
+    const open = await supabaseRequest<{ id: string; requested_cents: number; destination: string }[]>(
+      `/rest/v1/withdrawal_requests?select=id,requested_cents,destination&player_id=eq.${account.session.profile.id}&casino_id=eq.${account.casino.id}&status=in.(pending,reviewing)`,
+      account.session.auth,
+    );
+    const same = open.find((row) => row.id === id);
+    if (open.some((row) => row.id !== id)) return { ok: false, message: "Ya tenés un retiro en revisión." };
+    const destination = withdrawalDestination(String(form.get("destination") ?? ""));
+    const amount = withdrawalRequestCents(parseDepositAmount(String(form.get("amount") ?? "")), account.withdrawableCents, 0);
+    if (same) return same.requested_cents === amount && same.destination === destination
+      ? { ok: true, message: "El retiro ya está registrado." }
+      : { ok: false, message: "Esa referencia ya está vinculada a otra solicitud." };
+    await supabaseRequest("/rest/v1/rpc/submit_player_withdrawal", "service", {
+      target_casino: account.casino.id, target_player: account.session.profile.id, target_id: id,
+      requested_amount: amount, payout: destination,
+    });
+    return { ok: true, message: "Retiro enviado. La casa lo revisa y confirma el pago." };
+  } catch (error) {
+    if (error instanceof Error && !error.message.startsWith("Supabase")) return { ok: false, message: error.message };
+    return { ok: false, message: "No se pudo enviar el retiro. Revisá el monto y los datos de pago." };
   }
 }
 
