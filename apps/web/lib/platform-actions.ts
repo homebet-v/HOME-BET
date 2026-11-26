@@ -10,6 +10,12 @@ import { sessionCookie, sessionCookieOptions, sessionValues, supabaseConfigured,
 
 type ActionResult = { message: string; ok: boolean; next?: string };
 
+async function ensurePlayerProfile(userId: string | null, casinoId: string) {
+  return supabaseRequest<boolean>("/rest/v1/rpc/ensure_ci_player_profile", "service", {
+    target_user: userId, target_casino: casinoId,
+  });
+}
+
 export async function authenticate(form: FormData): Promise<ActionResult> {
   if (!supabaseConfigured()) return { ok: false, message: "El acceso todavía no está configurado." };
   const request = await headers();
@@ -37,25 +43,39 @@ export async function authenticate(form: FormData): Promise<ActionResult> {
       : identifier;
 
     if (register) {
-      if (!isPlayer || password !== form.get("confirmation"))
+      if (!isPlayer || !casino || password !== form.get("confirmation"))
         return { ok: false, message: "Revisá la confirmación de la contraseña." };
       const name = String(form.get("name") ?? "").trim();
       if (name.length < 2 || name.length > 80) return { ok: false, message: "Ingresá tu nombre." };
-      // Check the deployed schema before creating an Auth account.
-      await supabaseRequest("/rest/v1/profiles?select=verified_at&limit=0", "service");
-      await supabaseRequest("/auth/v1/admin/users", "service", {
+
+      try {
+        // Check that the reconciliation function is available before writing to Auth.
+        await ensurePlayerProfile(null, casino.id);
+      } catch {
+        return { ok: false, message: "El registro está temporalmente deshabilitado. Contactá al administrador de la casa." };
+      }
+      const user = await supabaseRequest<{ id?: string; user?: { id: string } }>("/auth/v1/admin/users", "service", {
         email, password, email_confirm: true,
         app_metadata: { player_casino_slug: slug },
         user_metadata: { display_name: name, identity_number: identifier },
       });
+      const userId = user.id ?? user.user?.id;
+      if (!userId || !await ensurePlayerProfile(userId, casino.id)) {
+        return { ok: false, message: "No se pudo vincular la cuenta a esta casa. Probá ingresar con tu CI." };
+      }
       return { ok: true, message: "Cuenta creada. Ingresá con tu CI para enviar los datos de verificación." };
     }
     const session = await supabaseRequest<Session & { user: { id: string } }>(
       "/auth/v1/token?grant_type=password", "public", { email, password },
     );
-    const [profile] = await supabaseRequest<{ role: string; casino_id: string | null; verified_at?: string | null }[]>(
-      `/rest/v1/profiles?select=role,casino_id${isPlayer ? ",verified_at" : ""}&id=eq.${session.user.id}`, { token: session.access_token },
+    const profileForSession = () => supabaseRequest<{ role: string; casino_id: string | null; verified_at?: string | null }[]>(
+      `/rest/v1/profiles?select=role,casino_id${isPlayer ? ",verified_at" : ""}&id=eq.${session.user.id}`,
+      { token: session.access_token },
     );
+    let [profile] = await profileForSession();
+    if (!profile && isPlayer && casino && await ensurePlayerProfile(session.user.id, casino.id)) {
+      [profile] = await profileForSession();
+    }
     const allowed = surface === "home" ? profile?.role === "superadmin"
       : surface === "admin" ? profile?.role === "superadmin" || (profile?.role === "casino_admin" && profile.casino_id === casino?.id)
       : surface === "casa" && profile?.role === "player" && profile.casino_id === casino?.id;
