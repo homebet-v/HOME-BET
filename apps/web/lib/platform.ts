@@ -21,7 +21,7 @@ export const platformSession = cache(async () => {
   const token = (await cookies()).get(sessionCookie.access)?.value;
   if (!token || !supabaseConfigured()) return null;
   const auth = { token };
-  let user: { id: string; email: string | null };
+  let user: { id: string };
   try {
     user = await supabaseRequest<typeof user>("/auth/v1/user", auth);
   } catch (error) {
@@ -31,14 +31,14 @@ export const platformSession = cache(async () => {
   const [profile] = await supabaseRequest<Profile[]>(
     `/rest/v1/profiles?select=id,casino_id,role,display_name,created_at&id=eq.${user.id}`, auth,
   );
-  return profile ? { auth, profile, email: user.email } : null;
+  return profile ? { auth, profile } : null;
 });
 
 export async function playerAccount(slug: string) {
   const [casino, session] = await Promise.all([casinoBySlug(slug), platformSession()]);
   if (casino?.status !== "active" || session?.profile.role !== "player" || session.profile.casino_id !== casino.id) return null;
   const balanceCents = await supabaseRequest<number>("/rest/v1/rpc/player_chip_balance", session.auth, {});
-  return { email: session.email, balanceCents, casino, session };
+  return { displayName: session.profile.display_name, balanceCents, casino, session };
 }
 
 export async function housePlayers(slug: string) {

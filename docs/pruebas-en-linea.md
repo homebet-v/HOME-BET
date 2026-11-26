@@ -39,7 +39,7 @@ Copiá la plantilla `apps/web/.env.example` a `apps/web/.env.local` si el archiv
 
 Git ignora ambos archivos `.env.local`. El token personal de la CLI sirve para autenticar la CLI. La app usa las claves del proyecto que figuran en la tabla.
 
-En Supabase Auth, habilitá el proveedor correo y la confirmación por email. Configurá una URL pública de jugadores como **Site URL** para las confirmaciones. El usuario confirma su correo y luego inicia sesión en el host donde se registró. Cada usuario de Auth tiene un perfil asignado a una sola casa.
+En Supabase Auth, habilitá el proveedor correo para el acceso de Home y administradores. Deshabilitá el alta pública desde Supabase Auth. El portal de jugadores registra cuentas por CI y contraseña desde el servidor y asigna cada cuenta a la casa donde se creó. El registro por CI no comprueba la titularidad del documento. Para pasar cuentas de jugadores que ya se crearon por correo al acceso por CI, hay que vincularlas a su identificación interna conservando el UUID de Auth y el saldo.
 
 ## Primer ingreso
 
@@ -61,7 +61,7 @@ En Supabase Auth, habilitá el proveedor correo y la confirmación por email. Co
    ```
 
 4. Desde **Catálogo** en Home, publicá la biblioteca de juegos incluida. En **Juegos** del panel de cada casa, activá los que quieras mostrar a sus jugadores.
-5. Registrá un jugador desde el portal de la casa, confirmá el correo y entrá con esa cuenta. En el panel de la misma casa, usá **Cargas** para acreditar fichas. En el portal, verificá saldo y movimiento. Probá también que un usuario de la otra casa no pueda entrar con esa cuenta ni leer el movimiento.
+5. Registrá un jugador con su CI desde el portal de la casa. La sesión se abre al finalizar el registro. En el panel de la misma casa, usá **Cargas** para acreditar fichas. En el portal, verificá saldo y movimiento. Probá también que un usuario de la otra casa no pueda entrar con esa cuenta ni leer el movimiento.
 
 Los saldos nuevos empiezan en cero y se calculan a partir del historial de fichas. Los juegos siguen funcionando con fichas de prueba separadas de la cuenta. Las rondas con saldo de cuenta, los retiros y la revisión de comprobantes aún requieren flujos propios.
 

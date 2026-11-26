@@ -1,5 +1,6 @@
 "use server";
 
+import { createHash } from "node:crypto";
 import { cookies, headers } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { catalog } from "./game-library";
@@ -14,23 +15,37 @@ export async function authenticate(form: FormData): Promise<ActionResult> {
   const request = await headers();
   const surface = request.get("x-homebet-surface");
   const slug = request.get("x-homebet-slug") ?? "";
-  const email = String(form.get("email") ?? "").trim().toLowerCase();
+  const isPlayer = surface === "casa";
+  const identifier = String(form.get(isPlayer ? "ci" : "email") ?? "").trim().toLowerCase();
   const password = String(form.get("password") ?? "");
   const register = form.get("mode") === "register";
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || email.length > 254 || password.length < 8 || password.length > 72)
-    return { ok: false, message: "Ingresá un correo válido y una contraseña de 8 a 72 caracteres." };
+  const validIdentifier = isPlayer ? /^[0-9]{5,15}$/.test(identifier)
+    : identifier.length <= 254 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(identifier);
+  if (!validIdentifier || password.length < 8 || password.length > 72)
+    return { ok: false, message: isPlayer
+      ? "Ingresá tu número de CI sin puntos y una contraseña de 8 a 72 caracteres."
+      : "Ingresá un correo válido y una contraseña de 8 a 72 caracteres." };
 
   try {
-    const casino = surface === "admin" || surface === "casa" ? await casinoBySlug(slug) : null;
-    if ((surface === "casa" || surface === "admin") && casino?.status !== "active")
+    const casino = surface === "admin" || isPlayer ? await casinoBySlug(slug) : null;
+    if ((surface === "admin" || isPlayer) && casino?.status !== "active")
       return { ok: false, message: "Esta casa no está disponible." };
+
+    // Auth accepts email/password. Use a stable internal identifier scoped to the house.
+    const email = isPlayer && casino
+      ? `${createHash("sha256").update(`${casino.id}:${identifier}`).digest("hex")}@players.homebet.example`
+      : identifier;
+
     if (register) {
-      if (surface !== "casa" || password !== form.get("confirmation"))
+      if (!isPlayer || password !== form.get("confirmation"))
         return { ok: false, message: "Revisá la confirmación de la contraseña." };
       const name = String(form.get("name") ?? "").trim();
       if (name.length < 2 || name.length > 80) return { ok: false, message: "Ingresá tu nombre." };
-      await supabaseRequest("/auth/v1/signup", "public", { email, password, data: { casino_slug: slug, display_name: name } });
-      return { ok: true, message: "Revisá tu correo para confirmar la cuenta. Después podés ingresar desde esta casa." };
+      await supabaseRequest("/auth/v1/admin/users", "service", {
+        email, password, email_confirm: true,
+        app_metadata: { player_casino_slug: slug },
+        user_metadata: { display_name: name },
+      });
     }
     const session = await supabaseRequest<Session & { user: { id: string } }>(
       "/auth/v1/token?grant_type=password", "public", { email, password },
@@ -47,7 +62,10 @@ export async function authenticate(form: FormData): Promise<ActionResult> {
     for (const [key, value] of Object.entries(sessionValues(session))) jar.set(key, value, options);
     return { ok: true, message: "" };
   } catch {
-    return { ok: false, message: "No se pudo completar el acceso. Verificá los datos y la confirmación de tu correo." };
+    return { ok: false, message: isPlayer
+      ? register ? "No se pudo crear la cuenta. Si ya te registraste, probá ingresar con tu CI."
+        : "No se pudo ingresar. Revisá tu CI y contraseña."
+      : "No se pudo completar el acceso. Verificá los datos y la confirmación de tu correo." };
   }
 }
 

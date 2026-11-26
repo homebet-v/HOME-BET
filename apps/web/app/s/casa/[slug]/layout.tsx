@@ -24,7 +24,7 @@ async function CasaFrame({ params, children }: { params: Promise<{ slug: string 
   const appearance = defaultAppearance(house.name);
   const overlay = Math.round((appearance.backgroundOverlay ?? 45) * 2.55).toString(16).padStart(2, "0");
   return (
-    <PlayerSessionProvider key={slug} account={account ? { email: account.email, balanceCents: account.balanceCents } : null}>
+    <PlayerSessionProvider key={slug} account={account ? { displayName: account.displayName, balanceCents: account.balanceCents } : null}>
       <GameAssetCache />
       <div
         className="casino-scenery min-h-dvh min-w-0 flex-1"

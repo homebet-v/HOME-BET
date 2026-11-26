@@ -2,7 +2,7 @@
 
 import { createContext, useContext, type ReactNode } from "react";
 
-export type PlayerSession = { email: string | null; balanceCents: number } | null;
+export type PlayerSession = { displayName: string | null; balanceCents: number } | null;
 const PlayerContext = createContext<PlayerSession>(null);
 
 export function PlayerSessionProvider({ account, children }: { account: PlayerSession; children: ReactNode }) {
