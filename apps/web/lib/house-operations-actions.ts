@@ -46,7 +46,13 @@ export async function loadAdminPlayer(playerId: string) {
   ]);
   if (!rows[0]) return null;
   const prefix = `${casino.id}/${playerId}/identity/`;
-  return { movements, available: photoKeys.filter((key) => rows[0].identity_files[key]?.startsWith(prefix)) };
+  const files = rows[0].identity_files;
+  const available = photoKeys.filter((key) => files[key]?.startsWith(prefix));
+  const previews = await Promise.all(available.map(async (key) => {
+    const path = files[key];
+    return [key, path ? await signedHouseDocument(path).catch(() => null) : null] as const;
+  }));
+  return { movements, available, previews: Object.fromEntries(previews) as Partial<Record<keyof IdentityPhotos, string | null>> };
 }
 
 export async function openPlayerDocument(playerId: string, key: keyof IdentityPhotos) {

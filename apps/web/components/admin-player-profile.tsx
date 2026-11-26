@@ -7,8 +7,8 @@ import { NavIcon } from "@/components/nav-icon";
 import {
   loadAdminPlayer, openPlayerDocument, reviewAdminPlayer, saveAdminPlayer,
 } from "@/lib/house-operations-actions";
-import type { DirectoryPlayer, PlayerMovement } from "@/lib/house-operations";
-import { verificationLabels, type IdentityPhotos } from "@/lib/verification";
+import type { DirectoryPlayer } from "@/lib/house-operations";
+import { verificationLabels } from "@/lib/verification";
 
 const format = (cents: number) => new Intl.NumberFormat("es-PY", { maximumFractionDigits: 2 }).format(cents / 100);
 const dates = new Intl.DateTimeFormat("es-PY", { dateStyle: "short", timeStyle: "short", timeZone: "America/Asuncion" });
@@ -29,7 +29,7 @@ function Heading({ icon, children }: { icon: string; children: ReactNode }) {
 export function AdminPlayerProfile({ player, houseName }: { player: DirectoryPlayer; houseName: string }) {
   const router = useRouter();
   const dialog = useRef<HTMLDialogElement>(null);
-  const [activity, setActivity] = useState<{ movements: PlayerMovement[]; available: (keyof IdentityPhotos)[] } | null>(null);
+  const [activity, setActivity] = useState<Awaited<ReturnType<typeof loadAdminPlayer>>>(null);
   const [asset, setAsset] = useState<{ url: string; title: string } | null>(null);
   const [tab, setTab] = useState<"movements" | "verification">("movements");
   const [message, setMessage] = useState("");
@@ -88,14 +88,29 @@ export function AdminPlayerProfile({ player, houseName }: { player: DirectoryPla
         <section>
           <Heading icon="/registros">Documento y verificación</Heading>
           <div className="grid grid-cols-3 gap-2">
-            {photos.map(([key, title]) => <button key={key} type="button" className={button} disabled={!activity?.available.includes(key)} onClick={async () => {
-              try {
-                const url = await openPlayerDocument(player.id, key);
-                if (!url) { setMessage("Documento no disponible."); return; }
-                setAsset({ url, title });
-                dialog.current?.showModal();
-              } catch { setMessage("No se pudo abrir el documento."); }
-            }}>{title}<span className="mt-1 block text-[10px] text-slate-400">{activity?.available.includes(key) ? "Ampliar" : "Sin foto"}</span></button>)}
+            {photos.map(([key, title]) => {
+              const available = activity?.available.includes(key);
+              const preview = activity?.previews[key];
+              return <button key={key} type="button" disabled={!available}
+                className="group min-w-0 overflow-hidden rounded-lg border border-white/15 bg-black/25 text-left hover:border-sky-400 focus-visible:outline-2 focus-visible:outline-sky-300"
+                onClick={async () => {
+                  try {
+                    const url = await openPlayerDocument(player.id, key);
+                    if (!url) { setMessage("Documento no disponible."); return; }
+                    setAsset({ url, title });
+                    dialog.current?.showModal();
+                  } catch { setMessage("No se pudo abrir el documento."); }
+                }}>
+                <div className="relative grid aspect-[4/3] place-items-center bg-black/35 px-1 text-center text-[10px] text-slate-400">
+                  {preview ? <img src={preview} alt={`Vista previa de ${title}`} referrerPolicy="no-referrer" decoding="async"
+                    className="absolute inset-0 size-full object-contain" />
+                    : !activity ? "Cargando…" : available ? "Vista previa no disponible" : "Sin foto"}
+                </div>
+                <span className="block px-2 py-2 text-center text-xs font-semibold">{title}
+                  {available && <span className="mt-0.5 block text-[10px] font-normal text-sky-300 group-hover:underline">Ampliar</span>}
+                </span>
+              </button>;
+            })}
           </div>
           {player.status === "pending" && activity && activity.available.length !== 3 &&
             <p className="mt-3 text-xs text-slate-400">La aprobación se habilita cuando se reciben las tres fotos.</p>}
