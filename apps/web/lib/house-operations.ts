@@ -3,16 +3,17 @@ import "server-only";
 import { adminSession, playerHouseSession } from "./platform";
 import { supabaseRequest } from "./supabase";
 import { emptyDetails, emptyPhotos, type IdentityDetails, type IdentityPhotos, type Registration } from "./verification";
+import type { LedgerKind } from "./wallet";
 import type { DepositBonus, DepositRequest } from "./deposits";
 
 type DirectoryRow = {
   id: string; display_name: string | null; identity_number: string | null;
   identity_details: Partial<IdentityDetails>; verification_decision: "pending" | "denied" | "rejected";
   verification_reason: string; verification_submitted_at: string | null;
-  created_at: string; verified_at: string | null; last_sign_in_at: string | null; balance_cents: number;
+  created_at: string; verified_at: string | null; last_sign_in_at: string | null; balance_cents: number; withdrawable_cents: number;
 };
-export type DirectoryPlayer = Registration & { balanceCents: number };
-export type PlayerMovement = { id: string; kind: "adjustment" | "stake" | "win"; amount_cents: number; created_at: string };
+export type DirectoryPlayer = Registration & { balanceCents: number; withdrawableCents: number };
+export type PlayerMovement = { id: string; kind: LedgerKind; amount_cents: number; created_at: string };
 export type DepositRow = DepositRequest & { receiptAvailable: boolean };
 
 export async function housePlayerDirectory(slug: string) {
@@ -24,7 +25,7 @@ export async function housePlayerDirectory(slug: string) {
     id: row.id, casinoId: casino.id, ci: row.identity_number ?? "",
     details: { ...emptyDetails, firstName: row.display_name ?? "", ...row.identity_details },
     photos: emptyPhotos, status: row.verified_at ? "verified" : row.verification_decision,
-    balanceCents: row.balance_cents, reason: row.verification_reason, submittedAt: row.verification_submitted_at,
+    balanceCents: row.balance_cents, withdrawableCents: row.withdrawable_cents, reason: row.verification_reason, submittedAt: row.verification_submitted_at,
     createdAt: row.created_at, lastSignInAt: row.last_sign_in_at ?? undefined,
   })) };
 }

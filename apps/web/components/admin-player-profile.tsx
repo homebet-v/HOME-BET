@@ -3,6 +3,8 @@
 import { useEffect, useState, useRef, type ReactNode } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { WalletBreakdown } from "@/components/wallet-breakdown";
+import { ledgerMovementLabels } from "@/lib/wallet";
 import { NavIcon } from "@/components/nav-icon";
 import {
   loadAdminPlayer, openPlayerDocument, reviewAdminPlayer, saveAdminPlayer,
@@ -81,7 +83,7 @@ export function AdminPlayerProfile({ player, houseName }: { player: DirectoryPla
         </section>
         <section className="border-t border-white/10 pt-4">
           <Heading icon="/fichas">Saldo y fichas</Heading>
-          <p className="text-2xl font-bold tabular-nums">{format(player.balanceCents)} <span className="text-sm text-slate-400">fichas</span></p>
+          <WalletBreakdown totalCents={player.balanceCents} withdrawableCents={player.withdrawableCents} />
         </section>
       </div>
       <div className={card}>
@@ -149,7 +151,7 @@ export function AdminPlayerProfile({ player, houseName }: { player: DirectoryPla
       {tab === "verification" ? <p className="text-sm">{verificationLabels[player.status]}{player.reason && ` · ${player.reason}`}</p>
         : activity?.movements.length ? <div className="overflow-x-auto"><table className="w-full text-left text-xs">
           <thead><tr><th>Fecha</th><th>Movimiento</th><th className="text-right">Fichas</th></tr></thead>
-          <tbody>{activity.movements.map((movement) => <tr key={movement.id} className="border-t border-white/10"><td className="py-2">{date(movement.created_at)}</td><td>{{ adjustment: "Acreditación", stake: "Apuesta", win: "Premio" }[movement.kind]}</td><td className="text-right tabular-nums">{format(movement.amount_cents)}</td></tr>)}</tbody>
+          <tbody>{activity.movements.map((movement) => <tr key={movement.id} className="border-t border-white/10"><td className="py-2">{date(movement.created_at)}</td><td>{ledgerMovementLabels[movement.kind]}</td><td className="text-right tabular-nums">{format(movement.amount_cents)}</td></tr>)}</tbody>
         </table></div> : <p className="text-xs text-slate-400">{activity ? "Todavía no hay movimientos." : "Cargando movimientos…"}</p>}
     </div>
     <dialog ref={dialog} aria-label="Documento ampliado" onClose={() => setAsset(null)} className="fixed inset-0 m-auto w-[min(850px,95vw)] rounded-xl border border-white/15 bg-[#101c35] p-4 text-white backdrop:bg-black/80">

@@ -57,7 +57,7 @@ En Supabase Auth, habilitá el proveedor correo para el acceso de Home y adminis
 6. Desde el portal del jugador, enviá una solicitud de carga con comprobante. En **Cargas** del panel se puede revisar, acreditar o rechazar. La acreditación y el cambio de estado se registran en una sola transacción. La acreditación manual sigue disponible como operación aparte.
 7. Probá que un administrador de otra casa no vea la ficha, sus documentos ni la solicitud.
 
-Los saldos empiezan en cero y se calculan a partir del historial real. Los comprobantes y las fotos se guardan en un bucket privado y el panel genera un enlace temporal al abrirlos. El editor de **Cajeros** guarda la configuración. El acceso operativo de cajeros, los retiros y las partidas con saldo de cuenta requieren flujos propios. Los juegos conservan sus fichas de prueba separadas.
+Los saldos empiezan en cero y se calculan a partir del historial real. Las cargas y bonos se usan para jugar. Los premios registrados son retirables, y una apuesta consume primero las fichas no retirables. Los comprobantes y las fotos se guardan en un bucket privado y el panel genera un enlace temporal al abrirlos. El editor de **Cajeros** guarda la configuración. El acceso operativo de cajeros, los retiros y las partidas con saldo de cuenta requieren flujos propios. Los juegos conservan sus fichas de prueba separadas.
 
 
 [Flujo de migraciones de Supabase](https://supabase.com/docs/guides/local-development/cli-workflows) · [Permisos de la Data API](https://supabase.com/docs/guides/api/securing-your-api)

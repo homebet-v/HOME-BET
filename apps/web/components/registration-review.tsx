@@ -52,7 +52,7 @@ export function RegistrationReview({ players, houseName, mode = "registrations" 
         </button>
         {(query || filter) && <button type="button" onClick={() => { setQuery(""); setFilter(""); setPage(1); }} className="px-2 py-2 text-xs text-sky-300 hover:underline">Limpiar</button>}
       </div>
-      <div className="player-list-heading px-2 py-1.5 text-[10px] text-slate-400" aria-hidden="true"><span /><span>Usuario / Verificación</span><span>Correo electrónico</span><span className="text-right">Saldo</span><span>Último ingreso</span><span>Registro</span><span /></div>
+      <div className="player-list-heading px-2 py-1.5 text-[10px] text-slate-400" aria-hidden="true"><span /><span>Usuario / Verificación</span><span>Correo electrónico</span><span className="text-right">Saldo / Retirable</span><span>Último ingreso</span><span>Registro</span><span /></div>
       <ul aria-label="Usuarios de esta casa" className="overflow-hidden divide-y divide-white/5">{pageRows.map((row) => {
         const name = `${row.details.firstName} ${row.details.lastName}`.trim() || (row.ci ? `CI ${row.ci}` : "Jugador");
         const stateColor = row.status === "verified" ? "text-emerald-300" : row.status === "rejected" ? "text-red-300" : "text-amber-200";
@@ -60,7 +60,7 @@ export function RegistrationReview({ players, houseName, mode = "registrations" 
           <span aria-hidden="true" className="flex size-6 shrink-0 items-center justify-center rounded-full border border-sky-300/15 bg-sky-400/10 text-sky-200"><NavIcon href="/perfil" className="!size-3.5" /></span>
           <span className="min-w-0"><span className="block truncate text-xs font-semibold text-slate-100" title={name}>{name}</span><span className="flex flex-wrap items-center gap-x-1.5 text-[10px] leading-3.5"><span className="whitespace-nowrap text-slate-400">CI {row.ci || "sin registrar"}</span><span className={stateColor}>{row.status === "denied" ? "Denegado" : verificationLabels[row.status]}</span>{row.status === "pending" && <span className="text-slate-400">{row.submittedAt ? "Documentos recibidos" : "Faltan documentos"}</span>}</span></span>
           <span className="player-list-extra min-w-0 truncate text-[11px] text-slate-400" title={row.details.email}>{row.details.email || "Sin completar"}</span>
-          <span className="whitespace-nowrap text-right"><span className="block text-xs font-bold tabular-nums">{new Intl.NumberFormat("es-PY").format(row.balanceCents / 100)} <span className="hidden text-[9px] font-normal text-slate-500 sm:inline">fichas</span></span></span>
+          <span className="whitespace-nowrap text-right"><span className="block text-xs font-bold tabular-nums">{new Intl.NumberFormat("es-PY").format(row.balanceCents / 100)} <span className="hidden text-[9px] font-normal text-slate-500 sm:inline">fichas</span></span><span className="block text-[9px] leading-3.5 text-slate-400">Retirable: {new Intl.NumberFormat("es-PY").format(row.withdrawableCents / 100)}</span></span>
           <span className="player-list-extra text-[10px] text-slate-400">{row.lastSignInAt ? dateLabel(row.lastSignInAt) : "Sin accesos registrados"}</span>
           <span className="player-list-extra text-[10px] text-slate-400">{dateLabel(row.createdAt)}</span>
           <svg aria-hidden="true" width="12" height="16" viewBox="0 0 16 24" fill="none" className="text-slate-500"><path d="m5 6 6 6-6 6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /></svg>

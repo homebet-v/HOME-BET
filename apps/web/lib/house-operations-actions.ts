@@ -42,7 +42,7 @@ export async function loadAdminPlayer(playerId: string) {
     supabaseRequest<{ identity_files: Partial<IdentityPhotos> }[]>(
       `/rest/v1/profiles?select=identity_files&id=eq.${playerId}&role=eq.player&casino_id=eq.${casino.id}`, session.auth),
     supabaseRequest<PlayerMovement[]>(
-      `/rest/v1/ledger_entries?select=id,kind,amount_cents,created_at&player_id=eq.${playerId}&casino_id=eq.${casino.id}&order=created_at.desc&limit=50`, session.auth),
+      `/rest/v1/ledger_entries?select=id,kind,amount_cents,created_at&player_id=eq.${playerId}&casino_id=eq.${casino.id}&order=created_at.desc,ledger_position.desc&limit=50`, session.auth),
   ]);
   if (!rows[0]) return null;
   const prefix = `${casino.id}/${playerId}/identity/`;

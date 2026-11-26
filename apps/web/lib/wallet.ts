@@ -1,4 +1,4 @@
-/** Modelo de demostración. Importes enteros en centésimos de ficha. */
+/** Reglas de saldo. Importes enteros en centésimos de ficha. */
 export type Wallet = { totalCents: number; withdrawableCents: number };
 export type WalletMovement = { id: string; type: "deposit" | "bonus" | "stake" | "prize" | "withdrawal"; amountCents: number };
 const validAmount = (value: number) => Number.isSafeInteger(value) && value > 0;
@@ -33,3 +33,12 @@ export function walletFromMovements(movements: readonly WalletMovement[]): Walle
     return applyWalletMovement(wallet, movement);
   }, { totalCents: 0, withdrawableCents: 0 });
 }
+
+export type LedgerKind = "adjustment" | "stake" | "win" | "withdrawal";
+
+export const ledgerMovementLabels: Record<LedgerKind, string> = {
+  adjustment: "Acreditación",
+  stake: "Apuesta",
+  win: "Premio",
+  withdrawal: "Retiro",
+};

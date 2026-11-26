@@ -1,3 +1,4 @@
+import type { LedgerKind } from "./wallet";
 import { catalog } from "./game-library";
 import { cache } from "react";
 import { cookies } from "next/headers";
@@ -8,7 +9,7 @@ export type Profile = {
   id: string; casino_id: string | null; role: "player" | "casino_admin" | "superadmin";
   display_name: string | null; created_at: string; verified_at: string | null;
 };
-type Entry = { id: string; amount_cents: number; kind: "stake" | "win" | "adjustment"; created_at: string };
+type Entry = { id: string; amount_cents: number; kind: LedgerKind; created_at: string };
 
 export const casinoBySlug = cache(async (slug: string) => {
   if (!supabaseConfigured()) return null;
@@ -43,8 +44,13 @@ export const playerHouseSession = cache(async (slug: string) => {
 export const playerAccount = cache(async (slug: string) => {
   const account = await playerHouseSession(slug);
   if (!account?.session.profile.verified_at) return null;
-  const balanceCents = await supabaseRequest<number>("/rest/v1/rpc/player_chip_balance", account.session.auth, {});
-  return { ...account, displayName: account.session.profile.display_name, balanceCents };
+  const [wallet] = await supabaseRequest<{ total_cents: number; withdrawable_cents: number }[]>(
+    "/rest/v1/rpc/read_player_wallet", account.session.auth,
+    { target_casino: account.casino.id, target_player: account.session.profile.id },
+  );
+  if (!wallet) return null;
+  return { ...account, displayName: account.session.profile.display_name,
+    balanceCents: wallet.total_cents, withdrawableCents: wallet.withdrawable_cents };
 });
 
 export async function housePlayers(slug: string) {
@@ -62,7 +68,7 @@ export async function playerLedger(slug: string) {
   const account = await playerAccount(slug);
   if (!account) return null;
   const entries = await supabaseRequest<Entry[]>(
-    `/rest/v1/ledger_entries?select=id,amount_cents,kind,created_at&casino_id=eq.${account.casino.id}&player_id=eq.${account.session.profile.id}&order=created_at.desc&limit=50`,
+    `/rest/v1/ledger_entries?select=id,amount_cents,kind,created_at&casino_id=eq.${account.casino.id}&player_id=eq.${account.session.profile.id}&order=created_at.desc,ledger_position.desc&limit=50`,
     account.session.auth,
   );
   return { ...account, entries };
