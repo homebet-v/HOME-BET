@@ -72,8 +72,8 @@ export async function playerIdentitySession(slug: string) {
   const [casino, session] = await Promise.all([casinoBySlug(slug), platformSession()]);
   if (casino?.status !== "active" || session?.profile.role !== "player" || session.profile.casino_id !== casino.id) return null;
   const [details] = await supabaseRequest<{
-    identity_details: Partial<IdentityDetails>; identity_files: Partial<IdentityPhotos>;
+    identity_number: string | null; identity_details: Partial<IdentityDetails>; identity_files: Partial<IdentityPhotos>;
     verification_decision: "pending" | "denied" | "rejected"; verification_reason: string; verification_submitted_at: string | null;
-  }[]>(`/rest/v1/profiles?select=identity_details,identity_files,verification_decision,verification_reason,verification_submitted_at&id=eq.${session.profile.id}`, session.auth);
+  }[]>(`/rest/v1/profiles?select=identity_number,identity_details,identity_files,verification_decision,verification_reason,verification_submitted_at&id=eq.${session.profile.id}`, session.auth);
   return details ? { casino, session, details } : null;
 }

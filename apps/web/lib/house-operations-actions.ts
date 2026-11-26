@@ -92,15 +92,24 @@ export async function submitIdentity(form: FormData) {
     return { ok: false, message: "La cuenta todavía no admite otra solicitud." };
   const { details, error } = readIdentity(form);
   if (error) return { ok: false, message: error };
-  const prefix = `${account.casino.id}/${account.session.profile.id}/identity/${randomUUID()}`;
+  const directory = `${account.casino.id}/${account.session.profile.id}/identity/`;
+  const prefix = `${directory}${randomUUID()}`;
   try {
-    const images = photoKeys.map((key) => form.get(key));
-    if (!images.every((file) => file instanceof File && file.size > 0 && file.size <= 1000000))
-      return { ok: false, message: "Cargá las tres fotos, de hasta 1 MB cada una." };
-    const uploads = await Promise.all(images.map((image, index) => uploadHouseDocument(`${prefix}-${photoKeys[index]}`, image as File, 1000000)));
+    const files: Partial<IdentityPhotos> = {};
+    const replacements = photoKeys.map((key) => {
+      const entry = form.get(key);
+      if (entry instanceof File && entry.size) return { key, image: entry };
+      const existing = account.details.identity_files[key];
+      if (existing?.startsWith(directory)) files[key] = existing;
+      return { key, image: null };
+    });
+    if (replacements.some(({ key, image }) => image ? image.size > 1000000 : !files[key]))
+      return { ok: false, message: "Completá las tres fotos. Cada imagen nueva debe pesar hasta 1 MB." };
+    for (const { key, image } of replacements) {
+      if (image) files[key] = await uploadHouseDocument(`${prefix}-${key}`, image, 1000000);
+    }
     const ok = await supabaseRequest<boolean>("/rest/v1/rpc/submit_player_identity", "service", {
-      target_casino: account.casino.id, target_player: account.session.profile.id, details,
-      files: Object.fromEntries(photoKeys.map((key, index) => [key, uploads[index]])),
+      target_casino: account.casino.id, target_player: account.session.profile.id, details, files,
     });
     return { ok, message: ok ? "Solicitud enviada a revisión." : "No se pudo enviar la solicitud." };
   } catch {

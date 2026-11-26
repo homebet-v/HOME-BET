@@ -45,7 +45,8 @@ export function PlayerAccess({ appearance, open, onClose }: { appearance: Appear
         <p className="text-lg font-semibold text-[color:var(--access-accent)]">{new Intl.NumberFormat("es-PY").format(account.balanceCents / 100)} fichas</p>
         <div className="flex flex-wrap items-center gap-4">
           <Link href="/saldo" className="underline" onClick={() => dialog.current?.close()}>Ver movimientos</Link>
-          <SignOut />
+          <Link href="/verificacion" className="underline" onClick={() => dialog.current?.close()}>Datos y verificación</Link>
+        <SignOut />
         </div>
       </div> : <PlatformLogin player />}
     </div>
