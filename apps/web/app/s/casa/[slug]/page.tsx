@@ -2,13 +2,13 @@ import { CasinoLobby } from "@/components/casino-lobby";
 import { defaultAppearance } from "@/lib/appearance";
 import { HouseGate } from "@/components/house-gate";
 import { MissingHouse } from "@/components/missing-house";
-import { enabledCatalog, houseBySlug } from "@/lib/fixtures";
+import { casinoBySlug, publicHouseCatalog } from "@/lib/platform";
 
-function Lobby({ slug }: { slug: string }) {
-  const house = houseBySlug(slug);
+async function Lobby({ slug }: { slug: string }) {
+  const house = await casinoBySlug(slug);
   if (!house) return <MissingHouse slug={slug} />;
 
-  const games = enabledCatalog(slug);
+  const games = await publicHouseCatalog(slug);
   const suspended = house.status === "suspended";
 
   return suspended ? <p className="text-sm text-zinc-400">Esta casa está suspendida.</p> : <CasinoLobby appearance={defaultAppearance(house.name)} games={games} />;

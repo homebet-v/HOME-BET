@@ -5,7 +5,7 @@ async function ReadSlug({
   children,
 }: {
   params: Promise<{ slug: string }>;
-  children: (slug: string) => ReactNode;
+  children: (slug: string) => ReactNode | Promise<ReactNode>;
 }) {
   const { slug } = await params;
   return children(slug);
@@ -16,7 +16,7 @@ export function HouseGate({
   children,
 }: {
   params: Promise<{ slug: string }>;
-  children: (slug: string) => ReactNode;
+  children: (slug: string) => ReactNode | Promise<ReactNode>;
 }) {
   return (
     <Suspense fallback={<p className="text-sm text-zinc-500">Cargando la casa…</p>}>

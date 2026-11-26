@@ -1,49 +1,22 @@
 import type { Metadata } from "next";
 import { Suspense, type ReactNode } from "react";
 import { AdminShell } from "@/components/admin-shell";
-import { houseBySlug } from "@/lib/fixtures";
+import { SignOut } from "@/components/platform-login";
+import { PlatformPanelLogin } from "@/components/platform-panel-login";
+import { adminSession } from "@/lib/platform";
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+export const metadata: Metadata = { title: "Administración · Homebet" };
+
+async function AuthorizedAdmin({ params, children }: { params: Promise<{ slug: string }>; children: ReactNode }) {
   const { slug } = await params;
-  const name = houseBySlug(slug)?.name ?? "Casino";
-  return {
-    title: { absolute: name },
-    description: `Panel de ${name}.`,
-  };
+  const authorized = await adminSession(slug);
+  if (!authorized) return <PlatformPanelLogin title="Ingresar al panel de la casa" />;
+  return <AdminShell name={authorized.casino.name}>
+    <div className="mb-4 flex justify-end"><SignOut /></div>
+    {children}
+  </AdminShell>;
 }
 
-
-async function AdminFrame({
-  params,
-  children,
-}: {
-  params: Promise<{ slug: string }>;
-  children: ReactNode;
-}) {
-  const { slug } = await params;
-  return (
-    <AdminShell name={houseBySlug(slug)?.name ?? slug}>
-      {children}
-    </AdminShell>
-  );
-}
-
-export default function AdminLayout({
-  children,
-  params,
-}: {
-  children: ReactNode;
-  params: Promise<{ slug: string }>;
-}) {
-  return (
-    <Suspense
-      fallback={
-        <AdminShell name="Mi casino">
-          <p className="text-sm text-zinc-500">Cargando la casa…</p>
-        </AdminShell>
-      }
-    >
-      <AdminFrame params={params}>{children}</AdminFrame>
-    </Suspense>
-  );
+export default function AdminLayout({ children, params }: { children: ReactNode; params: Promise<{ slug: string }> }) {
+  return <Suspense fallback={<p className="p-6">Cargando la casa…</p>}><AuthorizedAdmin params={params}>{children}</AuthorizedAdmin></Suspense>;
 }

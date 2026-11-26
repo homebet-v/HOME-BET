@@ -5,24 +5,64 @@
 1. Importá el repositorio en un único proyecto de Vercel. Elegí **Next.js** como preset y **`apps/web`** como Root Directory. Activá **Include source files outside of the Root Directory in the Build Step** para que Vercel incluya el workspace `packages/proveedores`. Dejá los comandos de instalación y build en automático y seleccioná Node.js 22.x, la versión usada en la prueba local.
 2. En las variables del entorno que sirve los dominios de prueba, agregá `NEXT_PUBLIC_ROOT_DOMAIN` con el dominio raíz, sin protocolo ni puerto. Por ejemplo, `ejemplo.com`. Volvé a desplegar después de cambiarlo, porque Next.js incorpora las variables públicas al build.
 3. En **Settings → Domains**, agregá `ejemplo.com` y `*.ejemplo.com` al mismo proyecto. Para el wildcard, configurá los nameservers que indica Vercel. Si el dominio ya tiene correo u otros servicios, trasladá sus registros DNS antes de cambiar los nameservers.
-4. Cuando Vercel confirme DNS y HTTPS, ejecutá `bash scripts/check-staging.sh ejemplo.com` desde la raíz. La prueba usa `curl` y `rg`. Verifica el ápice, Home, los paneles y las casas de Krakenbet y Kairobet, la redirección de una ruta interna y una ruta inexistente. Para probar el mismo enrutamiento en local, iniciá la app con `npm run dev` y pasá `localhost` como dominio.
+4. Cuando Vercel confirme DNS y HTTPS, después de crear Krakenbet y Kairobet en Supabase, ejecutá `bash scripts/check-staging.sh ejemplo.com` desde la raíz. La prueba usa `curl` y `rg`. Verifica el ápice, Home, los paneles y las casas de Krakenbet y Kairobet, la redirección de una ruta interna y una ruta inexistente. Para probar el mismo enrutamiento en local, iniciá la app con `npm run dev` y pasá `localhost` como dominio.
 
 Los hosts de prueba son `home.ejemplo.com`, `krakenbet.ejemplo.com`, `krakenbet-admin.ejemplo.com`, `kairobet.ejemplo.com` y `kairobet-admin.ejemplo.com`. El comodín cubre todos esos nombres. La URL de Vercel compartida para la prueba abre Home en los despliegues que incluyan este cambio. Las URLs nuevas que Vercel facilite mediante `VERCEL_URL` o `VERCEL_PROJECT_PRODUCTION_URL` también abren Home si terminan en `.vercel.app`. Usá el dominio propio para probar las casas y sus paneles.
-
-Las pantallas, usuarios, fichas y operaciones de esta etapa usan datos de demostración. Usá solamente datos ficticios durante la prueba, incluidos los formularios de cuenta y de cargas.
 
 [Vercel y monorepos](https://vercel.com/docs/monorepos/monorepo-faq) · [Dominios y wildcard](https://vercel.com/docs/domains/working-with-domains/add-a-domain)
 
 ## Supabase
 
-Usá un solo proyecto Supabase de prueba para todas las casas. Desde la raíz, con la CLI autenticada y el ID del proyecto de prueba, revisá las migraciones pendientes antes de aplicarlas.
+Usá un solo proyecto Supabase para todas las casas. Copiá `supabase/.env.example` a `supabase/.env.local` si hace falta y completá el token personal de Supabase y la referencia del proyecto. Si la CLI necesita contraseña de Postgres, agregala a ese mismo archivo. Ejecutá estos comandos desde la raíz para inspeccionar y aplicar las migraciones al proyecto que indicaste.
 
 ```bash
-supabase link --project-ref <id-del-proyecto>
-supabase db push --dry-run --remote
-supabase db push --remote
+(
+  set -a
+  source supabase/.env.local
+  set +a
+  : "${SUPABASE_ACCESS_TOKEN:?Completá el token en supabase/.env.local}"
+  : "${SUPABASE_PROJECT_REF:?Completá la referencia en supabase/.env.local}"
+  if [ -z "${SUPABASE_DB_PASSWORD:-}" ]; then unset SUPABASE_DB_PASSWORD; fi
+  supabase link --project-ref "$SUPABASE_PROJECT_REF" &&
+  supabase db push --linked --dry-run &&
+  supabase db push --linked
+)
 ```
 
-Las migraciones crean el esquema y las políticas RLS y declaran explícitamente los permisos de la Data API. El deploy de Vercel puede probarse antes de configurar credenciales. Para que la app use la base, todavía hace falta integrar Auth y las lecturas con sesión y validar el aislamiento entre dos casas. La primera prueba de dominios verifica el enrutamiento HTTP.
+Copiá la plantilla `apps/web/.env.example` a `apps/web/.env.local` si el archivo local todavía no existe. Completá en ese archivo o en **Environment Variables** de Vercel:
+
+| Variable | Valor |
+|---|---|
+| `NEXT_PUBLIC_SUPABASE_URL` | URL del proyecto |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Clave publicable |
+| `SUPABASE_SECRET_KEY` | Clave secreta del servidor |
+
+Git ignora ambos archivos `.env.local`. El token personal de la CLI sirve para autenticar la CLI. La app usa las claves del proyecto que figuran en la tabla.
+
+En Supabase Auth, habilitá el proveedor correo y la confirmación por email. Configurá una URL pública de jugadores como **Site URL** para las confirmaciones. El usuario confirma su correo y luego inicia sesión en el host donde se registró. Cada usuario de Auth tiene un perfil asignado a una sola casa.
+
+## Primer ingreso
+
+1. Creá en **Authentication → Users** una cuenta para administrar Home. Copiá el UUID de ese usuario y ejecutá esta sentencia, sustituyendo el marcador por el UUID real.
+
+   ```sql
+   insert into public.profiles (id, role)
+   values ('UUID_DEL_USUARIO_DE_HOME', 'superadmin');
+   ```
+
+2. Entrá en Home con esa cuenta. Creá cada casa en **Casas**. Para conservar las identidades existentes, usá sus nombres y slugs previstos, por ejemplo **Kairobet** con `kairobet` y **Krakenbet** con `krakenbet`.
+3. Creá en Auth una cuenta independiente para el administrador de cada casa. Vinculala al UUID de la casa en SQL Editor.
+
+   ```sql
+   insert into public.profiles (id, role, casino_id)
+   select 'UUID_DEL_USUARIO_ADMIN', 'casino_admin', id
+   from public.casinos
+   where slug = 'SLUG_DE_LA_CASA';
+   ```
+
+4. Desde **Catálogo** en Home, publicá la biblioteca de juegos incluida. En **Juegos** del panel de cada casa, activá los que quieras mostrar a sus jugadores.
+5. Registrá un jugador desde el portal de la casa, confirmá el correo y entrá con esa cuenta. En el panel de la misma casa, usá **Cargas** para acreditar fichas. En el portal, verificá saldo y movimiento. Probá también que un usuario de la otra casa no pueda entrar con esa cuenta ni leer el movimiento.
+
+Los saldos nuevos empiezan en cero y se calculan a partir del historial de fichas. Los juegos siguen funcionando con fichas de prueba separadas de la cuenta. Las rondas con saldo de cuenta, los retiros y la revisión de comprobantes aún requieren flujos propios.
 
 [Flujo de migraciones de Supabase](https://supabase.com/docs/guides/local-development/cli-workflows) · [Permisos de la Data API](https://supabase.com/docs/guides/api/securing-your-api)

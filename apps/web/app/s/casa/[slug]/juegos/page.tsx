@@ -1,13 +1,13 @@
 import { GameCatalog } from "@/components/game-catalog";
 import { HouseGate } from "@/components/house-gate";
 import { MissingHouse } from "@/components/missing-house";
-import { enabledCatalog, houseBySlug } from "@/lib/fixtures";
+import { casinoBySlug, publicHouseCatalog } from "@/lib/platform";
 
-function Games({ slug }: { slug: string }) {
-  const house = houseBySlug(slug);
+async function Games({ slug }: { slug: string }) {
+  const house = await casinoBySlug(slug);
   if (!house) return <MissingHouse slug={slug} />;
 
-  const games = house.status === "suspended" ? [] : enabledCatalog(slug);
+  const games = house.status === "suspended" ? [] : await publicHouseCatalog(slug);
 
   return (
     <div className="flex flex-col gap-8" data-screen="casa-juegos">

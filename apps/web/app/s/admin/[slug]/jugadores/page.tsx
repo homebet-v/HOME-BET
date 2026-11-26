@@ -1,9 +1,5 @@
-import { HouseGate } from "@/components/house-gate";
-import { MissingHouse } from "@/components/missing-house";
-import { RegistrationReview } from "@/components/registration-review";
-import { houseBySlug } from "@/lib/fixtures";
+import { HousePlayerList } from "@/components/house-player-list";
 
-export const metadata = { title: "Jugadores · Mi casino" };
-export default function AdminPlayersPage({ params }: { params: Promise<{ slug: string }> }) {
-  return <HouseGate params={params}>{(slug) => houseBySlug(slug) ? <RegistrationReview casinoId={slug} mode="players" /> : <MissingHouse slug={slug} />}</HouseGate>;
+export default function Page({ params }: { params: Promise<{ slug: string }> }) {
+  return <HousePlayerList params={params} title="Jugadores" />;
 }

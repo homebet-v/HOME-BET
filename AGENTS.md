@@ -40,7 +40,8 @@ CLAUDE.md                         apunta acá
 apps/web/                         Next.js: Home, admin hijo, casa
   proxy.ts                        host → superficie
   lib/tenant.ts                   regla de host, con tests
-  lib/fixtures.ts                 datos de muestra, hasta conectar Supabase
+  lib/game-library.ts             metadatos y recursos de los juegos incluidos
+  lib/platform.ts                 lecturas de Supabase con sesión y permisos
   app/s/home/                     /  /casas  /dominios  /juegos  /catalogo
   app/s/admin/[slug]/             /  /juegos  /jugadores  /dominio
   app/s/casa/[slug]/              /  /juegos  /cuenta
@@ -50,7 +51,7 @@ supabase/migrations/              esquema y RLS de la plataforma
 
 Las pantallas son rutas concretas. Un path sin página responde 404.
 
-Hasta que se pida conectar Supabase, la UI lee `apps/web/lib/fixtures.ts`. No instales el cliente, no leas las claves y no apliques migraciones. Los formularios se pueden completar y no guardan nada.
+El acceso, las casas y las fichas se leen desde Supabase. El taller y las partidas de prueba de los juegos tienen fichas aisladas de `ledger_entries`. El catálogo de juegos incluidos aporta arte y metadatos. Las publicaciones y activaciones por casa se guardan en Supabase.
 
 La UI habla español. Los identificadores del código van en inglés.
 
@@ -94,14 +95,13 @@ npm run dev
 Variables en `apps/web/.env.local` (plantilla en `apps/web/.env.example`):
 
 - `NEXT_PUBLIC_ROOT_DOMAIN` — `localhost` en local. En producción, el dominio raíz, sin protocolo.
-- `NEXT_PUBLIC_SUPABASE_URL` y `NEXT_PUBLIC_SUPABASE_ANON_KEY` — cliente.
-- `SUPABASE_SERVICE_ROLE_KEY` — solo servidor.
+- `NEXT_PUBLIC_SUPABASE_URL` y `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` — URL y clave publicable.
+- `SUPABASE_SECRET_KEY` — solo servidor. Las variables antiguas `NEXT_PUBLIC_SUPABASE_ANON_KEY` y `SUPABASE_SERVICE_ROLE_KEY` se aceptan como respaldo.
 
 Las migraciones viven en `supabase/migrations`. No se aplican solas desde este repo hasta que el proyecto Supabase esté enlazado.
 
 ## Qué no hacer
 
-- No conectar Supabase hasta que se pida. El esqueleto usa `lib/fixtures.ts`.
 - No crear un proyecto Vercel por casa, ni un Supabase por casa.
 - No resolver la casa en el cliente.
 - No poner lógica de un juego en `app/s/casa`. El portal pide el catálogo; el juego se publica desde `packages/proveedores`.

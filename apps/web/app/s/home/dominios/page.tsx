@@ -1,10 +1,12 @@
 import { HomeHeading } from "@/components/home-heading";
-import { houses } from "@/lib/fixtures";
+import { homeCasinos } from "@/lib/platform";
+import { Suspense } from "react";
 import { surfaceOrigin } from "@/lib/tenant";
 
 export const metadata = { title: "Dominios · Homebet" };
 
-export default function DomainsPage() {
+async function Domains() {
+  const houses = await homeCasinos();
   const root = process.env.NEXT_PUBLIC_ROOT_DOMAIN ?? "localhost";
 
   return (
@@ -49,4 +51,8 @@ export default function DomainsPage() {
       </div>
     </div>
   );
+}
+
+export default function DomainsPage() {
+  return <Suspense fallback={<p>Cargando dominios…</p>}><Domains /></Suspense>;
 }

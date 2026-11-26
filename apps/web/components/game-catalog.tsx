@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useInfiniteCarousel } from "@/components/use-infinite-carousel";
 import { GameEntry } from "@/components/game-entry";
 import { NavIcon } from "@/components/nav-icon";
-import { providers, type CatalogGame } from "@/lib/fixtures";
+import { providers, type CatalogGame } from "@/lib/game-library";
 
 const categoryNames = { slots: "Slots", roulette: "Ruleta", cards: "Cartas", instant: "Instantáneos" };
 const normalize = (value: string) => value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();

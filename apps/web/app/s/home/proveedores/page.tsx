@@ -1,8 +1,7 @@
 import Link from "next/link";
 import { ProviderRtpControl } from "@/components/provider-rtp-control";
 import { HomeHeading } from "@/components/home-heading";
-import { PendingForm } from "@/components/pending-form";
-import { catalog, providers } from "@/lib/fixtures";
+import { catalog, providers } from "@/lib/game-library";
 
 export const metadata = { title: "Proveedores · Homebet" };
 
@@ -18,11 +17,10 @@ export default function ProvidersPage() {
           <h2><img src={provider.logoImage} alt={provider.name} className="h-12 max-w-full object-contain object-left" /></h2>
           <p className="mt-2 text-sm leading-6 text-zinc-400">{provider.description}</p>
           <ul className="mt-6 border-t border-white/10 pt-4 text-sm text-zinc-300">{games.map((game) => <li key={game.slug} className="flex justify-between py-1"><span>{game.name}</span><span className="text-zinc-500">v{game.version}</span></li>)}</ul>
-          <p className="mt-4 text-xs text-zinc-500">{games.length} juego publicado</p>
+          <p className="mt-4 text-xs text-zinc-500">{games.length} juegos en la biblioteca</p>
         </section>;
       })}
     </div>
-    <PendingForm quiet title="Nuevo proveedor" description="Definí la identidad de una marca propia. Este formulario es de muestra: no crea ni guarda proveedores." submitLabel="Revisar proveedor" fields={[{ id: "provider-name", label: "Nombre de la marca" }, { id: "provider-slug", label: "Identificador" }, { id: "provider-description", label: "Descripción" }, { id: "provider-color", label: "Color de marca", type: "color" }]} />
     <Link href="/catalogo" className="text-sm text-sky-300 underline underline-offset-4">Ver juegos del catálogo →</Link>
   </div>;
 }

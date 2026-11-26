@@ -22,11 +22,11 @@ check() {
   printf 'OK %s (%s)\n' "$url" "$status"
 }
 
-check "$scheme://$domain$port/" 200 'data-screen="home-resumen"'
-check "$scheme://home.$domain$port/" 200 'data-screen="home-resumen"'
+check "$scheme://$domain$port/" 200 'Ingresar a Home'
+check "$scheme://home.$domain$port/" 200 'Ingresar a Home'
 for house in krakenbet kairobet; do
   check "$scheme://$house.$domain$port/juegos" 200 'data-screen="casa-juegos"'
-  check "$scheme://$house-admin.$domain$port/juegos" 200 'data-screen="admin-juegos"'
+  check "$scheme://$house-admin.$domain$port/juegos" 200 'Ingresar al panel de la casa'
 done
 check "$scheme://home.$domain$port/s/home" 307
 check "$scheme://krakenbet.$domain$port/ruta-inexistente" 404

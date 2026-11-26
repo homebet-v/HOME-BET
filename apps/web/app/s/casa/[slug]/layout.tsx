@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import { Suspense, type ReactNode, type CSSProperties } from "react";
 import Link from "next/link";
 import { GameAssetCache } from "@/components/game-asset-cache";
-import { DemoPlayerProvider } from "@/components/demo-player-context";
+import { PlayerSessionProvider } from "@/components/player-session";
+import { casinoBySlug, playerAccount } from "@/lib/platform";
 import { defaultAppearance, palettes } from "@/lib/appearance";
-import { houseBySlug } from "@/lib/fixtures";
+import { MissingHouse } from "@/components/missing-house";
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const name = houseBySlug(slug)?.name ?? "Casino";
+  const name = (await casinoBySlug(slug))?.name ?? "Casino";
   return {
     title: { absolute: name },
     description: `${name}. La casa de juegos.`,
@@ -17,11 +18,13 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 async function CasaFrame({ params, children }: { params: Promise<{ slug: string }>; children: ReactNode }) {
   const { slug } = await params;
-  const house = houseBySlug(slug);
-  const appearance = defaultAppearance(house?.name ?? "");
+  const [house, account] = await Promise.all([casinoBySlug(slug), playerAccount(slug)]);
+  if (!house) return <MissingHouse slug={slug} />;
+  if (house.status !== "active") return <p className="p-6">Esta casa está suspendida.</p>;
+  const appearance = defaultAppearance(house.name);
   const overlay = Math.round((appearance.backgroundOverlay ?? 45) * 2.55).toString(16).padStart(2, "0");
   return (
-    <DemoPlayerProvider key={slug} casinoId={slug}>
+    <PlayerSessionProvider key={slug} account={account ? { email: account.email, balanceCents: account.balanceCents } : null}>
       <GameAssetCache />
       <div
         className="casino-scenery min-h-dvh min-w-0 flex-1"
@@ -46,7 +49,7 @@ async function CasaFrame({ params, children }: { params: Promise<{ slug: string 
           </div>
         </footer>
       </div>
-    </DemoPlayerProvider>
+    </PlayerSessionProvider>
   );
 }
 export default function CasaLayout({ params, children }: { params: Promise<{ slug: string }>; children: ReactNode }) {

@@ -1,10 +1,10 @@
 import { HouseGate } from "@/components/house-gate";
 import { MissingHouse } from "@/components/missing-house";
-import { houseBySlug } from "@/lib/fixtures";
+import { adminSession } from "@/lib/platform";
 import { surfaceOrigin } from "@/lib/tenant";
 
-function Domain({ slug }: { slug: string }) {
-  const house = houseBySlug(slug);
+async function Domain({ slug }: { slug: string }) {
+  const house = (await adminSession(slug))?.casino;
   if (!house) return <MissingHouse slug={slug} />;
 
   const root = process.env.NEXT_PUBLIC_ROOT_DOMAIN ?? "localhost";
