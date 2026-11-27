@@ -121,7 +121,7 @@ export function PrismWheelChassis({ sides = 14, image }: { sides?: number; image
         <polyline points={`${a} ${fold}`} fill="none" stroke="#e4d8ff" strokeOpacity=".34" strokeWidth=".6" />
       </g>;
     })}
-    <rect width="320" height="320" clipPath="url(#prism-case-outline)"
+    <rect className="rg-prism-chassis-grain" width="320" height="320" clipPath="url(#prism-case-outline)"
       filter="url(#prism-case-brushed)" opacity=".17" style={{ mixBlendMode: 'soft-light' }} />
     <circle cx="160" cy="160" r="143" fill="none" stroke="#100d17" strokeWidth="5" />
     <circle cx="160" cy="160" r="145.7" fill="none" stroke="#c28b69" strokeWidth=".7" strokeOpacity=".7" />

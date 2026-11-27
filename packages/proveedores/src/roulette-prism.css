@@ -191,6 +191,27 @@
   pointer-events: none;
 }
 .rg-prism-illustrated-wall { filter: brightness(.75) saturate(1.15); }
+
+@media (pointer: coarse) {
+  /* The rotor and chassis use the same plane so the ball still lines up with the pockets. */
+  .rg-player[data-variant="prism"] .rg-rotor,
+  .rg-player[data-variant="prism"] .rg-prism-chassis {
+    transform: scale(var(--prism-wheel-stretch), .755);
+  }
+
+  .rg-player[data-variant="prism"] .rg-prism-chassis { z-index: 0; }
+  .rg-player[data-variant="prism"] .rg-rotor { z-index: 1; }
+  .rg-player[data-variant="prism"] .rg-prism-spindle { z-index: 2; }
+  .rg-player[data-variant="prism"] .rg-wheel-stage { isolation: isolate; }
+
+  .rg-player[data-variant="prism"] :is(.rg-wheel-stage, .rg-prism-chassis, .rg-wheel svg),
+  .rg-player[data-variant="prism"][data-prism-revealing="true"] :is(.rg-rotor, .rg-prism-spindle, .rg-prism-chassis) {
+    filter: none;
+  }
+
+  .rg-prism-chassis-grain { display: none; }
+}
+
 .rg-player[data-theme="obsidian-rift"] .rg-prism-illustrated-rim {
   animation: obsidian-lava-glow 3.7s ease-in-out infinite;
 }
