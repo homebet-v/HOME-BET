@@ -33,7 +33,7 @@ function SymbolTile({ game, symbol, className = "" }: { game: SlotGame; symbol: 
   return <span role="img" aria-label={game.symbols[symbol]} className={`slot-symbol ${className}`} style={{ backgroundImage: `url("${game.sprite}")`, backgroundPosition: `${symbol * 100 / 7}% 50%` }} />;
 }
 
-type ReelMotion = { id: number; from: readonly number[]; to: readonly number[]; speed: number; reduced: boolean; compact: boolean };
+type ReelMotion = { id: number; from: readonly number[]; to: readonly number[] | null; live?: boolean; speed: number; reduced: boolean; compact?: boolean };
 
 function reelDuration(column: number, speed: number) {
   return (1000 + column * 200) / speed;
@@ -43,38 +43,59 @@ function SlotReel({ game, column, columns, rows, grid, motion, winningCells, onS
   game: SlotGame; column: number; columns: number; rows: number; grid: readonly number[]; motion: ReelMotion | null; winningCells: Set<number>; onStop: (cue: "stop", column: number, roundId: number) => void;
 }) {
   const track = useRef<HTMLDivElement>(null);
-  // Keep both endpoints in the strip: the animation starts on the previous grid
-  // and lands on the exact result already chosen by the engine.
-  const travel = motion?.compact ? rows + 6 + column * 2 : 18 + column * 6;
+  const phase = useRef({ id: 0, rows: 0 });
+  const from = Array.from({ length: rows }, (_, row) => (motion?.from ?? grid)[row * columns + column]);
+  const filler = (index: number) => (index + column * 3 + (motion?.id ?? 0)) % game.symbols.length;
+  const cycleRows = game.symbols.length;
+  const cycle = [...from, ...Array.from({ length: cycleRows - rows }, (_, index) => filler(index))];
+  const travel = motion?.live ? 2 * cycleRows + column * 2 : motion?.compact ? rows + 6 + column * 2 : 18 + column * 6;
   const symbols = motion && !motion.reduced
-    ? [...Array.from({ length: rows }, (_, row) => motion.from[row * columns + column]),
-      ...Array.from({ length: travel - rows }, (_, index) => (index + column * 3 + motion.id) % game.symbols.length),
-      ...Array.from({ length: rows }, (_, row) => motion.to[row * columns + column])]
+    ? motion.live
+      ? [...Array.from({ length: travel }, (_, index) => cycle[index % cycleRows]),
+        ...Array.from({ length: rows }, (_, row) => motion.to?.[row * columns + column] ?? cycle[(travel + row) % cycleRows])]
+      : [...from, ...Array.from({ length: travel - rows }, (_, index) => filler(index)),
+        ...Array.from({ length: rows }, (_, row) => motion.to?.[row * columns + column] ?? from[row])]
     : Array.from({ length: rows }, (_, row) => grid[row * columns + column]);
-  const offset = motion && !motion.reduced ? -100 * travel / symbols.length : 0;
+  const offset = motion && !motion.reduced && motion.to ? -100 * travel / symbols.length : 0;
 
-  // Cancel the previous strip animation before the shortened resting strip paints.
-  // This also starts a new spin on its first frame, without flashing its result.
   useLayoutEffect(() => {
     if (!motion || motion.reduced || !track.current) return;
-    const keyframes = motion.compact ? [
-      { transform: "translate3d(0, 0, 0)", offset: 0, easing: "cubic-bezier(0.45, 0, 0.7, 0.65)" },
-      { transform: `translate3d(0, ${offset * 0.1}%, 0)`, offset: 0.15 },
-      { transform: `translate3d(0, ${offset * 0.74}%, 0)`, offset: 0.6, easing: "cubic-bezier(0.2, 0.45, 0.45, 1)" },
-      { transform: `translate3d(0, ${offset}%, 0)`, offset: 1 },
+    const translate = (steps: number) => `translate3d(0, ${-100 * steps / symbols.length}%, 0)`;
+    if (!motion.to) {
+      const cycleMs = Math.max(260, 560 / motion.speed);
+      const animation = track.current.animate(
+        [{ transform: translate(0) }, { transform: translate(cycleRows) }],
+        { duration: cycleMs, iterations: Infinity },
+      );
+      return () => {
+        const elapsed = Number(animation.currentTime) || 0;
+        phase.current = { id: motion.id, rows: (elapsed % cycleMs) / cycleMs * cycleRows };
+        animation.cancel();
+      };
+    }
+
+    const start = motion.live && phase.current.id === motion.id ? phase.current.rows : 0;
+    const keyframes = motion.live ? [
+      { transform: translate(start) },
+      { transform: translate(travel) },
+    ] : motion.compact ? [
+      { transform: translate(0), offset: 0, easing: "cubic-bezier(0.45, 0, 0.7, 0.65)" },
+      { transform: translate(travel * 0.1), offset: 0.15 },
+      { transform: translate(travel * 0.74), offset: 0.6, easing: "cubic-bezier(0.2, 0.45, 0.45, 1)" },
+      { transform: translate(travel), offset: 1 },
     ] : [
-      { transform: "translateY(0)", offset: 0 },
-      { transform: `translateY(${offset - 6 / symbols.length}%)`, offset: 0.92 },
-      { transform: `translateY(${offset}%)`, offset: 1 },
+      { transform: translate(0), offset: 0 },
+      { transform: translate(travel + 0.06), offset: 0.92 },
+      { transform: translate(travel), offset: 1 },
     ];
     const animation = track.current.animate(keyframes, {
       duration: reelDuration(column, motion.speed),
-      easing: motion.compact ? "linear" : "cubic-bezier(0.16, 0.65, 0.28, 1)",
+      easing: motion.live ? "cubic-bezier(0.22, 0.42, 0.44, 1)" : motion.compact ? "linear" : "cubic-bezier(0.16, 0.65, 0.28, 1)",
       fill: "forwards",
     });
     animation.onfinish = () => onStop("stop", column, motion.id);
     return () => { animation.onfinish = null; animation.cancel(); };
-  }, [motion, column, offset, onStop, symbols.length]);
+  }, [motion, column, cycleRows, travel, onStop, symbols.length]);
 
   return <div className="slot-reel" aria-label={`Rodillo ${column + 1}`}>
     <div ref={track} className={`slot-reel-track ${motion && !motion.reduced ? "slot-reel-moving" : ""}`} style={{ transform: `translateY(${offset}%)` }} aria-hidden={!!motion}>
@@ -157,7 +178,7 @@ export default function SlotPlayer({ game, onExit, house }: { game: SlotGame; on
   useSlotViewport(player, ready, controlLayout, sound, autoOpen, rulesOpen, engine.columns / engine.rows);
 
   useLayoutEffect(() => {
-    if (!reelMotion || !finishSpin.current) return;
+    if (!reelMotion?.to || !finishSpin.current) return;
     // Start the fallback once the reels are mounted so rendering time cannot cut the spin short.
     const delay = reelMotion.reduced ? 100 : reelDuration(columnCount - 1, reelMotion.speed) + 300;
     const fallback = setTimeout(finishSpin.current, delay);
@@ -244,17 +265,21 @@ export default function SlotPlayer({ game, onExit, house }: { game: SlotGame; on
       setMessage("");
       const roundId = crypto.randomUUID();
       const previousGrid = sessionRef.current.lastRound?.grid ?? initialGrid;
+      const localId = ++visualRound.current;
+      const motion = {
+        id: localId, from: previousGrid, live: true, speed,
+        reduced: window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+      };
+      playCue("spin");
+      setReelMotion({ ...motion, to: null });
       void house.spin(roundId, bet).then((result) => {
         if (!result.ok) throw new Error(result.message);
-        const localId = ++visualRound.current;
         const next = viewToSession(result.state, localId);
         const round = next.lastRound;
         if (!round) throw new Error("No se pudo leer la jugada.");
         sessionRef.current = next;
         setSession((current) => ({ ...current, balanceCents: next.balanceCents - round.payoutCents }));
-        playCue("spin");
-        const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-        setReelMotion({ id: localId, from: previousGrid, to: round.grid, speed, reduced, compact: window.matchMedia("(pointer: coarse)").matches });
+        setReelMotion({ ...motion, to: round.grid });
         stoppedReels.current.clear();
         const complete = () => {
           if (finishSpin.current !== complete) return;
@@ -420,7 +445,7 @@ export default function SlotPlayer({ game, onExit, house }: { game: SlotGame; on
   return <div ref={player} className={`slot-player relative isolate flex min-h-full flex-col overflow-x-clip bg-[#070a13] text-white ${isPolished ? "slot-lumen-skin" : ""}`} data-art-style={game.artStyle ?? "jewel"} data-engine={engine.id} data-motif={theme.motif} data-control-layout={controlLayout} style={{ "--slot-accent": visual.accent, "--slot-secondary": visual.secondary, "--slot-surface": visual.surface } as CSSProperties}>
     <img src={sceneArt} alt="" className="slot-scene-image pointer-events-none absolute inset-0 -z-20 h-full w-full object-cover opacity-25" />
     <div className="slot-scene-shade pointer-events-none absolute inset-0 -z-10 bg-gradient-to-b from-[#070a13]/10 via-[#070a13]/65 to-[#070a13]" />
-    <header className="slot-theme-header flex items-center justify-between gap-3 border-b border-white/10 bg-black/25 px-4 py-3"><div className="min-w-0"><p className="text-[9px] font-semibold uppercase tracking-[0.25em] text-amber-200">{isPolished ? `Lumen Studio${engine.columns === 5 ? ` · ${engine.edition} · ${engine.columns}×${engine.rows}` : ""}` : "Lumen Studio · 3 × 3"}</p></div><div className="flex shrink-0 items-center gap-2">{!cash && <span className="slot-demo-badge rounded-full border border-amber-300/20 bg-amber-300/10 px-2 py-1 text-[9px] font-bold text-amber-200">DEMO</span>}{isPolished && <><button type="button" className="slot-lumen-header-button" aria-label={sound ? "Silenciar sonido" : "Activar sonido"} aria-pressed={sound} onClick={() => setSound(!sound)}><SkinSoundGlyph sound={sound} /></button><button type="button" className="slot-lumen-header-button" aria-label="Abrir reglas y premios" aria-expanded={rulesOpen} onClick={() => setRulesOpen(!rulesOpen)}>i</button></>}{onExit && <button type="button" aria-label="Salir del juego" onClick={() => { stopAuto(); onExit(); }} className={buttonClass}>×</button>}</div></header>
+    <header className="slot-theme-header flex items-center justify-between gap-3 border-b border-white/10 bg-black/25 px-4 py-3"><div className="min-w-0"><p className="text-[9px] font-semibold uppercase tracking-[0.25em] text-amber-200">{isPolished ? `Reel Crown${engine.columns === 5 ? ` · ${engine.edition} · ${engine.columns}×${engine.rows}` : ""}` : "Reel Crown · 3 × 3"}</p></div><div className="flex shrink-0 items-center gap-2">{!cash && <span className="slot-demo-badge rounded-full border border-amber-300/20 bg-amber-300/10 px-2 py-1 text-[9px] font-bold text-amber-200">DEMO</span>}{isPolished && <><button type="button" className="slot-lumen-header-button" aria-label={sound ? "Silenciar sonido" : "Activar sonido"} aria-pressed={sound} onClick={() => setSound(!sound)}><SkinSoundGlyph sound={sound} /></button><button type="button" className="slot-lumen-header-button" aria-label="Abrir reglas y premios" aria-expanded={rulesOpen} onClick={() => setRulesOpen(!rulesOpen)}>i</button></>}{onExit && <button type="button" aria-label="Salir del juego" onClick={() => { stopAuto(); onExit(); }} className={buttonClass}>×</button>}</div></header>
     {!ready ? (
       <div className="flex min-h-72 flex-1 items-center justify-center bg-gradient-to-b from-black/25 via-black/70 to-black/45 px-6 py-8">
         <div className="w-full max-w-64 text-center">

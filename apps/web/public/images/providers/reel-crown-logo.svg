@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 270 64">
+  <defs>
+    <linearGradient id="gold" x2="0" y2="1" gradientUnits="objectBoundingBox">
+      <stop stop-color="#fff2a3"/>
+      <stop offset="1" stop-color="#ff9d35"/>
+    </linearGradient>
+  </defs>
+  <rect x="2" y="2" width="60" height="60" rx="14" fill="#260e45" stroke="#ae56ff" stroke-width="3"/>
+  <path d="M13 15l10 5 9-10 9 10 10-5-4 11H17z" fill="url(#gold)"/>
+  <rect x="12" y="30" width="40" height="22" rx="5" fill="#10061c" stroke="url(#gold)" stroke-width="3"/>
+  <path d="M24 31v20m16-20v20" stroke="#ae56ff" stroke-width="2"/>
+  <path d="m32 34 5 7-5 7-5-7z" fill="url(#gold)"/>
+  <path d="M16 41h4m24 0h4" stroke="#e3aaff" stroke-width="2" stroke-linecap="round"/>
+  <text x="77" y="43" fill="#ffe49a" font-family="system-ui, sans-serif" font-size="28" font-weight="800">REEL CROWN</text>
+</svg>

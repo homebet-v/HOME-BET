@@ -220,16 +220,158 @@ html::-webkit-scrollbar-button {
   background-repeat: repeat-y;
 }
 
-.casino-scenery[data-casino-palette="kairo"] .casino-catalog-scenery {
-  --kairo-scene-height: clamp(220px, 56vw, 780px);
-  background-color: #392513;
-  background-image:
-    linear-gradient(to bottom, var(--catalog-shade), transparent 18% 76%, var(--catalog-shade)),
-    radial-gradient(ellipse at 50% 44%, #130c07b3 10%, transparent 76%),
-    var(--casino-art, none);
-  background-size: 100% var(--kairo-scene-height);
-  background-blend-mode: normal, normal, luminosity;
+.casino-scenery[data-casino-palette="kairo"] {
+  --kairo-gold-line: #e6bb6699;
+  --house-filter-bg: #1b0e24;
 }
+
+[data-casino-palette="kairo"] .house-topbar {
+  isolation: isolate;
+  overflow: hidden;
+  min-height: 50px;
+  border-bottom: 2px solid var(--kairo-violet);
+  background: linear-gradient(105deg, #100519, #040a1c 54%, #0b0416);
+}
+
+[data-casino-palette="kairo"] .house-topbar::before {
+  content: "";
+  position: absolute;
+  inset: 0 -25%;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 50% 88%, #50118b26, transparent 54%);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-casino-palette="kairo"] .house-topbar::before {
+    animation: kairo-topbar-glow 12s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes kairo-topbar-glow {
+  from { transform: translateX(-20%); }
+  to { transform: translateX(20%); }
+}
+
+[data-casino-palette="kairo"] .house-charge .load-chip-shine { display: none; }
+
+[data-casino-palette="kairo"] .house-provider-strip {
+  padding-block: .5rem;
+  border-bottom-color: #af368276;
+  background: linear-gradient(100deg, #120916, #1a0a23 55%, #120812);
+}
+
+[data-casino-palette="kairo"] .house-provider-options > button {
+  min-height: 33px;
+  padding-block: 1.5px;
+}
+
+[data-casino-palette="kairo"] .house-category-strip button[aria-pressed="true"] {
+  --house-filter-bg: #440c73;
+}
+
+[data-casino-palette="kairo"] .casino-catalog-scenery {
+  background: linear-gradient(165deg, #170c20, #0c0811 30%, #110819);
+}
+
+[data-casino-palette="kairo"] .house-game-collection {
+  display: grid;
+  row-gap: 1.1rem;
+  padding-inline: clamp(.75rem, 3vw, 1.25rem);
+}
+
+[data-casino-palette="kairo"] .house-game-collection > section {
+  min-width: 0;
+  margin-block: 0;
+}
+
+[data-casino-palette="kairo"] .house-favorites-empty {
+  min-height: 80px;
+  display: grid;
+  place-content: center;
+  gap: .4rem;
+  padding: .75rem;
+  border-radius: .85rem;
+  background:
+    radial-gradient(ellipse 63% 145% at 14% -45%, transparent 72%, var(--kairo-violet) 73%, #961aff80 75%, transparent 81%),
+    radial-gradient(ellipse 58% 120% at 108% 120%, #5c159b, transparent 70%),
+    linear-gradient(160deg, #20112c, #140c1e);
+  box-shadow: inset 0 -2px 11px #961aff55;
+}
+
+[data-casino-palette="kairo"] .house-favorites-empty::before {
+  content: "☆" / "";
+  color: #dfaff5;
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+[data-casino-palette="kairo"] .house-game-tile {
+  background: linear-gradient(155deg, #301047, #190b20);
+}
+
+[data-casino-palette="kairo"] .house-game-tile:focus-within {
+  border-color: var(--kairo-gold-line);
+}
+
+[data-casino-palette="kairo"] .house-game-collection .casino-scroll {
+  gap: 8px;
+}
+
+[data-casino-palette="kairo"] .house-game-collection .casino-scroll > div {
+  flex: 0 0 calc((100% - 16px) / 3);
+}
+
+[data-casino-palette="kairo"] .house-cover-action {
+  border-color: var(--kairo-violet, #961aff);
+  background: linear-gradient(180deg, #3d1768, #1b0c36);
+  box-shadow: 0 0 10px #961aff80, inset 0 0 6px #961aff55;
+}
+
+[data-casino-palette="kairo"] .house-cover-action:is(:hover, :focus-visible) {
+  background: linear-gradient(180deg, #4b1c80, #240f46);
+  box-shadow: 0 0 14px #961affa0, inset 0 0 8px #961aff77;
+}
+
+[data-casino-palette="kairo"] .house-game-favorite {
+  top: 1px;
+  right: 1px;
+  width: 28px;
+  height: 28px;
+  border: 0;
+  background: transparent;
+  backdrop-filter: none;
+}
+
+[data-casino-palette="kairo"] .house-game-favorite::before {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border-radius: 50%;
+  background: rgb(2 6 23 / 82%);
+}
+
+[data-casino-palette="kairo"] .house-game-favorite:hover::before {
+  background: #241138;
+}
+
+[data-casino-palette="kairo"] .house-game-favorite svg {
+  position: relative;
+  width: 10px;
+  height: 10px;
+}
+
+[data-casino-palette="kairo"] .house-bottom-nav {
+  inset-inline: 8px;
+  bottom: max(8px, env(safe-area-inset-bottom));
+  width: auto;
+  max-width: 34rem;
+  margin-inline: auto;
+  padding-block: 4px;
+  background: radial-gradient(ellipse at 50% 0%, #961aff90, transparent 55%),
+    linear-gradient(130deg, #221022, #0d0816 53%, #21102b) !important;
+}
+
 /* La ilustración conserva su proporción y se funde con el fondo del catálogo. */
 .casino-scenery::before {
   content: "";
@@ -531,4 +673,41 @@ html::-webkit-scrollbar-button {
 @keyframes game-entry-fade {
   from { opacity: 0; }
   to { opacity: 1; }
+}
+
+
+.edition-cover-ii {
+  filter: hue-rotate(24deg) saturate(1.12) contrast(1.05);
+}
+
+.edition-cover-iii {
+  filter: hue-rotate(190deg) saturate(1.16) contrast(1.06);
+}
+
+.edition-cover-badge {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  z-index: 10;
+  padding: 4px 8px;
+  border: 1px solid #ffe5a4;
+  border-radius: 999px;
+  background: #17101ddd;
+  color: #fff3d0;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .04em;
+  box-shadow: 0 2px 8px #000a;
+}
+
+.edition-cover-badge-ii {
+  border-color: #64e6dc;
+  color: #9afff2;
+  background: #092b35e8;
+}
+
+.edition-cover-badge-iii {
+  border-color: #c59aff;
+  color: #e1ccff;
+  background: #26103ee8;
 }

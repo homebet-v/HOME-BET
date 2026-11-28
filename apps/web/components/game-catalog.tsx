@@ -26,6 +26,7 @@ export function GameCatalog({ games }: { games: readonly CatalogGame[] }) {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("");
   const [provider, setProvider] = useState("");
+  const [activeCover, setActiveCover] = useState<string | null>(null);
   const terms = normalize(query).trim().split(/\s+/).filter(Boolean);
   const filtered = games.filter((game) => {
     const providerName = providers.find((item) => item.slug === game.providerSlug)?.name ?? game.providerSlug;
@@ -47,9 +48,20 @@ export function GameCatalog({ games }: { games: readonly CatalogGame[] }) {
     </div>
     <div className="flex items-center justify-between gap-3"><p role="status" className="text-xs text-zinc-400">{filtered.length} de {games.length} juegos</p>{(query || category || provider) && <button type="button" onClick={() => { setQuery(""); setCategory(""); setProvider(""); }} className="text-xs text-white underline underline-offset-4">Limpiar filtros</button>}</div>
     {filtered.length === 0 ? <p className="py-8 text-center text-sm text-zinc-400">No encontramos juegos con esos filtros.</p> : <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-      {filtered.map((game) => <li key={game.slug} className="overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03]">
-        {game.coverImage && <img src={game.coverImage} style={{ imageRendering: game.artStyle === "pixel" ? "pixelated" : "auto" }} alt={`Portada de ${game.name}`} loading="lazy" className={game.runtime && game.coverFormat !== "portrait" ? "aspect-[3/2] w-full object-contain" : "aspect-[4/5] w-full object-cover"} />}
-        <div className="p-3"><h2 className="text-sm font-medium">{game.name}</h2><p className="mt-1 text-xs text-zinc-400">{[game.category ? categoryNames[game.category] : null, providers.find((item) => item.slug === game.providerSlug)?.name ?? game.providerSlug].filter(Boolean).join(" · ")}</p><p className="mt-1 text-xs text-zinc-500">Versión {game.version}</p><GameEntry name={game.name} slug={game.slug} runtime={game.runtime} /></div>
+      {filtered.map((game) => <li key={game.slug} className="kairo-catalog-game-card relative overflow-hidden rounded-xl border border-violet-500/40 bg-[#1b1026]">
+        {game.coverImage && <div className={`relative ${game.runtime && game.coverFormat !== "portrait" ? "aspect-[3/2]" : "aspect-[4/5]"} overflow-hidden`}>
+          <img src={game.coverImage} style={{ imageRendering: game.artStyle === "pixel" ? "pixelated" : "auto" }} alt={`Portada de ${game.name}`} loading="lazy" className={`h-full w-full object-contain ${game.edition ? `edition-cover edition-cover-${game.edition.toLowerCase()}` : ""}`} />
+          {game.edition && <span className={`edition-cover-badge edition-cover-badge-${game.edition.toLowerCase()}`}>Edición {game.edition}</span>}
+          {(() => {
+            const studio = providers.find((item) => item.slug === game.providerSlug);
+            return studio && <img src={studio.iconImage} alt={studio.name} title={studio.name} className="pointer-events-none absolute top-1 left-1 z-10 size-6 object-contain drop-shadow-[0_1px_2px_#000]" loading="lazy" />;
+          })()}
+          <GameEntry name={game.name} slug={game.slug} runtime={game.runtime} cover={{
+            revealed: activeCover === game.slug,
+            onToggle: () => setActiveCover((current) => current === game.slug ? null : game.slug ?? null),
+          }} />
+        </div>}
+        <h2 className="sr-only">{game.name}</h2>
       </li>)}
     </ul>}
   </section>;

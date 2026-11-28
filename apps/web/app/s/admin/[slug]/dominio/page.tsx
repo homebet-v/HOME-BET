@@ -7,7 +7,7 @@ async function Domain({ slug }: { slug: string }) {
   const house = (await adminSession(slug))?.casino;
   if (!house) return <MissingHouse slug={slug} />;
 
-  const root = process.env.NEXT_PUBLIC_ROOT_DOMAIN ?? "localhost";
+  const root = process.env.NEXT_PUBLIC_ROOT_DOMAIN;
   const casa = surfaceOrigin("casa", slug, root);
   const admin = surfaceOrigin("admin", slug, root);
 

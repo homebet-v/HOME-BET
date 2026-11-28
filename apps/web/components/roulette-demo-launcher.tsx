@@ -34,10 +34,11 @@ function prepareRoulette(theme: RouletteTheme) {
   return Promise.allSettled([theme.scene, ...controls].map(preloadGameImage));
 }
 
-export function RouletteDemoLauncher({ theme, duplicate = false, house = false }: {
+export function RouletteDemoLauncher({ theme, duplicate = false, house = false, className }: {
   theme: RouletteTheme;
   duplicate?: boolean;
   house?: boolean;
+  className?: string;
 }) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
@@ -81,7 +82,7 @@ export function RouletteDemoLauncher({ theme, duplicate = false, house = false }
   return <>
     <button type="button" tabIndex={duplicate ? -1 : undefined} onPointerDown={() => { void prepareRoulette(theme); }}
       onClick={() => { setAssetsReady(false); setOpen(true); }}
-      className="mt-3 w-full rounded-lg border border-amber-300/25 bg-amber-300/10 px-3 py-2.5 text-xs font-bold text-amber-100 hover:bg-amber-300/20">
+      className={className ?? "mt-3 w-full rounded-lg border border-amber-300/25 bg-amber-300/10 px-3 py-2.5 text-xs font-bold text-amber-100 hover:bg-amber-300/20"}>
       {house ? "Jugar" : "Jugar demo"}
     </button>
     {open && <dialog ref={dialog} aria-label={house ? theme.name : `Demo de ${theme.name}`}

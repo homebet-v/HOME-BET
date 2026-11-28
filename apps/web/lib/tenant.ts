@@ -78,16 +78,17 @@ export function resolveHost(
 export function surfaceOrigin(
   kind: "home" | "admin" | "casa",
   slug: string | null,
-  rootDomain = "localhost",
+  rootDomain?: string,
 ): string {
-  if (kind === "casa" || kind === "admin") {
+  const configuredRoot = rootDomain?.trim().toLowerCase().replace(/\.$/, "");
+  if (configuredRoot !== "localhost" && (kind === "casa" || kind === "admin")) {
     const host = Object.entries(ownedHosts).find(
       ([, value]) => value.canonical && value.kind === kind && value.slug === slug,
     )?.[0];
     if (host) return `https://${host}`;
   }
 
-  const root = rootDomain.trim().toLowerCase().replace(/\.$/, "") || "localhost";
+  const root = configuredRoot || "localhost";
   const local = root === "localhost";
   const protocol = local ? "http" : "https";
   const port = local ? ":3000" : "";

@@ -21,7 +21,7 @@ test("cada juego conserva su escena y paleta en la presentación compartida", ()
 });
 test("la presentación de Coral conserva sus recursos propios", () => {
   const coral = slotVisualProfile({ slug: "oraculo-coral", accent: "#ff00ff" }, { motif: "ocean", secondary: "#00ffaa", surface: "#002211" });
-  assert.equal(coral.scene, "/images/slots/oraculo-coral/skin-v2/scene.webp");
+  assert.equal(coral.scene, "/images/slots/oraculo-coral/remaster/scene.webp");
   assert.equal(coral.accent, "#35e4ff");
   assert.ok(coral.prizeBadges[0].endsWith("prize-pearl.webp"));
   assert.ok(coral.title.includes("oraculo-coral"));

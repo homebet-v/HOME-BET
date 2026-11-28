@@ -7,7 +7,7 @@ export const metadata = { title: "Dominios · Homebet" };
 
 async function Domains() {
   const houses = await homeCasinos();
-  const root = process.env.NEXT_PUBLIC_ROOT_DOMAIN ?? "localhost";
+  const root = process.env.NEXT_PUBLIC_ROOT_DOMAIN;
 
   return (
     <div className="flex flex-col gap-12" data-screen="home-dominios">

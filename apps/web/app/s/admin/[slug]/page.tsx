@@ -14,7 +14,7 @@ async function Overview({ slug }: { slug: string }) {
   const account = await adminSession(slug);
   if (!account) return null;
   const house = account.casino;
-  const root = process.env.NEXT_PUBLIC_ROOT_DOMAIN ?? "localhost";
+  const root = process.env.NEXT_PUBLIC_ROOT_DOMAIN;
   const [games, [totals]] = await Promise.all([
     publicHouseCatalog(slug),
     supabaseRequest<{ players: number; balance_cents: number }[]>("/rest/v1/rpc/house_operation_totals", account.session.auth, { target_casino: house.id }),

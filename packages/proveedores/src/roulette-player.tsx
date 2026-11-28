@@ -79,6 +79,9 @@ export default function RoulettePlayer({onExit,theme=defaultRouletteTheme,openin
  const isPrism = theme.variant === 'prism';
  const [revealingBoosts, setRevealingBoosts] = useState(false);
  const wheelStage = useRef<HTMLElement>(null);
+ const wheelRotor = useRef<HTMLDivElement>(null);
+ const ballOrbit = useRef<HTMLDivElement>(null);
+ const waitingMotion = useRef<readonly { element: HTMLDivElement; animation: Animation; from: number; turn: number; ms: number }[]>([]);
  const [spinningBoosts, setSpinningBoosts] = useState<readonly RouletteBoost[]>([]);
  const [view,setView]=useState<'table'|'wheel'>('table');
  const chipTrigger=useRef<HTMLButtonElement>(null);
@@ -93,7 +96,7 @@ export default function RoulettePlayer({onExit,theme=defaultRouletteTheme,openin
  const feedbackTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
  const prizeTimer=useRef<ReturnType<typeof setTimeout>|null>(null);
  const pending=useRef<RouletteSession|null>(null),busy=useRef(false),timer=useRef<ReturnType<typeof setTimeout>|null>(null),audio=useRef<AudioContext|null>(null),panelRef=useRef<HTMLDialogElement>(null);
- useEffect(()=>()=>{if(timer.current)clearTimeout(timer.current);if(prizeTimer.current)clearTimeout(prizeTimer.current);if(feedbackTimer.current)clearTimeout(feedbackTimer.current);void audio.current?.close()},[]);
+ useEffect(()=>()=>{if(timer.current)clearTimeout(timer.current);if(prizeTimer.current)clearTimeout(prizeTimer.current);if(feedbackTimer.current)clearTimeout(feedbackTimer.current);waitingMotion.current.forEach(({animation})=>animation.cancel());waitingMotion.current=[];void audio.current?.close()},[]);
  useEffect(()=>{if(panel)panelRef.current?.showModal();else panelRef.current?.close()},[panel]);
  const stake=rouletteStake(bets);const amounts=new Map<string,number>();for(const b of bets)amounts.set(b.spotId,(amounts.get(b.spotId)??0)+b.amountCents);
  const tone=(frequency:number)=>{if(!sound)return;try{audio.current??=new AudioContext();void audio.current.resume();const oscillator=audio.current.createOscillator(),gain=audio.current.createGain();oscillator.connect(gain);gain.connect(audio.current.destination);oscillator.type=theme.voice;oscillator.frequency.value=frequency*theme.note/440;gain.gain.setValueAtTime(.035,audio.current.currentTime);gain.gain.exponentialRampToValueAtTime(.001,audio.current.currentTime+.15);oscillator.start();oscillator.stop(audio.current.currentTime+.16)}catch{/* Sound is optional. */}};
@@ -134,10 +137,36 @@ export default function RoulettePlayer({onExit,theme=defaultRouletteTheme,openin
   }
   tone(result.payoutCents ? 880 : 220);
  };
+ const startWaitingMotion = () => {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const wheel = wheelRotor.current, ball = ballOrbit.current;
+  if (!wheel || !ball) return;
+  const start = (element: HTMLDivElement, from: number, turn: number, ms: number) => ({
+   element, from, turn, ms,
+   animation: element.animate(
+    [{transform: `rotate(${from}deg)`}, {transform: `rotate(${from + turn}deg)`}],
+    {duration: ms, iterations: Infinity},
+   ),
+  });
+  waitingMotion.current = [start(wheel, rotation, 360, 1550), start(ball, ballRotation, -360, 920)];
+ };
+ const stopWaitingMotion = (continueSpin: boolean) => {
+  const angles = [rotation, ballRotation];
+  waitingMotion.current.forEach(({element, animation, from, turn, ms}, index) => {
+   if (continueSpin) {
+    angles[index] = from + turn * ((Number(animation.currentTime) || 0) % ms) / ms;
+    element.style.transitionDuration = '0ms';
+    element.style.transform = `rotate(${angles[index]}deg)`;
+   }
+   animation.cancel();
+  });
+  if (continueSpin && waitingMotion.current.length) wheelRotor.current?.getBoundingClientRect();
+  waitingMotion.current = [];
+  return angles;
+ };
  const beginRound = (next: RouletteSession) => {
   const round = next.lastRound!;
   const landing = crypto.getRandomValues(new Uint32Array(1))[0] / 0x100000000 * 360;
-  const motion = rouletteSpinMotion(round.number, rotation, ballRotation, landing);
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const wheelMs = reduced ? 1 : theme.spinsMs;
   const ballMs = reduced ? 1 : wheelMs + 720;
@@ -150,13 +179,17 @@ export default function RoulettePlayer({onExit,theme=defaultRouletteTheme,openin
   setPrize(false);
   setSpinning(true);
   const startWheel = () => {
+   const [startRotation, startBall] = stopWaitingMotion(true);
+   const motion = rouletteSpinMotion(round.number, startRotation, startBall, landing);
    setRevealingBoosts(false);
+   if (wheelRotor.current) wheelRotor.current.style.transitionDuration = `${wheelMs}ms`;
+   if (ballOrbit.current) ballOrbit.current.style.transitionDuration = `${ballMs}ms`;
    setWheelDuration(wheelMs);
    setDuration(ballMs);
    setRotation(motion.wheelDegrees);
    setBallRotation(motion.ballDegrees);
    setNotice('La rueda está girando.');
-   tone(440);
+   if (!cash) tone(440);
    timer.current = setTimeout(finish, ballMs + 150);
   };
   if (round.boosts?.length) {
@@ -180,13 +213,19 @@ export default function RoulettePlayer({onExit,theme=defaultRouletteTheme,openin
   }
   busy.current = true;
   setSpinning(true);
+  setView('wheel');
+  setPrize(false);
+  setSpinningBoosts([]);
   setNotice('Confirmando la apuesta…');
+  startWaitingMotion();
+  tone(440);
   const placed = bets.map((bet) => ({ spotId: bet.spotId, amountCents: bet.amountCents }));
   void play(crypto.randomUUID(), placed).then((outcome) => {
    busy.current = false;
    try {
     beginRound({ balanceCents: outcome.balanceCents, rounds: session.rounds + 1, history: [outcome.lastRound.number, ...session.history].slice(0, 20), lastRound: outcome.lastRound });
    } catch {
+    stopWaitingMotion(false);
     pending.current = null;
     setSession((current) => ({ ...current, balanceCents: outcome.balanceCents, lastRound: outcome.lastRound }));
     setSpinning(false);
@@ -195,6 +234,8 @@ export default function RoulettePlayer({onExit,theme=defaultRouletteTheme,openin
    }
   }).catch((error: unknown) => {
    busy.current = false;
+   stopWaitingMotion(false);
+   setView('table');
    setSpinning(false);
    setNotice(error instanceof Error ? error.message : 'No se pudo cerrar la jugada.');
   });
@@ -300,8 +341,8 @@ export default function RoulettePlayer({onExit,theme=defaultRouletteTheme,openin
    {isPrism && <PrismWheelChassis sides={theme.voltFinish?.facets}
     image={theme.voltFinish?.chassisImage ? `${theme.artRoot}/${theme.voltFinish.chassisImage}` : undefined} />}
    <div className="rg-rotor">
-   <div className="rg-wheel" style={{transform:`rotate(${rotation}deg)`,transitionDuration:`${wheelDuration}ms`}}><Wheel theme={theme} result={prismResult}/></div>
-   <div className="rg-ball-orbit" style={{transform:`rotate(${ballRotation}deg)`,transitionDuration:`${duration}ms`,'--prism-ball-turn':`${-ballRotation}deg`,'--prism-ball-time':`${duration}ms`} as CSSProperties} onTransitionEnd={e=>{if(!revealingBoosts&&e.target===e.currentTarget&&e.propertyName==='transform')finish()}}><i/></div>
+   <div ref={wheelRotor} className="rg-wheel" style={{transform:`rotate(${rotation}deg)`,transitionDuration:`${wheelDuration}ms`}}><Wheel theme={theme} result={prismResult}/></div>
+   <div ref={ballOrbit} className="rg-ball-orbit" style={{transform:`rotate(${ballRotation}deg)`,transitionDuration:`${duration}ms`,'--prism-ball-turn':`${-ballRotation}deg`,'--prism-ball-time':`${duration}ms`} as CSSProperties} onTransitionEnd={e=>{if(!revealingBoosts&&e.target===e.currentTarget&&e.propertyName==='transform')finish()}}><i/></div>
    </div>
    {isPrism && <PrismWheelHub crystal={`${theme.artRoot}/${theme.voltFinish?.centerImage ?? 'center-crystal.webp'}`}
     large={Boolean(theme.voltFinish?.centerImage)} />}

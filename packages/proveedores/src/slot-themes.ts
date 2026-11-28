@@ -16,7 +16,7 @@ export type SlotTheme = {
 export const slotThemes: Readonly<Record<string, SlotTheme>> = {
   "jardin-de-luces": { motif: "botanical", secondary: "#d9f99d", surface: "#071d18", emblem: "❧", notes: [523, 659, 784], voice: "sine", bonus: { item: "flor", title: "El jardín secreto", symbol: 4 } },
   "puerto-ambar": { motif: "brass", secondary: "#fde68a", surface: "#211509", emblem: "✥", notes: [220, 330, 440], voice: "triangle", bonus: { item: "cofre", title: "El tesoro del puerto", symbol: 4 } },
-  "taller-de-cometas": { motif: "celestial", secondary: "#fef08a", surface: "#211326", emblem: "✦", notes: [440, 659, 880], voice: "triangle", bonus: { item: "cometa", title: "Una estrella por descubrir", symbol: 3 } },
+  "taller-de-cometas": { motif: "celestial", secondary: "#f0cd94", surface: "#130f20", emblem: "✦", notes: [440, 659, 880], voice: "triangle", bonus: { item: "cometa", title: "Una estrella por descubrir", symbol: 3 } },
   "biblioteca-lunar": { motif: "celestial", secondary: "#e0e7ff", surface: "#15132e", emblem: "☾", notes: [294, 440, 587], voice: "sine", bonus: { item: "libro", title: "Las páginas del destino", symbol: 4 } },
   "aurora-glacial": { motif: "frost", secondary: "#e0f2fe", surface: "#082333", emblem: "❄", notes: [784, 988, 1175], voice: "sine", bonus: { item: "gema", title: "El secreto del hielo", symbol: 0 } },
   "oraculo-coral": { motif: "ocean", secondary: "#5eead4", surface: "#09282c", emblem: "≈", notes: [349, 440, 523], voice: "sine", bonus: { item: "perla", title: "La voz del arrecife", symbol: 3 } },

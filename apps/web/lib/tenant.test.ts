@@ -39,6 +39,8 @@ test("kairobet.online is the Kairobet house and its panel", () => {
   assert.equal(surfaceOrigin("casa", "kairobet"), "https://kairobet.online");
   assert.equal(surfaceOrigin("admin", "kairobet"), "https://admin.kairobet.online");
   assert.equal(surfaceOrigin("casa", "kairobet", "homebet.com"), "https://kairobet.online");
+  assert.equal(surfaceOrigin("casa", "kairobet", "localhost"), "http://kairobet.localhost:3000");
+  assert.equal(surfaceOrigin("admin", "kairobet", "localhost"), "http://kairobet-admin.localhost:3000");
 });
 
 test("nested hosts, reserved labels and foreign domains stay unknown", () => {

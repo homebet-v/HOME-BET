@@ -15,11 +15,12 @@ export type CatalogGame = {
   fanArt?: boolean;
   category?: "slots" | "roulette" | "cards" | "instant";
   runtime?: "slot-3x3" | "slot-5x3" | "slot-5x5" | "roulette-european";
+  edition?: "II" | "III";
   artwork?: { symbol: string; color: string; background: string };
 };
 
 export const catalog: readonly CatalogGame[] = [
-  ...slotPlayableGames.map((game): CatalogGame => ({ providerSlug: game.providerSlug, slug: game.slug, name: game.name, category: "slots", coverImage: game.cover, artStyle: game.artStyle, fanArt: game.fanArt, status: "published", version: game.version, runtime: game.engine === "5x5" ? "slot-5x5" : game.engine === "5x3" ? "slot-5x3" : "slot-3x3" })),
+  ...slotPlayableGames.map((game): CatalogGame => ({ providerSlug: game.providerSlug, slug: game.slug, name: game.name, category: "slots", coverImage: game.cover, artStyle: game.artStyle, fanArt: game.fanArt, edition: game.slug.endsWith("-ii") ? "II" : game.slug.endsWith("-iii") ? "III" : undefined, status: "published", version: game.version, runtime: game.engine === "5x5" ? "slot-5x5" : game.engine === "5x3" ? "slot-5x3" : "slot-3x3" })),
   ...[...voltFoundryRouletteThemes, ...rouletteThemes].map((theme): CatalogGame => ({
     providerSlug: theme.variant === "prism" ? voltFoundry.slug : "lumen",
     slug: theme.slug,
@@ -54,8 +55,8 @@ export const catalog: readonly CatalogGame[] = [
 ];
 
 export const providers = [
-  { ...voltFoundry, logoImage: "/images/providers/volt-foundry-logo.webp", iconImage: "/images/providers/volt-foundry-icon.webp", initials: "VF", description: "Ruletas europeas con números multiplicados, carcasas facetadas y ejes de cristal.", color: "#a689ff" },
-  { slug: "lumen", logoImage: "/images/slots/provider-logo.webp", iconImage: "/images/slots/provider-icon.webp", name: "Lumen Studio", initials: "LS", description: `${slotGames.length} temáticas y ${slotPlayableGames.length} ediciones. Motores 3×3, 5×3 y 5×5 con bonos y giros gratis.`, color: "#fbbf24" },
-  { slug: "atlas", logoImage: "/images/providers/atlas-logo.png", iconImage: "/images/providers/atlas-icon.png", name: "Atlas Games", initials: "AG", description: "Juegos de mesa y clásicos de casino.", color: "#38bdf8" },
-  { slug: "aurora", logoImage: "/images/providers/aurora-logo.png", iconImage: "/images/providers/aurora-icon.png", name: "Aurora Studios", initials: "AS", description: "Slots y experiencias de temática original.", color: "#c084fc" },
+  { ...voltFoundry, logoImage: "/images/providers/volt-foundry-logo.webp", iconImage: "/images/providers/volt-foundry-brand-icon.svg", initials: "VF", description: "Ruletas europeas con números multiplicados, carcasas facetadas y ejes de cristal.", color: "#a689ff" },
+  { slug: "lumen", logoImage: "/images/providers/reel-crown-logo.svg", iconImage: "/images/providers/reel-crown-brand-icon.svg", name: "Reel Crown", initials: "RC", description: `${slotGames.length} temáticas y ${slotPlayableGames.length} ediciones. Motores 3×3, 5×3 y 5×5 con bonos y giros gratis.`, color: "#fbbf24" },
+  { slug: "atlas", logoImage: "/images/providers/atlas-logo.png", iconImage: "/images/providers/atlas-brand-icon.svg", name: "Atlas Games", initials: "AG", description: "Juegos de mesa y clásicos de casino.", color: "#38bdf8" },
+  { slug: "aurora", logoImage: "/images/providers/aurora-logo.png", iconImage: "/images/providers/aurora-brand-icon.svg", name: "Aurora Studios", initials: "AS", description: "Slots y experiencias de temática original.", color: "#c084fc" },
 ] as const;
